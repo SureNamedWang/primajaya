@@ -18,7 +18,7 @@
 				<article class="card-body p-5">
 					<dl class="item-property">
 						<dt>Deskripsi Produk</dt>
-						<dd>{{$products->detail}}</dd>
+						<dd style="text-align: justify;">{{$products->detail}}</dd>
 					</dl>
 				</article>
 			</aside>
@@ -28,12 +28,13 @@
 						{{ucwords($products->nama)}}
 					</h2>
 					<hr>
-					<span class="price h3 text-danger"> 
+					<h6 style="font-weight: bolder;">Harga Dasar</h6>
+					<span class="price h3 text-danger">
 						<span class="currency">IDR </span><span class="num">{{number_format($products->harga)}}</span>
 					</span>
 					<hr>
 					<!-- price-detail-wrap .// -->
-					<form action="{{route('keranjang.store')}}" method="post">
+					<form action="{{route('cart.store')}}" method="post">
 						@csrf
 						<div class="row">
 							<input type="hidden" name="idBarang" value="{{$products->id}}">
@@ -59,7 +60,7 @@
 								@foreach ($addonKain as $kain)
 								<div class="form-check">
 									<label class="form-check-label" for="radio{{$kain->id}}">
-										<input type="radio" class="form-check-input" id="radio{{$kain->id}}" name="rdoAddon" value="{{$kain->id}}">{{ucwords($kain->nama)}} - IDR.{{number_format($kain->harga)}}
+										<input type="radio" class="form-check-input" id="radio{{$kain->id}}" name="rdoAddonKain" value="{{$kain->id}}">{{ucwords($kain->nama)}} - IDR.{{number_format($kain->harga)}}
 									</label>
 								</div>
 								@endforeach
@@ -69,7 +70,7 @@
 								<header style="font-weight: bolder">Logo</header>
 								@foreach ($addonLogo as $logo)
 								<div class="form-check">
-									<input type="checkbox" class="form-check-input" id="checkLogo{{$logo->id}}" name="cbkLogo[]">
+									<input type="checkbox" class="form-check-input" id="checkLogo{{$logo->id}}" name="cbkLogo" value="{{$logo->id}}">
 									<label class="form-check-label" for="checkLogo{{$logo->id}}">
 										{{ucwords($logo->nama)}} - IDR.{{number_format($logo->harga)}}
 									</label>

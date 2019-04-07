@@ -4,6 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Keranjang;
+use App\ActiveCarts;
+use App\Products;
+use App\Ukuran;
+use App\Harga;
+use App\AddonKain;
+use App\AddonLogo;
 
 class KeranjangController extends Controller
 {
@@ -15,6 +21,13 @@ class KeranjangController extends Controller
     public function index()
     {
         //
+        $cart = Keranjang::all();
+        //$addonKain = AddonKain::all();
+        //$addonLogo = AddonLogo::all();
+        //$products = Products::all();
+        //dd($cart);
+        //return view('cart')->with(compact('cart','products','addonKain','addonLogo'));
+        return view('cart')->with(compact('cart'));
     }
 
     /**
@@ -37,15 +50,22 @@ class KeranjangController extends Controller
     {
         //
         $keranjang = new Keranjang();
+        $keranjang->active_carts_id = 1;
         $keranjang->idUser = 1;
         $keranjang->idBarang = $request->idBarang;
         $keranjang->jumlah = $request->jumlah;
-        if(isset($request->catatan)){
-            $keranjang->catatan = $request->catatan;
+        $keranjang->id_ukuran = $request->ukuran;
+        $keranjang->id_kain = $request->rdoAddonKain;
+        if(isset($request->cbkLogo)){
+            $keranjang->id_logo = $request->cbkLogo;
+        }
+        else{
+            $keranjang->id_logo = 0;
         }
         //dd($request->input());
         $keranjang->save();
         dd($keranjang);
+        return view('cart');
     }
 
     /**
