@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\products;
+use App\Products;
+use App\Gambar;
+use App\Ukuran;
+use App\Harga;
+use App\AddonKain;
+use App\AddonLogo;
 
 class ProductController extends Controller
 {
@@ -15,7 +20,10 @@ class ProductController extends Controller
     public function index()
     {
         //
-        $products = products::all();
+        $products = Products::all();
+        
+        //dd($products->first()->ukuranProduct);
+        //dd($addonKain);
         return view('products')->with(compact('products'));
     }
 
@@ -49,9 +57,12 @@ class ProductController extends Controller
     public function show($id)
     {
         //
-        $products = products::find($id);
-        //dd($products);
-        return view('product')->with(compact('products'));
+        $addonKain = AddonKain::all();
+        $addonLogo = AddonLogo::all();
+        //$harga = Harga::all();
+        $products = Products::find($id);
+        //dd($products->hargaUkuranProduct->first()->hargaUkuran);
+        return view('product')->with(compact('products','addonKain','addonLogo'));
     }
 
     /**

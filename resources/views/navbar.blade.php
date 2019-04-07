@@ -45,7 +45,7 @@
 
   <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-    <a class="navbar-brand" href="{{ url('/product') }}">
+    <a class="navbar-brand" href="{{ url('/catalogue') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
 

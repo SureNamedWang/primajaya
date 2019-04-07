@@ -23,7 +23,7 @@
   <link href="{{asset('css/sb-admin.css')}}" rel="stylesheet">
   
   <!-- w3school-->
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="{{asset('css/w3.css')}}">
 
   <!--productpage-->
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">

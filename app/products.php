@@ -4,7 +4,24 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class products extends Model
+class Products extends Model
 {
     //
+    public function gambarProduct(){
+    	return $this->hasMany('App\Gambar', 'id_products', 'id');
+    }
+    public function ukuranProduct(){
+    	return $this->hasMany('App\Ukuran', 'id_products', 'id');
+    }
+    public function hargaUkuranProduct()
+    {
+        return $this->hasManyThrough(
+            'App\Harga',
+            'App\Ukuran',
+            'id_products', // Foreign key on users table...
+            'id_ukuran', // Foreign key on posts table...
+            'id', // Local key on countries table...
+            'id' // Local key on users table...
+        );
+    }
 }

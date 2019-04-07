@@ -1,178 +1,118 @@
 @extends('index')
 @section('content')
-<!-- #Produk -->
-<!-- <div class="card mb-3">
-	<div class="card-header" style="font-weight: bold; font-size: 25px ;text-align: center;background-color: beige">
-		{{$products->nama}}
-	</div>
-	<div class="card-body">
+<div class="container">
+
+	<div class="card">
 		<div class="row">
-			<div class="col-xl-4 col-sm-6 mb-3" style="align-items: center;">
-				<img id="gbr" src="{{asset($products->gambar)}}" alt="Norway" style="width:100%; border-color: burlywood">
-				<div class="row" style="margin: auto;">
-					<div class="col-xl-3 col-sm-6 mb-3" style="padding-left: 0px; padding-right: 0px;padding-top: 0px;padding-bottom: 0px; border-style: solid; border-color: burlywood; cursor: pointer;">
-						<img id="gbr" src="{{asset('la.jpg')}}" alt="Norway" style="width:100%; margin: auto;">
-					</div>
-					<div class="col-xl-3 col-sm-6 mb-3" style="padding-left: 0px; padding-right: 0px;padding-top: 0px;padding-bottom: 0px; border-style: solid; border-color: burlywood; cursor: pointer;">
-						<img id="gbr" src="{{asset('ny.jpg')}}" alt="Norway" style="width:100%; margin: auto;">
-					</div>
-					<div class="col-xl-3 col-sm-6 mb-3" style="padding-left: 0px; padding-right: 0px;padding-top: 0px;padding-bottom: 0px; border-style: solid; border-color: burlywood; cursor: pointer;">
-						<img id="gbr" src="{{asset('chicago.jpg')}}" alt="Norway" style="width:100%; margin: auto;">
-					</div>
-					<div class="col-xl-3 col-sm-6 mb-3" style="padding-left: 0px; padding-right: 0px;padding-top: 0px;padding-bottom: 0px; border-style: solid; border-color: burlywood; cursor: pointer;">
-						<img id="gbr" src="{{asset('ny.jpg')}}" alt="Norway" style="width:100%; margin: auto;">
-					</div>
-					<div class="col-xl-3 col-sm-6 mb-3" style="padding-left: 0px; padding-right: 0px;padding-top: 0px;padding-bottom: 0px; border-style: solid; border-color: burlywood; cursor: pointer;">
-						<img id="gbr" src="{{asset('chicago.jpg')}}" alt="Norway" style="width:100%; margin: auto;">
-					</div>
-				</div>
-			</div>
-			<div class="col-xl-8 col-sm-6 mb-3" style="align-items: center;">
-				<div class="card mb-3">
-					<div class="card-header" style="font-weight: bold; font-size: 25px ;text-align: center;background-color: violet">
-						Rp.{{$products->harga}},00.
-					</div>
-					<div class="card-body">
-						<form action="{{route('keranjang.store')}}" method="post">
-							@csrf
+			<aside class="col-sm-5">
+				<article class="gallery-wrap"> 
+					<div class="img-big-wrap">
+						<div><img src="{{asset($products->gambar)}}" class="w-100 m-0 p-0" id="bigwrap" "></div>
+					</div> <!-- slider-product.// -->
+					<div class="img-small-wrap">
+						@foreach ($products->gambarProduct as $gbr)
+						<div class="item-gallery"> <img src="{{asset($gbr->gambar)}}" class="gbk"> </div>
+						@endforeach
+					</div> <!-- slider-nav.// -->
+				</article> <!-- gallery-wrap .end// -->
+				<article class="card-body p-5">
+					<dl class="item-property">
+						<dt>Deskripsi Produk</dt>
+						<dd>{{$products->detail}}</dd>
+					</dl>
+				</article>
+			</aside>
+			<aside class="col-sm-7">
+				<article class="card-body p-5">
+					<h2 class="title mb-3 bold text-center">
+						{{ucwords($products->nama)}}
+					</h2>
+					<hr>
+					<span class="price h3 text-danger"> 
+						<span class="currency">IDR </span><span class="num">{{number_format($products->harga)}}</span>
+					</span>
+					<hr>
+					<!-- price-detail-wrap .// -->
+					<form action="{{route('keranjang.store')}}" method="post">
+						@csrf
+						<div class="row">
 							<input type="hidden" name="idBarang" value="{{$products->id}}">
-							<div class="form-group">
+							<div class="form-group col-sm-12">
 								<div class="form-label-group">
 									<input type="number" min="1" max="100" step="1" id="jumlah" name="jumlah" class="form-control" placeholder="Jumlah" required="required" value="1" >
 									<label for="jumlah">Jumlah</label>
 								</div>
 							</div>
-							<div class="form-group">
-								<div class="form-label-group">
-									<input type="text" id="catatan" name="catatan" class="form-control" placeholder="Catatan">
-									<label for="catatan">Catatan</label>
-								</div>
+							<div class="form-group col-sm-12 center">
+								<header style="font-weight: bolder;">Pilih Ukuran</header>
+								<select class="form-control" name="ukuran">
+									<option value="">Ukuran</option>
+									@foreach ($products->hargaUkuranProduct as $harga)
+									<option value="{{$harga->id}}">{{$harga->hargaUkuran->ukuran}} - {{$harga->nama}} - IDR.{{number_format($harga->harga)}}</option>
+									@endforeach
+								</select>
 							</div>
-							<input type="submit" id="submit" class="btn btn-primary btn-block" value="Tambah Ke Keranjang">
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="card mb-3">
-			<header class="card mb-3">
-				<h3>Deskripsi Barang:</h3>
-			</header>
-			<p>{{$products->detail}}</p>
-		</div>
-
-		<div class="card mb-3">
-			<header class="card mb-3">
-				<h3>Spesifikasi Barang:</h3>
-			</header>
-			<p>Ukuran : 10mx5m</p>
-			<p>Warna : Putih, Hitam, Coklat</p>
-			<p>Bahan : Nilon</p>
-		</div>
-
-		<footer class="w3-container w3-blue">
-			<h5>Footer</h5>
-		</footer>
-
-	</div>
-	<!-- /#card body -->
-	<!--</div> -->
-	<!-- /#Produk -->
-
-	<div class="container">
-
-		<div class="card">
-			<div class="row">
-				<aside class="col-sm-5">
-					<article class="gallery-wrap"> 
-						<div class="img-big-wrap">
-							<div><img src="{{asset($products->gambar)}}" class="w-100 m-0 p-0" id="bigwrap" "></div>
-						</div> <!-- slider-product.// -->
-						<div class="img-small-wrap">
-							<div class="item-gallery"> <img src="{{asset('ny.jpg')}}" class="gbk"> </div>
-							<div class="item-gallery"> <img src="{{asset('la.jpg')}}" class="gbk"> </div>
-							<div class="item-gallery"> <img src="{{asset('chicago.jpg')}}" class="gbk"> </div>
-						</div> <!-- slider-nav.// -->
-					</article> <!-- gallery-wrap .end// -->
-				</aside>
-				<aside class="col-sm-7">
-					<article class="card-body p-5">
-						<h2 class="title mb-3 bold text-center">
-							{{ucwords($products->nama)}}
-						</h2>
-						<hr>
-							<span class="price h3 text-danger"> 
-								<span class="currency">IDR </span><span class="num">{{$products->harga}}</span>
-							</span>
-						<hr>
-						<!-- price-detail-wrap .// -->
-						<dl class="item-property">
-							<dt>Description</dt>
-							<dd>{{$products->detail}}</dd>
-						</dl>
-						<dl class="param param-feature">
-							<dt>Model#</dt>
-							<dd>12345611</dd>
-						</dl>  <!-- item-property-hor .// -->
-						<dl class="param param-feature">
-							<dt>Color</dt>
-							<dd>Black and white</dd>
-						</dl>  <!-- item-property-hor .// -->
-						<dl class="param param-feature">
-							<dt>Delivery</dt>
-							<dd>Russia, USA, and Europe</dd>
-						</dl>  <!-- item-property-hor .// -->
-
-						<hr>
-						<form action="{{route('keranjang.store')}}" method="post">
-							@csrf
-							<div class="row">
-								<input type="hidden" name="idBarang" value="{{$products->id}}">
-								<div class="form-group col-sm-6">
-									<div class="form-label-group">
-										<input type="number" min="1" max="100" step="1" id="jumlah" name="jumlah" class="form-control" placeholder="Jumlah" required="required" value="1" >
-										<label for="jumlah">Jumlah</label>
-									</div>
+							<div class="form-group col-sm-12 center">
+								<header style="font-weight: bolder">Material Kain</header>
+							</div>
+							<div class="form-group col-sm-12 center">
+								@foreach ($addonKain as $kain)
+								<div class="form-check">
+									<label class="form-check-label" for="radio{{$kain->id}}">
+										<input type="radio" class="form-check-input" id="radio{{$kain->id}}" name="rdoAddon" value="{{$kain->id}}">{{ucwords($kain->nama)}} - IDR.{{number_format($kain->harga)}}
+									</label>
 								</div>
-								<div class="form-group col-sm-6">
-									<div class="form-label-group">
-										<input type="text" id="catatan" name="catatan" class="form-control" placeholder="Catatan">
-										<label for="catatan">Catatan</label>
-									</div>
+								@endforeach
+							</div>
+							<hr>
+							<div class="form-group col-sm-12 center">
+								<header style="font-weight: bolder">Logo</header>
+								@foreach ($addonLogo as $logo)
+								<div class="form-check">
+									<input type="checkbox" class="form-check-input" id="checkLogo{{$logo->id}}" name="cbkLogo[]">
+									<label class="form-check-label" for="checkLogo{{$logo->id}}">
+										{{ucwords($logo->nama)}} - IDR.{{number_format($logo->harga)}}
+									</label>
 								</div>
-								<hr>
-								<div class="form-group col-sm-12 center">
-									<button type="submit" class="btn btn-block btn-lg btn-outline-primary text-uppercase">
-										<i class="fas fa-shopping-cart"></i>
-										Tambah ke Keranjang
-									</button>
-								</div>
-							</div> <!-- row.// -->
-						</form>
-					</article> <!-- card-body.// -->
-				</aside> <!-- col.// -->
-			</div> <!-- row.// -->
-		</div> <!-- card.// -->
+								@endforeach
+							</div>
+							<div class="form-group col-sm-12 center">
+								<header style="font-weight: bolder">Upload Logo</header>
+								<input class="input-group-btn" type="file" name="fileToUpload">
+							</div>
+							<hr>
+							<div class="form-group col-sm-12 center">
+								<button type="submit" class="btn btn-block btn-lg btn-outline-primary text-uppercase">
+									<i class="fas fa-shopping-cart"></i>
+									Tambah ke Keranjang
+								</button>
+							</div>
+						</div> <!-- row.// -->
+					</form>
+				</article> <!-- card-body.// -->
+			</aside> <!-- col.// -->
+		</div> <!-- row.// -->
+	</div> <!-- card.// -->
 
 
-	</div>
-	<!--container.//-->
+</div>
+<!--container.//-->
+@endsection
+
+@section('script')
+<script>
+	$(".gbk").hover(
+		function() {
+			let gbr = $(this).attr('src');
+			console.log(gbr);
+			$("#bigwrap").attr("src",gbr);
+		}
+		);
+	$('.gbk').mouseleave(
+		function(){
+			let gbr = "{{asset($products->gambar)}}";
+			console.log(gbr);
+			$("#bigwrap").attr("src",gbr);
+		});
+	</script>
 	@endsection
-
-	@section('script')
-	<script>
-		$(".gbk").hover(
-			function() {
-				let gbr = $(this).attr('src');
-				console.log(gbr);
-				$("#bigwrap").attr("src",gbr);
-			}
-			);
-		$('.gbk').mouseleave(
-			function(){
-				let gbr = "{{asset($products->gambar)}}";
-				console.log(gbr);
-				$("#bigwrap").attr("src",gbr);
-			});
-		</script>
-		@endsection

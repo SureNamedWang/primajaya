@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\keranjang;
+use App\Keranjang;
 
 class KeranjangController extends Controller
 {
@@ -36,7 +36,7 @@ class KeranjangController extends Controller
     public function store(Request $request)
     {
         //
-        $keranjang = new keranjang();
+        $keranjang = new Keranjang();
         $keranjang->idUser = 1;
         $keranjang->idBarang = $request->idBarang;
         $keranjang->jumlah = $request->jumlah;

@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Keranjang extends Model
+class AddonLogo extends Model
 {
     //
-    protected $table = 'keranjang';
+    protected $table = 'addon_logo';
     public $timestamps = false;
 }
