@@ -18,6 +18,8 @@ Route::resource('/catalogue', 'ProductController');
 
 Route::resource('/cart', 'KeranjangController');
 
+Route::resource('/orders', 'KeranjangController');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ActiveCarts extends Model
+class CartsList extends Model
 {
     //
-    protected $table = 'active_carts';
+    protected $table = 'carts_list';
     public $timestamps = false;
 }

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\CartsList;
 use App\Keranjang;
-use App\ActiveCarts;
 use App\Products;
 use App\Ukuran;
 use App\Harga;
@@ -27,7 +27,8 @@ class KeranjangController extends Controller
         //$products = Products::all();
         //dd($cart);
         //return view('cart')->with(compact('cart','products','addonKain','addonLogo'));
-        return view('cart')->with(compact('cart'));
+        //return view('cart')->with(compact('cart'));
+        return view('orders')->with(compact('cart'));
     }
 
     /**
@@ -50,8 +51,8 @@ class KeranjangController extends Controller
     {
         //
         $keranjang = new Keranjang();
-        $keranjang->active_carts_id = 1;
-        $keranjang->idUser = 1;
+        //id keranjang ambil dari yang aktif, belum ada caranya
+        $keranjang->idKeranjang =$request->idKeranjang;
         $keranjang->idBarang = $request->idBarang;
         $keranjang->jumlah = $request->jumlah;
         $keranjang->id_ukuran = $request->ukuran;
