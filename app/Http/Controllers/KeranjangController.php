@@ -25,10 +25,10 @@ class KeranjangController extends Controller
         //$addonKain = AddonKain::all();
         //$addonLogo = AddonLogo::all();
         //$products = Products::all();
-        //dd($cart);
+        //dd($cart->first()->keranjangProducts->gambar);
         //return view('cart')->with(compact('cart','products','addonKain','addonLogo'));
-        //return view('cart')->with(compact('cart'));
-        return view('orders')->with(compact('cart'));
+        return view('cart')->with(compact('cart'));
+        //return view('orders')->with(compact('cart'));
     }
 
     /**
@@ -52,21 +52,26 @@ class KeranjangController extends Controller
         //
         $keranjang = new Keranjang();
         //id keranjang ambil dari yang aktif, belum ada caranya
-        $keranjang->idKeranjang =$request->idKeranjang;
-        $keranjang->idBarang = $request->idBarang;
+        $keranjang->id_carts_list =1;
+        $keranjang->id_products = $request->idBarang;
         $keranjang->jumlah = $request->jumlah;
-        $keranjang->id_ukuran = $request->ukuran;
+        $keranjang->id_harga = $request->ukuran;
         $keranjang->id_kain = $request->rdoAddonKain;
         if(isset($request->cbkLogo)){
             $keranjang->id_logo = $request->cbkLogo;
+            $hargaLogo = AddonLogo::find($request->cbkLogo)->harga;
         }
         else{
-            $keranjang->id_logo = 0;
+            $hargaLogo = 0;
         }
-        //dd($request->input());
+        $hargaBarang = Harga::find($request->ukuran)->harga;
+        $hargaKain = AddonKain::find($request->rdoAddonKain)->harga;
+        $totalHarga = $hargaBarang+$hargaKain+$hargaLogo;
+        $keranjang->harga = $totalHarga;
+        //dd($totalHarga);
         $keranjang->save();
-        dd($keranjang);
-        return view('cart');
+        //dd($keranjang);
+        return redirect('/cart');
     }
 
     /**

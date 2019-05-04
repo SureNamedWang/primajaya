@@ -22,7 +22,7 @@ class ProductController extends Controller
         //
         $products = Products::all();
         
-        //dd($products->first()->ukuranProduct);
+        //dd($products->first()->gambarProduct->where('thumbnail', 1));
         //dd($addonKain);
         return view('products')->with(compact('products'));
     }

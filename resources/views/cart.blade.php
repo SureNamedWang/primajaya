@@ -17,24 +17,43 @@
                             <th scope="col">Barang</th>
                             <th scope="col">Ukuran</th>
                             <th scope="col">Tipe Kain</th>
-                            <th scope="col">Logo+Desain</th>
+                            <th scope="col">Logo</th>
+                            <th scope="col">Desain</th>
                             <th scope="col">Jumlah</th>
                             <th scope="col">Total Harga</th>
                             <th> </th>
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                        $totalHarga=0;
+                        @endphp
                         @foreach ($cart as $item)
                         <tr>
-                            <td><img src="la.jpg" style="height: 50px;width: 50px;" /> </td>
-                            <td>{{$item->id}}</td>
-                            <td>2x2</td>
-                            <td>Parasol 1.3m</td>
-                            <td>None</td>
-                            <td>1</td>
-                            <td>Rp.15.500.000</td>
+                            <td><img src="{{$item->keranjangProducts->gambarProduct->where('thumbnail', 1)->first()->gambar}}" style="height: 50px;width: 50px;" /> </td>
+                            <td>{{$item->keranjangProducts->nama}}</td>
+                            <td>{{$item->keranjangHarga->hargaUkuran->ukuran}}</td>
+                            <td>{{$item->keranjangKain->nama}}</td>
+                            <td>
+                                @if(isset($item->id_logo))
+                                <i class="fa fa-check"></i>
+                                @else
+                                <i class="fa fa-window-minimize"></i>
+                                @endif
+                            </td>
+                            <td>@if(isset($item->desain))
+                                <i class="fa fa-check"></i>
+                                @else
+                                <i class="fa fa-window-minimize"></i>
+                                @endif
+                            </td>
+                            <td>{{$item->jumlah}}</td>
+                            <td>Rp. {{number_format($item->harga)}}</td>
                             <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
                         </tr>
+                        @php
+                        $totalHarga=$totalHarga+$item->harga;
+                        @endphp
                         @endforeach
                         <tr>
                             <td></td>
@@ -53,8 +72,8 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td>Sub-Total</td>
-                            <td class="text-right">Rp.15.500.000</td>
+                            <td><strong>Sub-Total</strong></td>
+                            <td><strong>Rp. {{number_format($totalHarga)}}</strong></td>
                         </tr>
                         <tr>
                             <td></td>
@@ -63,8 +82,8 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td>Shipping</td>
-                            <td class="text-right">Rp.0</td>
+                            <td><strong>Shipping</strong></td>
+                            <td><strong>Rp.0</strong></td>
                         </tr>
                         <tr>
                             <td></td>
@@ -74,7 +93,7 @@
                             <td></td>
                             <td></td>
                             <td><strong>Total</strong></td>
-                            <td class="text-right"><strong>Rp.15.500.000</strong></td>
+                            <td><strong>Rp. {{number_format($totalHarga)}}</strong></td>
                         </tr>
                     </tbody>
                 </table>
@@ -84,11 +103,11 @@
             <div class="row">
                 <div class="col-sm-12  col-md-6">
                     <a href="{{ url('/catalogue') }}">
-                        <button class="btn btn-block btn-light">Continue Shopping</button>
+                        <button class="btn btn-block btn-danger">Continue Shopping</button>
                     </a>
                 </div>
                 <div class="col-sm-12 col-md-6 text-right">
-                    <button class="btn btn-lg btn-block btn-success text-uppercase">Checkout</button>
+                    <button class="btn btn-block btn-success">Check Out</button>
                 </div>
             </div>
         </div>

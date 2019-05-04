@@ -7,7 +7,7 @@
 			<aside class="col-sm-5">
 				<article class="gallery-wrap"> 
 					<div class="img-big-wrap">
-						<div><img src="{{asset($products->gambar)}}" class="w-100 m-0 p-0" id="bigwrap" "></div>
+						<div><img src="{{asset($products->gambarProduct->where('thumbnail', 1)->first()->gambar)}}" class="w-100 m-0 p-0" id="bigwrap" "></div>
 					</div> <!-- slider-product.// -->
 					<div class="img-small-wrap">
 						@foreach ($products->gambarProduct as $gbr)

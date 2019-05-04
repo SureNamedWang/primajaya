@@ -18,7 +18,7 @@ Route::resource('/catalogue', 'ProductController');
 
 Route::resource('/cart', 'KeranjangController');
 
-Route::resource('/orders', 'KeranjangController');
+//Route::resource('/orders', 'KeranjangController');
 
 Auth::routes();
 
