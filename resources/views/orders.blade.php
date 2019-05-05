@@ -16,32 +16,78 @@
                             <th scope="col">OrderID</th>
                             <th scope="col">Pembeli</th>
                             <th scope="col">Tanggal</th>
-                            <th scope="col">Total Belanja</th>
+                            <th scope="col">Subtotal</th>
                             <th scope="col">Biaya Kirim</th>
-                            <th scope="col">Total Harga</th>
-                            <th scope="col">Status Pembayaran</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">DP</th>
+                            <th scope="col">Total Di Bayar</th>
+                            <th scope="col">Status</th>
                             <th></th>
                             <th></th>
-                            <th></th>
+
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($cart as $item)
+                        @foreach ($orders as $item)
                         <tr>
-                            <td>1</td>
-                            <td>Moses</td>
-                            <td>2019-05-01</td>
-                            <td>50000</td>
-                            <td>0</td>
-                            <td>50000</td>
-                            <td>Belum Lunas</td>
-                            <td><button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal">Ubah Biaya Kirim</button></td>
-                            <td><button class="btn btn-sm btn-info">Detail Barang</button></td>
-                            <td><button class="btn btn-sm btn-dark">SPK</button></td>
+                            <td>{{$item->id}}</td>
+                            <td>{{$item->id_user}}</td>
+                            <td>{{$item->created_at}}</td>
+                            <td>{{$item->subtotal}}</td>
+                            <td>{{$item->biaya_kirim}}</td>
+                            <td>{{$item->total}}</td>
+                            <td>{{$item->dp}}</td>
+                            <td>{{$item->total_pembayaran}}</td>
+                            <td>{{$item->status}}</td>
+                            <td><button class="btn btn-sm btn-danger">Detail Pembayaran</button></td>
+                            <td><button class="btn btn-sm btn-info">Detail Order</button></td>
+                            @if($user->admin==1)
+                                <td><button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal{{$item->id}}">Ubah Biaya Kirim</button></td>
+                                
+                                <!-- The Modal -->
+                                <div class="modal" id="myModal{{$item->id}}">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                              <h4 class="modal-title">Ubah Ongkos Kirim</h4>
+                                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
 
+                                            <!-- Modal body -->
+                                            <form method="post" action="{{ route('orders.update', ['id' => $item->id]) }}">
+                                            {{method_field('PATCH')}}
+                                            {{ csrf_field() }}
+                                            <div class="modal-body">
+
+                                                <div class="form-group col-sm-12">
+                                                    <div class="form-label-group">                
+                                                        <input type="text" name="hargaAwal" value="{{$item->biaya_kirim}}" disabled>
+                                                        <label for="hargaAwal">Harga Awal</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-sm-12">
+                                                    <div class="form-label-group">                
+                                                        <input type="number" name="hargaBaru">
+                                                        <label for="hargaBaru">Harga Baru</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+                                                <input type="submit" class="btn btn-info" value="Ubah"></button>
+
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+                                            </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /endModal -->
+                            @endif
                         </tr>
                         @endforeach
-                        
                     </tbody>
                 </table>
             </div>
@@ -49,41 +95,5 @@
     </div>
 </div>
 
-<!-- The Modal -->
-<div class="modal" id="myModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
 
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">Ubah Ongkos Kirim</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-
-      <!-- Modal body -->
-      <div class="modal-body">
-        <form>
-            <div class="form-group col-sm-12">
-                <div class="form-label-group">                
-                    <input type="text" name="hargaAwal" value="0" disabled>
-                    <label for="hargaAwal">Harga Awal</label>
-                </div>
-            </div>
-            <div class="form-group col-sm-12">
-                <div class="form-label-group">                
-                    <input type="number" name="hargaBaru">
-                    <label for="hargaBaru">Harga Baru</label>
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <!-- Modal footer -->
-    <div class="modal-footer">
-        <button type="button" class="btn btn-info" data-dismiss="modal">Ubah</button>
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-    </div>
-</div>
-</div>
-</div>
 @endsection

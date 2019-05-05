@@ -3,15 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\CartsList;
 use App\Keranjang;
-use App\Products;
-use App\Ukuran;
-use App\Harga;
-use App\AddonKain;
-use App\AddonLogo;
+use App\Orders;
+use Auth;
 
-class KeranjangController extends Controller
+class OrdersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,9 +17,11 @@ class KeranjangController extends Controller
     public function index()
     {
         //
-        $cart = Keranjang::all();
-        return view('cart')->with(compact('cart'));
-        //return view('orders')->with(compact('cart'));
+        $orders = Orders::all();
+
+        $user=Auth::user();
+        //dd($user);
+        return view('orders')->with(compact('orders','user'));
     }
 
     /**
@@ -45,28 +43,6 @@ class KeranjangController extends Controller
     public function store(Request $request)
     {
         //
-        $keranjang = new Keranjang();
-        //id keranjang ambil dari yang aktif, belum ada caranya
-        $keranjang->id_carts_list =1;
-        $keranjang->id_products = $request->idBarang;
-        $keranjang->jumlah = $request->jumlah;
-        $keranjang->id_harga = $request->ukuran;
-        $keranjang->id_kain = $request->rdoAddonKain;
-        if(isset($request->cbkLogo)){
-            $keranjang->id_logo = $request->cbkLogo;
-            $hargaLogo = AddonLogo::find($request->cbkLogo)->harga;
-        }
-        else{
-            $hargaLogo = 0;
-        }
-        $hargaBarang = Harga::find($request->ukuran)->harga;
-        $hargaKain = AddonKain::find($request->rdoAddonKain)->harga;
-        $totalHarga = $hargaBarang+$hargaKain+$hargaLogo;
-        $keranjang->harga = $totalHarga;
-        //dd($totalHarga);
-        $keranjang->save();
-        //dd($keranjang);
-        return redirect('/cart');
     }
 
     /**
@@ -101,6 +77,12 @@ class KeranjangController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $data=Orders::find($id);
+        $data->biaya_kirim = $request->hargaBaru;
+        $data->total=$data->total+$request->hargaBaru;
+        //dd($data->total);
+        $data->save();
+        return redirect('/orders');
     }
 
     /**
@@ -112,5 +94,10 @@ class KeranjangController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function __construct()
+    {
+        $this->middleware('auth');
     }
 }
