@@ -20,6 +20,8 @@ Route::resource('/cart', 'KeranjangController');
 
 Route::resource('/orders', 'OrdersController');
 
+Route::resource('/pembayaran', 'PembayaranController');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
