@@ -1,0 +1,25 @@
+<?php
+
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
+class AddonLogoTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        //
+        DB::table('addon_logo')->insert([
+            'nama' => 'Logo',
+            'harga' => 200000,
+        ]);
+        DB::table('addon_logo')->insert([
+            'nama' => 'Logo+Desain',
+            'harga' => 250000,
+        ]);
+    }
+}
