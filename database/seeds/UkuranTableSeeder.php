@@ -40,5 +40,9 @@ class UkuranTableSeeder extends Seeder
             'id_products' => 1,
             'ukuran' => '4x6',
         ]);
+        DB::table('ukuran')->insert([
+            'id_products' => 2,
+            'ukuran' => '2x2',
+        ]);
     }
 }

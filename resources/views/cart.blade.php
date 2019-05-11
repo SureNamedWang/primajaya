@@ -49,7 +49,16 @@
                             </td>
                             <td>{{$item->jumlah}}</td>
                             <td>Rp. {{number_format($item->harga)}}</td>
-                            <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
+                            <td class="text-right">
+                                <form action="{{route('cart.destroy', ['id' => $item->id])}}" method="post">
+                                    {{method_field('DELETE')}}
+                                    {{csrf_field()}}
+                                    <button class="btn btn-sm btn-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                            
                         </tr>
                         @php
                         $totalHarga=$totalHarga+$item->harga;

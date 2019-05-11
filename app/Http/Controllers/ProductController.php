@@ -57,12 +57,12 @@ class ProductController extends Controller
     public function show($id)
     {
         //
-        $addonKain = AddonKain::all();
-        $addonLogo = AddonLogo::all();
+        //$addonKain = AddonKain::all();
+        //$addonLogo = AddonLogo::all();
         //$harga = Harga::all();
         $products = Products::find($id);
-        //dd($products->hargaUkuranProduct->first()->hargaUkuran);
-        return view('product')->with(compact('products','addonKain','addonLogo'));
+        //dd($products->hargaUkuranProduct->first()->harga);
+        return view('product')->with(compact('products'));
     }
 
     /**

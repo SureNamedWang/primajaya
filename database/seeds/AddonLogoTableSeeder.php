@@ -14,10 +14,12 @@ class AddonLogoTableSeeder extends Seeder
     {
         //
         DB::table('addon_logo')->insert([
+            'id_products' =>1,
             'nama' => 'Logo',
             'harga' => 200000,
         ]);
         DB::table('addon_logo')->insert([
+            'id_products' =>1,
             'nama' => 'Logo+Desain',
             'harga' => 250000,
         ]);

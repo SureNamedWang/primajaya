@@ -15,6 +15,7 @@ class CreateAddonKainTable extends Migration
     {
         Schema::create('addon_kain', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('id_products');
             $table->string('nama', 255);
             $table->integer('harga');
         });

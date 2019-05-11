@@ -64,7 +64,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-sm-12">
-                                                    <div class="form-label-group">                
+                                                    <div class="form-label-group">
                                                         <input type="number" name="jumlah" required>
                                                         <label for="jumlah">Jumlah</label>
                                                     </div>
@@ -73,7 +73,7 @@
 
                                             <!-- Modal footer -->
                                             <div class="modal-footer">
-                                                <input type="submit" name="approval" class="btn btn-info" value="Approved"></button>
+                                                <input type="submit" name="approval" class="btn btn-info" value="Approve"></button>
 
                                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
                                             </div>
@@ -96,6 +96,7 @@
                             <td></td>
                             <td><a href="{{route('orders.index')}}" class="btn btn-block btn-info">List Order</a></td>
                         </tr>
+                        
                     </tbody>
                 </table>
             </div>

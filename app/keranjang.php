@@ -3,12 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Keranjang extends Model
 {
     //
     protected $table = 'keranjang';
     public $timestamps = false;
+    use SoftDeletes;
 
     public function keranjangProducts()
     {

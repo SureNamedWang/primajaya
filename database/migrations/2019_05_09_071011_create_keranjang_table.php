@@ -23,6 +23,7 @@ class CreateKeranjangTable extends Migration
             $table->integer('id_logo')->nullable();
             $table->string('desain', 255)->nullable();
             $table->integer('harga');
+            $table->softDeletes();
         });
     }
 
