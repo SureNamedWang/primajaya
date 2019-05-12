@@ -39,7 +39,7 @@
                             <td>{{$item->dp}}</td>
                             <td>{{$item->total_pembayaran}}</td>
                             <td>{{$item->status}}</td>
-                            <td><a href="{{route('pembayaran.index')}}" class="btn btn-sm btn-danger">Detail Pembayaran</a></td>
+                            <td><a href="{{route('pembayaran.update', ['id' => $item->id])}}" class="btn btn-sm btn-danger">Detail Pembayaran</a></td>
                             <td><button class="btn btn-sm btn-info">Detail Order</button></td>
                             @if($user->admin==1)
                                 <td><button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal{{$item->id}}">Ubah Biaya Kirim</button></td>

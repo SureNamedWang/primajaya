@@ -1,5 +1,8 @@
 @extends('index')
 @section('content')
+@if (Session::has('message'))
+   <div class="alert alert-info">{{ Session::get('message') }}</div>
+@endif
 <div class="container">
 
 	<div class="card">
@@ -34,7 +37,7 @@
 					</span>
 					<hr>
 					<!-- price-detail-wrap .// -->
-					<form action="{{route('cart.store')}}" method="post">
+					<form action="{{route('cart.store')}}" method="post" enctype="multipart/form-data">
 						@csrf
 						<div class="row">
 							<input type="hidden" name="idBarang" value="{{$products->id}}">

@@ -19,7 +19,6 @@
 			<div class="col-xl-4 col-sm-6 mb-3">
 				<a href="{{route('catalogue.show', ['id' => $product->id])}}">
 					<div class="w3-container">
-						<!-- <form id="{{$product->id}}" action="{{route('catalogue.show', ['id' => $product->id])}}" method="GET"> -->
 							<h6 style="font-weight: bolder">{{ucwords($product->nama)}}</h6>
 							<div class="w3-card-4">
 								<img src="{{$product->gambarProduct->where('thumbnail', 1)->first()->gambar}}" alt="Norway" style="width:100%">
@@ -34,7 +33,6 @@
 								</footer>
 							</div>
 							<input type="hidden" name="idBarang" value="{{$product->id}}">
-							<!-- </form> -->
 						</div>
 					</a>
 				</div>

@@ -42,7 +42,7 @@
                                 @endif
                             </td>
                             <td>@if(isset($item->desain))
-                                <i class="fa fa-check"></i>
+                                <img src="{{asset('storage/'.$item->desain)}}" style="height: 50px;width: 50px;">
                                 @else
                                 <i class="fa fa-window-minimize"></i>
                                 @endif
@@ -115,9 +115,16 @@
                         <button class="btn btn-block btn-danger">Continue Shopping</button>
                     </a>
                 </div>
+                @if($cart->count()!=0)
                 <div class="col-sm-12 col-md-6 text-right">
-                    <button class="btn btn-block btn-success">Check Out</button>
+                    <form method="post" action="{{ route('cart.update', ['id' => $userCart->id])}}">
+                        {{method_field('PATCH')}}
+                        {{csrf_field()}}
+                        <input type="hidden" name="subtotal" value="{{$totalHarga}}">
+                        <input type="submit" class="btn btn-block btn-success" value="Check Out">
+                    </form>
                 </div>
+                @endif
             </div>
         </div>
     </div>

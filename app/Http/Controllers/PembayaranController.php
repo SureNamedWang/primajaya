@@ -17,9 +17,6 @@ class PembayaranController extends Controller
     public function index()
     {
         //
-        $pembayaran = Pembayaran::all();
-        $user = Auth::user();
-        return view('pembayaran')->with(compact('pembayaran','user'));
     }
 
     /**
@@ -41,6 +38,24 @@ class PembayaranController extends Controller
     public function store(Request $request)
     {
         //
+        //dd($request->file('fileToUpload'));
+        $pembayaran=new Pembayaran();
+        $pembayaran->id_orders = $request->OrderID;
+        $path = $request->file('fileToUpload')->extension();
+        //dd($path);
+        if($path!='png' and $path!='jpg' and $path!='jpeg'){
+            Session::flash('message', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
+            return Redirect::back();
+        }
+        else{
+            $path = $request->file('fileToUpload')->store('pembayaran', 'public');
+            //dd($path);
+            $pembayaran->bukti=$path;
+        }
+        $pembayaran->jumlah = 0;
+        $pembayaran->approval = 0;
+        $pembayaran->save();
+        return back();
     }
 
     /**
@@ -52,6 +67,10 @@ class PembayaranController extends Controller
     public function show($id)
     {
         //
+        $user = Auth::user();
+        $pembayaran = Pembayaran::where('id_orders',$id)->get();
+        //dd($pembayaran);
+        return view('pembayaran')->with(compact('pembayaran','user','id'));
     }
 
     /**

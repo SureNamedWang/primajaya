@@ -10,7 +10,10 @@ use App\Ukuran;
 use App\Harga;
 use App\AddonKain;
 use App\AddonLogo;
+use App\Orders;
 use Auth;
+use Session;
+use Redirect;
 
 class KeranjangController extends Controller
 {
@@ -35,7 +38,7 @@ class KeranjangController extends Controller
         $userCart = CartsList::where('id_user',$user->id)->where('status',1)->first();
         $cart = Keranjang::where('id_carts_list',$userCart->id)->get();
         //dd($cart);
-        return view('cart')->with(compact('cart'));
+        return view('cart')->with(compact('cart','userCart'));
         //return view('orders')->with(compact('cart'));
     }
 
@@ -80,8 +83,19 @@ class KeranjangController extends Controller
         if(isset($request->cbkLogo)){
             $keranjang->id_logo = $request->cbkLogo;
             if($request->cbkLogo==1){
-                $keranjang->desain=$request->fileToUpload;
+                
+                $path = $request->file('fileToUpload')->extension();
+                //dd($path);
+                if($path!='png' and $path!='jpg' and $path!='jpeg'){
+                    Session::flash('message', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
+                    return Redirect::back();
+                }
+                else{
+                    $path = $request->file('fileToUpload')->store('logo', 'public');
+                    $keranjang->desain=$path;
+                }
             }
+            
             $hargaLogo = AddonLogo::find($request->cbkLogo)->harga;
         }
         else{
@@ -130,6 +144,23 @@ class KeranjangController extends Controller
     public function update(Request $request, $id)
     {
         //
+        //dd($request->subtotal);
+        $data=CartsList::find($id);
+        $data->status=0;
+        
+        $order=new Orders();
+        $order->id_carts_list=$data->id;
+        $order->id_user=$data->id_user;
+        $order->subtotal=$request->subtotal;
+        $order->biaya_kirim=0;
+        $order->total=$order->subtotal+$order->biaya_kirim;
+        $order->dp=$order->total*30/100;
+        $order->status="pending";
+        $order->total_pembayaran=0;
+        //dd($order);
+        $data->save();
+        $order->save();
+        return redirect()->route('orders.index');
     }
 
     /**
