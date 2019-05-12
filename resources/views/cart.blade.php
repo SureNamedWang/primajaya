@@ -41,7 +41,8 @@
                                 <i class="fa fa-window-minimize"></i>
                                 @endif
                             </td>
-                            <td>@if(isset($item->desain))
+                            <td>
+                                @if(isset($item->desain))
                                 <img src="{{asset('storage/'.$item->desain)}}" style="height: 50px;width: 50px;">
                                 @else
                                 <i class="fa fa-window-minimize"></i>
@@ -49,6 +50,7 @@
                             </td>
                             <td>{{$item->jumlah}}</td>
                             <td>Rp. {{number_format($item->harga)}}</td>
+                            @if($userCart->status!=0)
                             <td class="text-right">
                                 <form action="{{route('cart.destroy', ['id' => $item->id])}}" method="post">
                                     {{method_field('DELETE')}}
@@ -58,7 +60,7 @@
                                     </button>
                                 </form>
                             </td>
-                            
+                            @endif
                         </tr>
                         @php
                         $totalHarga=$totalHarga+$item->harga;
@@ -115,7 +117,7 @@
                         <button class="btn btn-block btn-danger">Continue Shopping</button>
                     </a>
                 </div>
-                @if($cart->count()!=0)
+                @if($cart->count()!=0 and $userCart->status!=0)
                 <div class="col-sm-12 col-md-6 text-right">
                     <form method="post" action="{{ route('cart.update', ['id' => $userCart->id])}}">
                         {{method_field('PATCH')}}

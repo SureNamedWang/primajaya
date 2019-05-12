@@ -43,7 +43,7 @@
                             </td>
                             <td>{{$item->created_at}}</td>
                             <td>{{$item->updated_at}}</td>
-                            <td><a href="{{route('orders.index')}}" class="btn btn-sm btn-info">Detail Order</a></td>
+                            <td></td>
                             @if($user->admin==1)
                             <td><button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal{{$item->id}}">Approval</button></td>
 

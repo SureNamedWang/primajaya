@@ -121,6 +121,12 @@ class KeranjangController extends Controller
     public function show($id)
     {
         //
+        $user = Auth::user();
+        $userCart = CartsList::where('id_user',$user->id)->where('id',$id)->first();
+        //dd($userCart);
+        $cart = Keranjang::where('id_carts_list',$userCart->id)->get();
+        //dd($cart);
+        return view('cart')->with(compact('cart','userCart'));
     }
 
     /**

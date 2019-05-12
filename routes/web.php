@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('catalogue');
 });
 Route::resource('/catalogue', 'ProductController');
 
