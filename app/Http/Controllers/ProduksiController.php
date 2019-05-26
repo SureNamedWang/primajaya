@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Pembayaran;
+use App\Produksi;
 use App\Orders;
+use App\User;
+use Mail;
 use Auth;
 use Session;
 use Redirect;
 
-class PembayaranController extends Controller
+class ProduksiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -40,9 +42,9 @@ class PembayaranController extends Controller
     public function store(Request $request)
     {
         //
-        //dd($request->file('fileToUpload'));
-        $pembayaran=new Pembayaran();
-        $pembayaran->id_orders = $request->OrderID;
+        $produksi=new Produksi();
+        $produksi->id_orders = $request->OrderID;
+        $produksi->id_karyawan = $request->karyawan;
         $path = $request->file('fileToUpload')->extension();
         //dd($path);
         if($path!='png' and $path!='jpg' and $path!='jpeg'){
@@ -50,14 +52,29 @@ class PembayaranController extends Controller
             return Redirect::back();
         }
         else{
-            $path = $request->file('fileToUpload')->store('pembayaran', 'public');
+            $path = $request->file('fileToUpload')->store('produksi', 'public');
             //dd($path);
-            $pembayaran->bukti=$path;
+            $produksi->foto = $path;
         }
-        $pembayaran->jumlah = 0;
-        $pembayaran->approval = 0;
-        $pembayaran->save();
-        return redirect('/pembayaran/'.$request->OrderID);
+        $produksi->waktu = $request->waktu;
+        $produksi->detail_kegiatan = $request->detail;
+        $produksi->progress=$request->progress;
+        $produksi->id_admin=$request->admin;
+        //dd($produksi);
+        $produksi->save();
+
+        $Orders = Orders::find($request->OrderID);
+        $pembeli = User::find($Orders->id_user);
+
+        Mail::send('email', [], function ($m) use ($path,$pembeli) {
+            $m->from('noreply@primajaya.com', 'Prima Jaya');
+
+            $m->to($pembeli->email)->subject('Pesanan Anda');
+
+            $m->attach(asset('storage/'.$path));
+        });
+
+        return redirect('/produksi/'.$request->OrderID);
     }
 
     /**
@@ -70,9 +87,9 @@ class PembayaranController extends Controller
     {
         //
         $user = Auth::user();
-        $pembayaran = Pembayaran::where('id_orders',$id)->get();
+        $produksi = Produksi::where('id_orders',$id)->get();
         //dd($pembayaran);
-        return view('pembayaran')->with(compact('pembayaran','user','id'));
+        return view('produksi')->with(compact('produksi','user','id'));
     }
 
     /**
@@ -96,26 +113,6 @@ class PembayaranController extends Controller
     public function update(Request $request, $id)
     {
         //
-        //dd($request->input());
-
-        $data=Pembayaran::find($id);
-        if($request->approval="Approved"){
-            $data->approval = 1;
-        }
-        $data->jumlah = $request->jumlah;
-
-        $order=Orders::find($data->id_orders);
-        $order->total_pembayaran+=$request->jumlah;
-
-        if($order->total_pembayaran>=$order->dp){
-            $order->status="Sedang Diproses";
-        }
-        //dd($order->total_pembayaran);
-
-        $data->save();
-        $order->save();
-
-        return redirect('/pembayaran/'.$order->id);
     }
 
     /**
@@ -128,7 +125,6 @@ class PembayaranController extends Controller
     {
         //
     }
-
     public function __construct()
     {
         $this->middleware('auth');

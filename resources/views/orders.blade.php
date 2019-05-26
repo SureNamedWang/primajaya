@@ -13,25 +13,30 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
+                            @if($user->admin==1)
                             <th scope="col">OrderID</th>
                             <th scope="col">Pembeli</th>
-                            <th scope="col">Tanggal</th>
+                            @endif
+                            <th scope="col">Tanggal Beli</th>
                             <th scope="col">Subtotal</th>
                             <th scope="col">Biaya Kirim</th>
                             <th scope="col">Total</th>
-                            <th scope="col">DP</th>
+                            <th scope="col">DP Minimal</th>
                             <th scope="col">Total Di Bayar</th>
                             <th scope="col">Status</th>
                             <th></th>
                             <th></th>
-
+                            <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($orders as $item)
                         <tr>
+                            @if($user->admin==1)
                             <td>{{$item->id}}</td>
                             <td>{{$item->id_user}}</td>
+                            @endif
                             <td>{{$item->created_at}}</td>
                             <td>{{$item->subtotal}}</td>
                             <td>{{$item->biaya_kirim}}</td>
@@ -85,6 +90,9 @@
                                     </div>
                                 </div>
                                 <!-- /endModal -->
+                            @endif
+                            @if($item->dp<=$item->total_pembayaran)
+                            <td><a href="{{route('produksi.show', ['id' => $item->id])}}" class="btn btn-sm btn-info">Detail Produksi</a></td>
                             @endif
                         </tr>
                         @endforeach

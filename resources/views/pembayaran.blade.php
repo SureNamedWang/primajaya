@@ -18,10 +18,12 @@
                         <tr>
                             <th scope="col">OrderID</th>
                             <th scope="col">Bukti</th>
-                            <th scope="col">Jumlah</th>
+                            <th scope="col">Jumlah Bayar</th>
                             <th scope="col">Approval</th>
                             <th scope="col">Tanggal Upload</th>
+                            @if($user->admin==1)
                             <th scope="col">Tanggal Approval</th>
+                            @endif
                             <th></th>
                             <th></th>
                         </tr>
@@ -42,7 +44,9 @@
                                 @endif
                             </td>
                             <td>{{$item->created_at}}</td>
+                            @if($user->admin==1)
                             <td>{{$item->updated_at}}</td>
+                            @endif
                             <td></td>
                             @if($user->admin==1)
                             <td><button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal{{$item->id}}">Approval</button></td>
@@ -64,7 +68,7 @@
                                         <div class="modal-body">
                                             <div class="form-group col-sm-12">
                                                 <div class="form-label-group">
-                                                    <img src="{{$item->bukti}}" style="height: 300px;width: 300px;" />
+                                                    <img src="{{asset('storage/'.$item->bukti)}}" style="height: 300px;width: 300px;" />
                                                 </div>
                                             </div>
                                             <div class="form-group col-sm-12">

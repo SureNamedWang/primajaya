@@ -16,7 +16,7 @@ class CreateUkuranTable extends Migration
         Schema::create('ukuran', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('id_products');
-            $table->string('ukuran', 255);
+            $table->integer('id_mukuran');
         });
     }
 

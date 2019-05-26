@@ -22,7 +22,7 @@ class CreateOrdersTable extends Migration
             $table->integer('total');
             $table->integer('dp');
             $table->integer('total_pembayaran');
-            $table->char('status', 7);
+            $table->string('status', 255);
             $table->timestamps();
         });
     }

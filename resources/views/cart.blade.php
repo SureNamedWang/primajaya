@@ -30,10 +30,16 @@
                         @endphp
                         @foreach ($cart as $item)
                         <tr>
-                            <td><img src="{{$item->keranjangProducts->gambarProduct->where('thumbnail', 1)->first()->gambar}}" style="height: 50px;width: 50px;" /> </td>
+                            <td><img src="{{asset($item->keranjangProducts->gambarProduct->where('thumbnail', 1)->first()->gambar)}}" style="height: 50px;width: 50px;" /> </td>
                             <td>{{$item->keranjangProducts->nama}}</td>
-                            <td>{{$item->keranjangHarga->hargaUkuran->ukuran}}</td>
-                            <td>{{$item->keranjangKain->nama}}</td>
+                            <td>{{$item->keranjangHarga->hargaUkuran->MasterUkuran->ukuran}}</td>
+                            <td>
+                            @if(isset($item->id_kain))
+                                {{$item->keranjangKain->nama}}
+                            @else
+                                <i class="fa fa-window-minimize"></i>   
+                            @endif
+                            </td>
                             <td>
                                 @if(isset($item->id_logo))
                                 <i class="fa fa-check"></i>
@@ -93,16 +99,6 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td><strong>Shipping</strong></td>
-                            <td><strong>Rp.0</strong></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
                             <td><strong>Total</strong></td>
                             <td><strong>Rp. {{number_format($totalHarga)}}</strong></td>
                         </tr>
@@ -112,12 +108,19 @@
         </div>
         <div class="col mb-2">
             <div class="row">
+                @if($userCart->status==0)
+                <div class="col-sm-12  col-md-6">
+                    <a href="{{ url('/orders') }}">
+                        <button class="btn btn-block btn-danger">Back</button>
+                    </a>
+                </div>
+                @endif
+                @if($cart->count()!=0 and $userCart->status!=0)
                 <div class="col-sm-12  col-md-6">
                     <a href="{{ url('/catalogue') }}">
                         <button class="btn btn-block btn-danger">Continue Shopping</button>
                     </a>
                 </div>
-                @if($cart->count()!=0 and $userCart->status!=0)
                 <div class="col-sm-12 col-md-6 text-right">
                     <form method="post" action="{{ route('cart.update', ['id' => $userCart->id])}}">
                         {{method_field('PATCH')}}

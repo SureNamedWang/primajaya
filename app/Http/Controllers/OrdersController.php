@@ -19,7 +19,12 @@ class OrdersController extends Controller
         //
         $user = Auth::user();
         //dd($user);
-        $orders = Orders::where('id_user',$user->id)->get();
+        if($user->admin==0){
+            $orders = Orders::where('id_user',$user->id)->get();   
+        }
+        else{
+            $orders=Orders::All();
+        }
         return view('orders')->with(compact('orders','user'));
     }
 

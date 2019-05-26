@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Pembayaran;
-use App\Orders;
+use App\Products;
+use App\Harga;
+use App\AddonKain;
+use App\AddonLogo;
 use Auth;
 use Session;
 use Redirect;
 
-class PembayaranController extends Controller
+class BarangController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,6 +21,9 @@ class PembayaranController extends Controller
     public function index()
     {
         //
+        $user = Auth::user();
+        $products = Products::all();
+        return view('barang')->with(compact('products','user'));
     }
 
     /**
@@ -29,6 +34,8 @@ class PembayaranController extends Controller
     public function create()
     {
         //
+        $user= Auth::user();
+        return view('tambahbarang')->with(compact('user'));
     }
 
     /**
@@ -40,24 +47,7 @@ class PembayaranController extends Controller
     public function store(Request $request)
     {
         //
-        //dd($request->file('fileToUpload'));
-        $pembayaran=new Pembayaran();
-        $pembayaran->id_orders = $request->OrderID;
-        $path = $request->file('fileToUpload')->extension();
-        //dd($path);
-        if($path!='png' and $path!='jpg' and $path!='jpeg'){
-            Session::flash('message', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
-            return Redirect::back();
-        }
-        else{
-            $path = $request->file('fileToUpload')->store('pembayaran', 'public');
-            //dd($path);
-            $pembayaran->bukti=$path;
-        }
-        $pembayaran->jumlah = 0;
-        $pembayaran->approval = 0;
-        $pembayaran->save();
-        return redirect('/pembayaran/'.$request->OrderID);
+        dd($request->input());
     }
 
     /**
@@ -69,10 +59,6 @@ class PembayaranController extends Controller
     public function show($id)
     {
         //
-        $user = Auth::user();
-        $pembayaran = Pembayaran::where('id_orders',$id)->get();
-        //dd($pembayaran);
-        return view('pembayaran')->with(compact('pembayaran','user','id'));
     }
 
     /**
@@ -96,26 +82,6 @@ class PembayaranController extends Controller
     public function update(Request $request, $id)
     {
         //
-        //dd($request->input());
-
-        $data=Pembayaran::find($id);
-        if($request->approval="Approved"){
-            $data->approval = 1;
-        }
-        $data->jumlah = $request->jumlah;
-
-        $order=Orders::find($data->id_orders);
-        $order->total_pembayaran+=$request->jumlah;
-
-        if($order->total_pembayaran>=$order->dp){
-            $order->status="Sedang Diproses";
-        }
-        //dd($order->total_pembayaran);
-
-        $data->save();
-        $order->save();
-
-        return redirect('/pembayaran/'.$order->id);
     }
 
     /**

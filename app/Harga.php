@@ -13,4 +13,9 @@ class Harga extends Model
 	{
 		return $this->belongsTo('App\Ukuran', 'id_ukuran', 'id');
 	}
+
+	public function hargaTipe()
+	{
+		return $this->belongsTo('App\tipeUkuran', 'id_tipe', 'id');
+	}	
 }

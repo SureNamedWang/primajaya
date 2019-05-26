@@ -17,10 +17,12 @@ class DatabaseSeeder extends Seeder
         $this->call(CartsListTableSeeder::class);
         $this->call(GambarTableSeeder::class);
         $this->call(HargaTableSeeder::class);
-        $this->call(KeranjangTableSeeder::class);
-        $this->call(OrdersTableSeeder::class);
-        $this->call(PembayaranTableSeeder::class);
+        //$this->call(KeranjangTableSeeder::class);
+        //$this->call(OrdersTableSeeder::class);
+        //$this->call(PembayaranTableSeeder::class);
         $this->call(ProductsTableSeeder::class);
         $this->call(UkuranTableSeeder::class);
+        $this->call(MasterUkuranTableSeeder::class);
+        $this->call(TipeUkuranTableSeeder::class);
     }
 }

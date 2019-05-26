@@ -22,6 +22,10 @@ Route::resource('/orders', 'OrdersController');
 
 Route::resource('/pembayaran', 'PembayaranController');
 
+Route::resource('/produksi', 'ProduksiController');
+
+Route::resource('/barang', 'BarangController');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

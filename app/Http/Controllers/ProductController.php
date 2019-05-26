@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
 use App\Products;
 use App\Gambar;
 use App\Ukuran;
@@ -20,11 +21,12 @@ class ProductController extends Controller
     public function index()
     {
         //
+        $user = Auth::user();
         $products = Products::all();
         
         //dd($products->first()->gambarProduct->where('thumbnail', 1));
         //dd($addonKain);
-        return view('products')->with(compact('products'));
+        return view('products')->with(compact('products','user'));
     }
 
     /**
@@ -60,9 +62,10 @@ class ProductController extends Controller
         //$addonKain = AddonKain::all();
         //$addonLogo = AddonLogo::all();
         //$harga = Harga::all();
+        $user = Auth::user();
         $products = Products::find($id);
         //dd($products->hargaUkuranProduct->first()->harga);
-        return view('product')->with(compact('products'));
+        return view('product')->with(compact('products','user'));
     }
 
     /**

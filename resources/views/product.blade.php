@@ -53,7 +53,7 @@
 									<option data-techname="0" value="">Ukuran</option>
 									@foreach ($products->hargaUkuranProduct as $harga)
 									<option data-techname="{{$harga->harga}}" value="{{$harga->id}}">
-										{{$harga->hargaUkuran->ukuran}} - {{$harga->nama}} - IDR.{{number_format($harga->harga)}}
+										{{$harga->hargaUkuran->MasterUkuran->ukuran}} - {{$harga->hargaTipe->nama}} - IDR.{{number_format($harga->harga)}}
 									</option>
 									@endforeach
 								</select>
