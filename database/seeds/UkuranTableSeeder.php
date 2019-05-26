@@ -14,35 +14,35 @@ class UkuranTableSeeder extends Seeder
         //
         DB::table('ukuran')->insert([
             'id_products' => 1,
-            'ukuran' => '2x2',
+            'id_mukuran' => 1,
         ]);
         DB::table('ukuran')->insert([
             'id_products' => 1,
-            'ukuran' => '2x2.5',
+            'id_mukuran' => 2,
         ]);
         DB::table('ukuran')->insert([
             'id_products' => 1,
-            'ukuran' => '3x3',
+            'id_mukuran' => 3,
         ]);
         DB::table('ukuran')->insert([
             'id_products' => 1,
-            'ukuran' => '3x4',
+            'id_mukuran' => 4,
         ]);
         DB::table('ukuran')->insert([
             'id_products' => 1,
-            'ukuran' => '4x4',
+            'id_mukuran' => 5,
         ]);
         DB::table('ukuran')->insert([
             'id_products' => 1,
-            'ukuran' => '4x5',
+            'id_mukuran' => 6,
         ]);
         DB::table('ukuran')->insert([
             'id_products' => 1,
-            'ukuran' => '4x6',
+            'id_mukuran' => 7,
         ]);
         DB::table('ukuran')->insert([
             'id_products' => 2,
-            'ukuran' => '2x2',
+            'id_mukuran' => 1,
         ]);
     }
 }
