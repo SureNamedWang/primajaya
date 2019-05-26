@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Products extends Model
 {
     //
+    public $timestamps = false;
     public function gambarProduct(){
     	return $this->hasMany('App\Gambar', 'id_products', 'id');
     }

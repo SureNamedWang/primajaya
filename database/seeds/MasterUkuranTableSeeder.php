@@ -33,8 +33,5 @@ class MasterUkuranTableSeeder extends Seeder
         DB::table('master_ukuran')->insert([
             'ukuran' => '4x6',
         ]);
-        DB::table('master_ukuran')->insert([
-            'ukuran' => '2x2',
-        ]);
     }
 }

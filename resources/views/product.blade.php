@@ -117,7 +117,7 @@
 		);
 	$('.gbk').mouseleave(
 		function(){
-			let gbr = "{{asset($products->gambar)}}";
+			let gbr = "{{asset($products->gambarProduct->where('thumbnail', 1)->first()->gambar)}}";
 			console.log(gbr);
 			$("#bigwrap").attr("src",gbr);
 		});

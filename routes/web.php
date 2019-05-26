@@ -26,6 +26,8 @@ Route::resource('/produksi', 'ProduksiController');
 
 Route::resource('/barang', 'BarangController');
 
+Route::post('/ukuran', 'BarangController@ukuran')->name('ukuran');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

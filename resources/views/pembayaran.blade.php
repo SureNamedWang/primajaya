@@ -109,7 +109,7 @@
                                 <div class="modal-content">
                                     <!-- Modal Header -->
                                     <div class="modal-header">
-                                      <h4 class="modal-title">Approve Pembayaran</h4>
+                                      <h4 class="modal-title">Upload Bukti Pembayaran</h4>
                                       <button type="button" class="close" data-dismiss="modal">&times;</button>
                                   </div>
                                   <!-- Modal body -->
@@ -118,6 +118,7 @@
                                     <div class="modal-body">
                                         <div class="form-group col-sm-12">
                                             <input type="hidden" name="OrderID" value="{{$id}}">
+                                            Upload Bukti Pembayaran
                                             <input class="input-group-btn" type="file" name="fileToUpload">
                                         </div>
                                     </div>

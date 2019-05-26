@@ -1,41 +1,55 @@
 @extends('index')
 @section('content')
 
+@if (Session::has('message'))
+   <div class="alert alert-info">{{ Session::get('message') }}</div>
+@endif
+
 @if($user->admin==1)
 <div class="container">
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-2">
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-8">
             <div class="card">
               <div class="card-header">
                 Form Tambah Barang
             </div>
-            <div class="card-body" style="">
+            <div class="card-body">
                 <form method="post" action="{{route('barang.store')}}" enctype="multipart/form-data">
                     {{csrf_field()}}
-
+                    <input type="hidden" name="asal" value="tambahBarang">
                     <div class="form-group col-sm-12">
                         <div class="form-label-group">
-                            <input type="text" name="nama" required>
+                            <input type="text" class="w-100" name="nama" required>
                             <label for="nama">Nama</label>
                         </div>
                     </div>
                     <div class="form-group col-sm-12">
                         <div class="form-label-group">
                             <h6>Detail</h6>
-                            <textarea name="detail" cols="25" rows="5"></textarea>
+                            <textarea name="detail" class="w-100" cols="25" rows="5"></textarea>
                         </div>
                     </div>
                     <div class="form-group col-sm-12">
                         <h6>Gambar</h6>
-                        <input class="input-group-btn" type="file" name="fileToUpload">
+                        <input class="input-group-btn" class="w-100" type="file" name="fileToUpload">
                     </div>
                     <div class="form-group col-sm-12">
-                        <div class="form-label-group">
-                            <input type="text" name="ukuran" required>
-                            <label for="ukuran">Ukuran</label>
-                        </div>
+                        <select class="form-control" name="ukuran">
+                            <option value="">Pilih Ukuran</option>
+                            @foreach ($ukuran as $ukuran)
+                            <option value="{{$ukuran->id}}">{{$ukuran->ukuran}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <select class="form-control" name="tipe">
+                            <option value="">Pilih Tipe</option>
+                            @foreach ($tipe as $tipe)
+                            <option value="{{$tipe->id}}">{{$tipe->nama}}</option>
+                            @endforeach
+                        </select> 
                     </div>
                     <div class="form-group col-sm-12">
                         <div class="form-label-group">
@@ -44,23 +58,23 @@
                         </div>
                     </div>
                     <div class="form-group col-sm-12">
-                        <div class="form-label-group">
-                            <input type="text" name="type" required>
-                            <label for="type">Type(Komplit/Rangka/Kain)</label>
-                        </div>
-                    </div>
-                    <div class="form-group col-sm-12">
-                        <input type="submit" name="upload" class="btn btn-block btn-info" value="Tambah">
+                        <input type="submit" class="btn btn-block btn-danger" name="submit" value="submit">
                     </div>
                 </form>  
             </div>
         </div>
 
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-2">
     </div>
 </div>
 </div>
+
+<script type="text/javascript">
+    $('#btnTambah').on('click', function(){
+        $( "#tableRow" ).clone().appendTo('tbody')
+    })
+</script>
 
 @endif
 @endsection
