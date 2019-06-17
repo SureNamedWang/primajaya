@@ -18,6 +18,14 @@
       </a>
     </li>
     @endif
+    @if($user->admin==1)
+    <li class="nav-item">
+      <a class="nav-link" href="{{route('barang.index')}}">
+        <i class="fas fa-fw fa-boxes"></i>
+        <span>List Barang</span>
+      </a>
+    </li>
+    @endif
     <li class="nav-item">
       <a class="nav-link" href="{{route('orders.index')}}">
         <i class="fas fa-fw fa-clipboard-list"></i>
