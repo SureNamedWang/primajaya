@@ -1,6 +1,8 @@
 @extends('index')
 @section('content')
-
+@if (Session::has('message'))
+   <div class="alert alert-info">{{ Session::get('message') }}</div>
+@endif
 <section class="jumbotron text-center">
     <div class="container">
         <h1 class="jumbotron-heading">Pembayaran</h1>
@@ -109,7 +111,7 @@
                                 <div class="modal-content">
                                     <!-- Modal Header -->
                                     <div class="modal-header">
-                                      <h4 class="modal-title">Upload Bukti Pembayaran</h4>
+                                      <h4 class="modal-title" style="bolder">Upload Bukti Pembayaran</h4>
                                       <button type="button" class="close" data-dismiss="modal">&times;</button>
                                   </div>
                                   <!-- Modal body -->

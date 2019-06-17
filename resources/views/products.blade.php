@@ -21,7 +21,7 @@
 					<div class="w3-container">
 							<h6 style="font-weight: bolder">{{ucwords($product->nama)}}</h6>
 							<div class="w3-card-4">
-								<img src="{{$product->gambarProduct->where('thumbnail', 1)->first()->gambar}}" alt="Norway" style="width:100%">
+								<img src="{{asset('storage/'.$product->gambarProduct->where('thumbnail', 1)->first()->gambar)}}" alt="Norway" style="width:100%">
 								<div class="w3-container w3-center" style="height: 80px">
 									<?php
 									echo (substr($product->detail,0,75).'...');

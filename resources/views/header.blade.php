@@ -30,3 +30,5 @@
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <link href="{{asset('css/productdetail.css')}}" rel="stylesheet">
+  <!-- <link href="{{asset('css/readmore.css')}}" rel="stylesheet">
+  <script type="text/javascript" src="{{asset('js/readmore.js')}}"></script> -->

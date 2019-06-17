@@ -3,7 +3,7 @@
 
 <section class="jumbotron text-center">
     <div class="container">
-        <h1 class="jumbotron-heading">Pembayaran</h1>
+        <h1 class="jumbotron-heading">Proses Produksi Pesanan ID:{{$produksi->first()->id_orders}}</h1>
     </div>
 </section>
 @if (Session::has('message'))
@@ -30,7 +30,6 @@
                         @foreach ($produksi as $item)
                         <tr>
                             @if($user->admin==1)
-                            <td>{{$item->id_orders}}</td>
                             <td>{{$item->id_karyawan}}</td>
                             @endif
                             <td>{{$item->created_at}}</td>
@@ -93,6 +92,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group col-sm-12">
+                                                <h6 style="bolder">Upload Gambar:</h6>
                                                 <input class="input-group-btn" type="file" name="fileToUpload">
                                             </div>
                                         </div>

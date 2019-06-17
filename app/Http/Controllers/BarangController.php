@@ -14,6 +14,7 @@ use App\tipeUkuran;
 use Auth;
 use Session;
 use Redirect;
+use Collect;
 
 class BarangController extends Controller
 {
@@ -44,11 +45,16 @@ class BarangController extends Controller
         return view('tambahbarang')->with(compact('user','ukuran','tipe'));
     }
 
-    public function ukuran(Request $request){
+    public function tipe($id){
+        //dd($id);
         $user= Auth::user();
-        $ukuran=masterUkuran::all();
+        $ukuran=Ukuran::where('id_products',$id)->get();
         $tipe=tipeUkuran::all();
-        return view('tambahukuran')->with(compact('user','ukuran','tipe'));
+        return view('tambahtipe')->with(compact('user','ukuran','tipe'));
+    }
+
+    public function ukuran(){
+
     }
 
     /**
@@ -61,8 +67,13 @@ class BarangController extends Controller
     {
         //
         //dd($request->input());
+
+    }
+
+    public function storeBarang(Request $request){
+        //Dari Tambah Barang
         if($request->asal=="tambahBarang"){
-            
+
             $barang = new Products();
             $barang->detail=$request->detail;
             $barang->nama=$request->nama;
@@ -105,8 +116,39 @@ class BarangController extends Controller
             $harga->save();
 
         }
-
     }
+
+    public function storeTipe(Request $request){
+        //Dari Tambah Ukuran
+        $pesan="";
+        $err=Harga::where('id_ukuran', $request->ukuran)->whereIn('id_tipe', $request->tipe)->get();
+        //dd($err);
+        foreach ($err as $key => $value) {
+            # code...
+            //dd($value);
+            $pesan =$pesan."Tipe ".$value->hargaTipe->nama." sudah ada untuk barang ini \n";
+        }
+        if($pesan!=""){
+            Session::flash('message', $pesan);
+            return Redirect::back();
+        }
+        else{
+            foreach ($request->tipe as $key => $value) {
+                # code...
+                $data=new Harga();
+                $data->id_ukuran=$request->ukuran;
+                $data->id_tipe=$value;
+                $data->harga=$request->harga[$key];
+
+                $data->save();
+            }
+            $pesan = "Data berhasil disimpan";
+            Session::flash('message', $pesan);
+            return Redirect::back();
+        }
+    }
+
+    
 
     /**
      * Display the specified resource.
@@ -116,7 +158,8 @@ class BarangController extends Controller
      */
     public function show($id)
     {
-        //
+        //tambah ukuran barang
+
     }
 
     /**
@@ -140,6 +183,41 @@ class BarangController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+    public function ajaxTipe(Request $request){
+        //dd($request->input());
+        $tipes=Harga::where('id_ukuran',$request->id)->get();
+        //dd($tipes);
+
+        $tipes->transform(function ($item, $key) {
+            $item->id_tipe=$item->hargaTipe->nama;
+            return $item;
+        });
+        //dd($tipes);
+
+        return response($tipes,200);
+    }
+
+    public function updateTipe($id){
+        $user= Auth::user();
+        $ukuran=Ukuran::where('id_products',$id)->get();
+        return view('updatetipe')->with(compact('ukuran','user'));
+    }
+
+    public function storeUpdateTipe(Request $request){
+
+        foreach ($request as $key => $value) {
+            # code...
+
+            dd($value);
+            $update=Harga::where('id',$value->id);
+
+            $update->harga=$value->harga;
+
+            $update->save();
+
+        }
     }
 
     /**

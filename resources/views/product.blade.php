@@ -10,11 +10,11 @@
 			<aside class="col-sm-5">
 				<article class="gallery-wrap"> 
 					<div class="img-big-wrap">
-						<div><img src="{{asset($products->gambarProduct->where('thumbnail', 1)->first()->gambar)}}" class="w-100 m-0 p-0" id="bigwrap"></div>
+						<div><img src="{{asset('storage/'.$products->gambarProduct->where('thumbnail', 1)->first()->gambar)}}" class="w-100 m-0 p-0" id="bigwrap"></div>
 					</div> <!-- slider-product.// -->
 					<div class="img-small-wrap">
 						@foreach ($products->gambarProduct as $gbr)
-						<div class="item-gallery"> <img src="{{asset($gbr->gambar)}}" class="gbk"></div>
+						<div class="item-gallery"> <img src="{{asset('storage/'.$gbr->gambar)}}" class="gbk"></div>
 						@endforeach
 					</div> <!-- slider-nav.// -->
 				</article> <!-- gallery-wrap .end// -->
@@ -58,6 +58,7 @@
 									@endforeach
 								</select>
 							</div>
+							@if(count($products->addonKainProduct)>=1)
 							<div class="form-group col-sm-12 center">
 								<header style="font-weight: bolder">Material Kain</header>
 							</div>
@@ -71,7 +72,9 @@
 								</div>
 								@endforeach
 							</div>
+							@endif
 							<hr>
+							@if(count($products->addonLogoProduct)>=1)
 							<div class="form-group col-sm-12 center">
 								<header style="font-weight: bolder">Logo</header>
 								@foreach ($products->addonLogoProduct as $logo)
@@ -83,10 +86,12 @@
 								</div>
 								@endforeach
 							</div>
+							
 							<div class="form-group col-sm-12 center">
 								<header style="font-weight: bolder">Upload Logo</header>
 								<input class="input-group-btn" type="file" name="fileToUpload">
 							</div>
+							@endif
 							<hr>
 							<div class="form-group col-sm-12 center">
 								<button type="submit" class="btn btn-block btn-lg btn-outline-primary text-uppercase">
@@ -117,7 +122,7 @@
 		);
 	$('.gbk').mouseleave(
 		function(){
-			let gbr = "{{asset($products->gambarProduct->where('thumbnail', 1)->first()->gambar)}}";
+			let gbr = "{{asset('storage/'.$products->gambarProduct->where('thumbnail', 1)->first()->gambar)}}";
 			console.log(gbr);
 			$("#bigwrap").attr("src",gbr);
 		});

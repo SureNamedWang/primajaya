@@ -20,6 +20,7 @@
                             <th scope="col">ID</th>
                             <th scope="col">Nama</th>
                             <th scope="col" class="w-15">Detail</th>
+                            <th scope="col"></th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -31,7 +32,12 @@
                             <td>{{$item->id}}</td>
                             <td>{{$item->nama}}</td>
                             <td>{{$item->detail}}</td>
-                            
+                            <td>
+                                <a href="{{route('tipe', ['id' => $item->id])}}" class="btn btn-block btn-info">Tambah Tipe</a>
+                            </td>
+                            <td>
+                                <a href="{{route('updateTipe', ['id' => $item->id])}}" class="btn btn-block btn-danger"> Update Tipe</a>
+                            </td>
                         </tr>
                         @endforeach
 
@@ -53,6 +59,8 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
 
+</script>
 @endif
 @endsection

@@ -23,7 +23,8 @@ class ProductController extends Controller
         //
         $user = Auth::user();
         $products = Products::all();
-        
+        //dd($products);
+        //dd($products[2]->hargaUkuranProduct->first()->harga);
         //dd($products->first()->gambarProduct->where('thumbnail', 1));
         //dd($addonKain);
         return view('products')->with(compact('products','user'));
@@ -64,6 +65,7 @@ class ProductController extends Controller
         //$harga = Harga::all();
         $user = Auth::user();
         $products = Products::find($id);
+        //dd($products->gambarProduct);
         //dd($products->hargaUkuranProduct->first()->harga);
         return view('product')->with(compact('products','user'));
     }

@@ -16,7 +16,7 @@
                 Form Tambah Barang
             </div>
             <div class="card-body">
-                <form method="post" action="{{route('barang.store')}}" enctype="multipart/form-data">
+                <form method="post" action="{{route('storeBarang')}}" enctype="multipart/form-data">
                     {{csrf_field()}}
                     <input type="hidden" name="asal" value="tambahBarang">
                     <div class="form-group col-sm-12">
@@ -69,12 +69,6 @@
     </div>
 </div>
 </div>
-
-<script type="text/javascript">
-    $('#btnTambah').on('click', function(){
-        $( "#tableRow" ).clone().appendTo('tbody')
-    })
-</script>
 
 @endif
 @endsection

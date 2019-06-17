@@ -30,7 +30,7 @@
                         @endphp
                         @foreach ($cart as $item)
                         <tr>
-                            <td><img src="{{asset($item->keranjangProducts->gambarProduct->where('thumbnail', 1)->first()->gambar)}}" style="height: 50px;width: 50px;" /> </td>
+                            <td><img src="{{asset('storage/'.$item->keranjangProducts->gambarProduct->where('thumbnail', 1)->first()->gambar)}}" style="height: 50px;width: 50px;" /> </td>
                             <td>{{$item->keranjangProducts->nama}}</td>
                             <td>{{$item->keranjangHarga->hargaUkuran->MasterUkuran->ukuran}}</td>
                             <td>

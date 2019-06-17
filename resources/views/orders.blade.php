@@ -1,5 +1,8 @@
 @extends('index')
 @section('content')
+@if (Session::has('message'))
+   <div class="alert alert-info">{{ Session::get('message') }}</div>
+@endif
 <section class="jumbotron text-center">
     <div class="container">
         <h1 class="jumbotron-heading">List Order</h1>

@@ -26,7 +26,15 @@ Route::resource('/produksi', 'ProduksiController');
 
 Route::resource('/barang', 'BarangController');
 
-Route::post('/ukuran', 'BarangController@ukuran')->name('ukuran');
+Route::get('/ajaxTipe', 'BarangController@ajaxTipe')->name('ajaxTipe');
+
+Route::get('/tipe/{id}', 'BarangController@tipe')->name('tipe');
+
+Route::get('/update/tipe/{id}', 'BarangController@updateTipe')->name('updateTipe');
+
+Route::post('/tambah/barang', 'BarangController@storeBarang')->name('storeBarang');
+
+Route::post('/tambah/tipe', 'BarangController@storeTipe')->name('storeTipe');
 
 Auth::routes();
 
