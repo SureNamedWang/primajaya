@@ -201,8 +201,9 @@ class BarangController extends Controller
 
     public function updateTipe($id){
         $user= Auth::user();
+        $idBarang=$id;
         $ukuran=Ukuran::where('id_products',$id)->get();
-        return view('updatetipe')->with(compact('ukuran','user'));
+        return view('updatetipe')->with(compact('ukuran','user','idBarang'));
     }
 
     public function storeUpdateTipe(Request $request){
