@@ -4,7 +4,7 @@
 @if($user->admin==1)
 <section class="jumbotron text-center">
     <div class="container">
-        <h1 class="jumbotron-heading">Pembayaran</h1>
+        <h1 class="jumbotron-heading">List Barang</h1>
     </div>
 </section>
 @if (Session::has('message'))
@@ -31,7 +31,7 @@
                         <tr>
                             <td>{{$item->id}}</td>
                             <td>{{$item->nama}}</td>
-                            <td>{{$item->detail}}</td>
+                            <td>{{substr($item->detail, 0,275)}}</td>
                             <td>
                                 <a href="{{route('tipe', ['id' => $item->id])}}" class="btn btn-block btn-info">Tambah Tipe</a>
                             </td>
