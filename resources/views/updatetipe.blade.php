@@ -6,7 +6,7 @@
 <div class="alert alert-info">{{ Session::get('message') }}</div>
 @endif
 <div class="form-group col-sm-12">
-    <form method="post" action="{{route('updateTipe', ['id' => $idBarang])}}" enctype="multipart/form-data">
+    <form method="post" action="{{route('storeUpdateTipe')}}" enctype="multipart/form-data">
         {{csrf_field()}}
         <div class="card">
           <div class="card-header">
@@ -72,11 +72,11 @@
                     '<td>'+
                         '<div class="form-group col-sm-12">'+
                             '<div class="form-label-group">'+
-                                '<input type="text" name="harga" value="'+element.harga+'">'+
+                                '<input type="text" name="harga[]" value="'+element.harga+'">'+
                             '</div>'+
                         '</div>'+
                     '</td>'+
-                    '<input type="hidden" name="id" value="'+element.id+'">'+
+                    '<input type="hidden" name="id[]" value="'+element.id+'">'+
                 '</tr>'
                 );
             });

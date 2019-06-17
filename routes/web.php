@@ -36,6 +36,8 @@ Route::post('/tambah/barang', 'BarangController@storeBarang')->name('storeBarang
 
 Route::post('/tambah/tipe', 'BarangController@storeTipe')->name('storeTipe');
 
+Route::post('storeUpdateTipe', 'BarangController@storeUpdateTipe')->name('storeUpdateTipe');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

@@ -208,17 +208,21 @@ class BarangController extends Controller
 
     public function storeUpdateTipe(Request $request){
 
-        foreach ($request as $key => $value) {
+        foreach ($request->harga as $key => $value) {
             # code...
 
-            dd($value);
-            $update=Harga::where('id',$value->id);
+            //dd($request->id[$key]);
+            $update=Harga::where('id',$request->id[$key])->first();
+            
+            //dd($update);
 
-            $update->harga=$value->harga;
+            $update->harga=$value;
 
+            //dd($update);
             $update->save();
-
         }
+        Session::flash('message', "Update tersimpan");
+        return Redirect::back();
     }
 
     /**
