@@ -36,7 +36,7 @@
                                 <a href="{{route('tipe', ['id' => $item->id])}}" class="btn btn-block btn-info">Tambah Tipe</a>
                             </td>
                             <td>
-                                <a href="{{route('updateTipe', ['id' => $item->id])}}" class="btn btn-block btn-danger"> Update Tipe</a>
+                                <a href="{{route('updateTipeView', ['id' => $item->id])}}" class="btn btn-block btn-danger"> Update Tipe</a>
                             </td>
                         </tr>
                         @endforeach

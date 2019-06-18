@@ -6,7 +6,7 @@
 <div class="alert alert-info">{{ Session::get('message') }}</div>
 @endif
 <div class="form-group col-sm-12">
-    <form method="post" action="{{route('storeUpdateTipe')}}" enctype="multipart/form-data">
+    <form method="post" action="{{route('updateTipeProses')}}" enctype="multipart/form-data">
         {{csrf_field()}}
         <div class="card">
           <div class="card-header">

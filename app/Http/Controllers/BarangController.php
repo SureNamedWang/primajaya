@@ -199,14 +199,14 @@ class BarangController extends Controller
         return response($tipes,200);
     }
 
-    public function updateTipe($id){
+    public function updateTipeView($id){
         $user= Auth::user();
         $idBarang=$id;
         $ukuran=Ukuran::where('id_products',$id)->get();
         return view('updatetipe')->with(compact('ukuran','user','idBarang'));
     }
 
-    public function storeUpdateTipe(Request $request){
+    public function updateTipeProses(Request $request){
 
         foreach ($request->harga as $key => $value) {
             # code...

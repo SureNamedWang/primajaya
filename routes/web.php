@@ -30,13 +30,13 @@ Route::get('/ajaxTipe', 'BarangController@ajaxTipe')->name('ajaxTipe');
 
 Route::get('/tipe/{id}', 'BarangController@tipe')->name('tipe');
 
-Route::get('/update/tipe/{id}', 'BarangController@updateTipe')->name('updateTipe');
+Route::get('/update/tipe/{id}', 'BarangController@updateTipeView')->name('updateTipeView');
 
 Route::post('/tambah/barang', 'BarangController@storeBarang')->name('storeBarang');
 
 Route::post('/tambah/tipe', 'BarangController@storeTipe')->name('storeTipe');
 
-Route::post('storeUpdateTipe', 'BarangController@storeUpdateTipe')->name('storeUpdateTipe');
+Route::post('updateTipeProses', 'BarangController@updateTipeProses')->name('updateTipeProses');
 
 Auth::routes();
 
