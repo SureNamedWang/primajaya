@@ -17,7 +17,7 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th scope="col">ID</th>
+                            <th scope="col">Thumbnail</th>
                             <th scope="col">Nama</th>
                             <th scope="col" class="w-15">Detail</th>
                             <th scope="col"></th>
@@ -29,9 +29,9 @@
                     <tbody>
                         @foreach ($products as $item)
                         <tr>
-                            <td>{{$item->id}}</td>
+                            <td><img src="{{asset('storage/'.$item->gambarProduct->where('thumbnail', 1)->first()->gambar)}}" style="height: 50px;width: 50px;" /></td>
                             <td>{{$item->nama}}</td>
-                            <td>{{substr($item->detail, 0,275)}}</td>
+                            <td>{{substr($item->detail, 0,50)}}...</td>
                             <td>
                                 <a href="{{route('tipe', ['id' => $item->id])}}" class="btn btn-block btn-info">Tambah Tipe</a>
                             </td>
