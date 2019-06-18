@@ -90,6 +90,8 @@ class BarangController extends Controller
 
             $harga->save();
 
+            Session::flash('message', "Barang baru berhasil di simpan");
+            return Redirect::back();
         }
     }
 
