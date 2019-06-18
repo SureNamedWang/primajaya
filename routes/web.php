@@ -30,6 +30,8 @@ Route::get('/ajaxTipe', 'BarangController@ajaxTipe')->name('ajaxTipe');
 
 Route::get('/tipe/{id}', 'BarangController@tipe')->name('tipe');
 
+Route::get('/gambar/{id}', 'BarangController@gambar')->name('gambar');
+
 Route::get('/update/tipe/{id}', 'BarangController@updateTipeView')->name('updateTipeView');
 
 Route::post('/tambah/barang', 'BarangController@storeBarang')->name('storeBarang');

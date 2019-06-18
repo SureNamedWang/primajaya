@@ -36,6 +36,9 @@
                                 <a href="{{route('tipe', ['id' => $item->id])}}" class="btn btn-block btn-info">Tambah Tipe</a>
                             </td>
                             <td>
+                                <a href="{{route('gambar', ['id' => $item->id])}}" class="btn btn-block btn-info">List Gambar</a>
+                            </td>
+                            <td>
                                 <a href="{{route('updateTipeView', ['id' => $item->id])}}" class="btn btn-block btn-danger"> Update Tipe</a>
                             </td>
                             <td><button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#myModal{{$item->id}}">Edit Barang</button></td>

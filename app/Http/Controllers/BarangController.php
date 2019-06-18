@@ -198,6 +198,14 @@ class BarangController extends Controller
         //
     }
 
+    public function gambar($id){
+        $gambar=Gambar::where('id_products',$id)->get();
+        //dd($gambar);
+        $user= Auth::user();
+        $idBarang=$id;
+        return view('insertGambar')->with(compact('gambar','user','idBarang'));
+    }
+
     public function ajaxTipe(Request $request){
         //dd($request->input());
         $tipes=Harga::where('id_ukuran',$request->id)->get();
