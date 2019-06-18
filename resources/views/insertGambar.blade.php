@@ -16,14 +16,14 @@
         <div class="row">
             <div class="col-sm-12 mb-3 text-center">
                 <div class="w3-container mb-3">
-                    <h6 style="font-weight: bolder">Thumbnail Saat Ini</h6>
+                    <h3 style="font-weight: bolder">Thumbnail Saat Ini</h3>
                     <div class="w3-card-12">
                         <img src="{{asset('storage/'.$gambar->where('thumbnail', 1)->first()->gambar)}}" alt="thumbnail" style="width:150px;height: 150px">
                     </div>
                 </div>
             </div>
         </div>
-        <h6 style="font-weight: bolder">Ganti Thumbnail</h6>
+        <h4 style="font-weight: bolder">Pilih Thumbnail Baru</h4>
         <div class="row">
             @foreach ($gambar as $gbr)
             <div class="form-group col-xl-3 col-sm-6 mb-3">
@@ -43,7 +43,6 @@
                 </div>
             </div>
             @endforeach
-            
         </div>
     </div>
 
