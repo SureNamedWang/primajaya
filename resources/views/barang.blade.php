@@ -51,8 +51,7 @@
                                       </div>
 
                                       <!-- Modal body -->
-                                      <form method="post" action="#">
-                                        {{method_field('PATCH')}}
+                                      <form method="post" action="{{route('editBarang')}}">
                                         {{csrf_field()}}
                                         <div class="modal-body">
                                             <div class="form-group col-sm-12">
@@ -72,6 +71,7 @@
                                                     <textarea name="detail" class="w-100" cols="25" rows="5">{{$item->detail}}</textarea>
                                                 </div>
                                             </div>
+                                            <input type="hidden" name="idBarang" value="{{$item->id}}">
                                         </div>
 
                                         <!-- Modal footer -->

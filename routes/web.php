@@ -34,9 +34,13 @@ Route::get('/update/tipe/{id}', 'BarangController@updateTipeView')->name('update
 
 Route::post('/tambah/barang', 'BarangController@storeBarang')->name('storeBarang');
 
+Route::post('editBarang', 'BarangController@editBarang')->name('editBarang');
+
 Route::post('/tambah/tipe', 'BarangController@storeTipe')->name('storeTipe');
 
 Route::post('updateTipeProses', 'BarangController@updateTipeProses')->name('updateTipeProses');
+
+
 
 Auth::routes();
 

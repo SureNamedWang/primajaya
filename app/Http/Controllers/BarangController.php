@@ -45,31 +45,6 @@ class BarangController extends Controller
         return view('tambahbarang')->with(compact('user','ukuran','tipe'));
     }
 
-    public function tipe($id){
-        //dd($id);
-        $user= Auth::user();
-        $ukuran=Ukuran::where('id_products',$id)->get();
-        $tipe=tipeUkuran::all();
-        return view('tambahtipe')->with(compact('user','ukuran','tipe'));
-    }
-
-    public function ukuran(){
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-        //dd($request->input());
-
-    }
-
     public function storeBarang(Request $request){
         //Dari Tambah Barang
         if($request->asal=="tambahBarang"){
@@ -116,6 +91,42 @@ class BarangController extends Controller
             $harga->save();
 
         }
+    }
+
+    public function editBarang(Request $request){
+        //dd($request->input());
+        $barang= Products::where('id',$request->idBarang)->first();
+        //dd($barang);
+        $barang->nama=$request->nama;
+        $barang->detail=$request->detail;
+        $barang->save();
+        Session::flash('message', "Barang berhasil di edit");
+        return Redirect::back();
+    }
+
+    public function ukuran(){
+
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+        //dd($request->input());
+
+    }
+
+    public function tipe($id){
+        //dd($id);
+        $user= Auth::user();
+        $ukuran=Ukuran::where('id_products',$id)->get();
+        $tipe=tipeUkuran::all();
+        return view('tambahtipe')->with(compact('user','ukuran','tipe'));
     }
 
     public function storeTipe(Request $request){
