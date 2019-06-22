@@ -87,7 +87,9 @@ class ProduksiController extends Controller
     {
         //
         $user = Auth::user();
+        //dd($id);
         $produksi = Produksi::where('id_orders',$id)->get();
+        //dd($produksi);
         //dd($pembayaran);
         return view('produksi')->with(compact('produksi','user','id'));
     }
