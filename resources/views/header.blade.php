@@ -1,34 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>CV.Prima Jaya Tenda</title>
+	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+	<link rel="icon" href="{{asset('assets/img/icon.ico')}}" type="image/x-icon"/>
 
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+	<!-- Fonts and icons -->
+	<script src="{{asset('assets/js/plugin/webfont/webfont.min.js')}}"></script>
+	<script>
+		WebFont.load({
+			google: {"families":["Open+Sans:300,400,600,700"]},
+      custom: {"families":["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands"], 
+      urls: ["{{asset('assets/css/fonts.css')}}"]},
+			active: function() {
+				sessionStorage.fonts = true;
+			}
+		});
+	</script>
 
-  <title>Prima Jaya</title>
+	<!-- CSS Files -->
+	<link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
+	<link rel="stylesheet" href="{{asset('assets/css/azzara.min.css')}}">
 
-  <!-- Bootstrap core CSS-->
-  <link href="{{asset('vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+	<!-- w3school-->
+	<link rel="stylesheet" href="{{asset('css/w3.css')}}">
 
-  <!-- Custom fonts for this template-->
-  <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
-
-  <!-- Page level plugin CSS-->
-  <link href="{{asset('vendor/datatables/dataTables.bootstrap4.css')}}" rel="stylesheet">
-
-  <!-- Custom styles for this template-->
-  <link href="{{asset('css/sb-admin.css')}}" rel="stylesheet">
-  
-  <!-- w3school-->
-  <link rel="stylesheet" href="{{asset('css/w3.css')}}">
-
-  <!--productpage-->
-  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <link href="{{asset('css/productdetail.css')}}" rel="stylesheet">
-  <!-- <link href="{{asset('css/readmore.css')}}" rel="stylesheet">
-  <script type="text/javascript" src="{{asset('js/readmore.js')}}"></script> -->
+<!--productpage-->
+<link href="{{asset('css/productdetail.css')}}" rel="stylesheet">
+</head>

@@ -1,61 +1,76 @@
-<div id="wrapper">
+<!-- Sidebar -->
+<div class="sidebar">
 
-  <!-- Sidebar -->
-  <ul class="sidebar navbar-nav">
-    <li class="nav-item">
-      <a class="nav-link" href="{{route('catalogue.index')}}">
-        <i class="fas fa-fw fa-tags"></i>
-        <span>Catalogue</span>
-      </a>
-    </li>
-    @if(isset($user))
-    <div class="dropdown-divider"></div>
-    @if($user->admin==0)
-    <li class="nav-item">
-      <a class="nav-link" href="{{route('cart.index')}}">
-        <i class="fas fa-fw fa-shopping-cart"></i>
-        <span>Keranjang Belanja</span>
-      </a>
-    </li>
-    @endif
-    @if($user->admin==1)
-    <li class="nav-item">
-      <a class="nav-link" href="{{route('barang.index')}}">
-        <i class="fas fa-fw fa-boxes"></i>
-        <span>List Barang</span>
-      </a>
-    </li>
-    @endif
-    <li class="nav-item">
-      <a class="nav-link" href="{{route('orders.index')}}">
-        <i class="fas fa-fw fa-clipboard-list"></i>
-        <span>List Order</span>
-      </a>
-    </li>
-    @if(isset($user))
-    @else
-    <li class="nav-item">
-      <a class="nav-link" href="charts.html">
-        <i class="fas fa-fw fa-user"></i>
-        <span>Login/Register</span></a>
-      </li>
-      @endif
-    @endif
-      @if(isset($user) and $user->admin==101))
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>Orders</span>
-        </a>
+  <div class="sidebar-background"></div>
+  <div class="sidebar-wrapper scrollbar-inner">
+    <div class="sidebar-content">
+      <ul class="nav">
+        @guest @else
+        <div class="user">
+          <div class="avatar-sm float-left mr-2">
+            <img src="{{asset('storage/profile.jpg')}}" alt="avatar" class="avatar-img rounded-circle">
+          </div>
+          <div class="info">
+            <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+                  <span>
+                  {{ Auth::user()->name }}
+                  @if(Auth::user()->admin==1)
+                    <span class="user-level">Administrator</span>
+                  @endif
+                    <span class="caret"></span>
+                  </span>
+                </a>
+            <div class="clearfix"></div>
 
-        <div class="dropdown-menu" aria-labelledby="pagesDropdown">
-          <a class="dropdown-item" href="login.html">List Order</a>
-          <a class="dropdown-item" href="login.html">Pembayaran</a>
-          <a class="dropdown-item" href="register.html">Produksi</a>
+            <div class="collapse in" id="collapseExample">
+              <ul class="nav">
+                <li>
+                  <a href="#profile">
+                        <span class="link-collapse">My Profile</span>
+                      </a>
+                </li>
+                <li>
+                  <a href="#edit">
+                        <span class="link-collapse">Edit Profile</span>
+                      </a>
+                </li>
+                <li>
+                  <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                  document.getElementById('logout-form').submit();">
+                                          <span class="link-collapse">{{ __('Logout') }}</span>
+                                        </a>
+
+                  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                    </>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
-      </li>
-      @endif
-    </ul>
-    <div id="content-wrapper">
-
-      <div class="container-fluid">
+        @endguest
+      </ul>
+      <ul class="nav">
+        <li class="nav-item active">
+          <a href="index.html">
+                  <i class="la flaticon-store" style="font-size:25px"></i>
+                  <p>Store</p>
+                </a>
+        </li>
+        <li class="nav-section">
+          <span class="sidebar-mini-icon">
+                  <i class="fa fa-ellipsis-h"></i>
+                </span>
+          <h4 class="text-section">Menu</h4>
+        </li>
+        <li class="nav-item">
+          <a href="#base">
+                  <i class="la flaticon-shopping-bag" style="font-size:25px"></i>
+                  <p>Keranjang Belanja</p>
+                </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- End Sidebar -->
