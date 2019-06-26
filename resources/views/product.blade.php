@@ -1,8 +1,6 @@
 @extends('index')
 @section('content')
-@if (Session::has('message'))
-   <div class="alert alert-info">{{ Session::get('message') }}</div>
-@endif
+
 <div class="container">
 
 	<div class="card">
@@ -10,7 +8,9 @@
 			<aside class="col-sm-5">
 				<article class="gallery-wrap"> 
 					<div class="img-big-wrap">
-						<div><img src="{{asset('storage/'.$products->gambarProduct->where('thumbnail', 1)->first()->gambar)}}" class="w-100 m-0 p-0" id="bigwrap"></div>
+						<div>
+							<img src="{{asset('storage/'.$products->gambarProduct->where('thumbnail', 1)->first()->gambar)}}" class="w-100 m-0 p-0" id="bigwrap">
+						</div>
 					</div> <!-- slider-product.// -->
 					<div class="img-small-wrap">
 						@foreach ($products->gambarProduct as $gbr)
@@ -42,9 +42,9 @@
 						<div class="row">
 							<input type="hidden" name="idBarang" value="{{$products->id}}">
 							<div class="form-group col-sm-12">
+								<header style="font-weight: bolder;">Jumlah</header>
 								<div class="form-label-group">
 									<input type="number" min="1" max="100" step="1" onchange="hitungHarga()" id="jumlah" name="jumlah" class="form-control" placeholder="Jumlah" required="required" value="1" >
-									<label for="jumlah">Jumlah</label>
 								</div>
 							</div>
 							<div class="form-group col-sm-12 center">
@@ -79,7 +79,7 @@
 								<header style="font-weight: bolder">Logo</header>
 								@foreach ($products->addonLogoProduct as $logo)
 								<div class="form-check">
-									<input type="checkbox" onchange="hitungHarga()" data-techname="{{$logo->harga}}" class="form-check-input" id="checkLogo" name="cbkLogo" value="{{$logo->id}}">
+									<input type="radio" onchange="hitungHarga()" data-techname="{{$logo->harga}}" class="form-check-input" id="checkLogo" name="cbkLogo" value="{{$logo->id}}">
 									<label class="form-check-label" for="checkLogo{{$logo->id}}">
 										{{ucwords($logo->nama)}} - IDR.{{number_format($logo->harga)}}
 									</label>
@@ -87,9 +87,10 @@
 								@endforeach
 							</div>
 							
-							<div class="form-group col-sm-12 center">
-								<header style="font-weight: bolder">Upload Logo</header>
-								<input class="input-group-btn" type="file" name="fileToUpload">
+							<div class="input-file input-file-image mx-auto">
+									<img class="img-upload-preview" width="150" src="http://placehold.it/150x150" alt="preview">
+									<input type="file" class="form-control form-control-file" id="uploadImg" name="fileToUpload" accept="image/*">
+									<label for="uploadImg" class=" label-input-file btn btn-primary">Upload an Image</label>
 							</div>
 							@endif
 							<hr>
@@ -146,8 +147,10 @@
 		}
 		let total=parseInt(vUkuran)+parseInt(vKain)+parseInt(vLogo);
 		total=total*vJumlah;
+		total=total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 		//alert('ukuran:'+vUkuran+' Kain:'+vKain+' Logo:'+vLogo+' Total:'+total);
 		$('#dispHarga').html(total);
+		//number_format(total,0,',','.')
 	}
 	</script>
 	@endsection

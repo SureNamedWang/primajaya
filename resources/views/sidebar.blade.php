@@ -38,11 +38,11 @@
                   <a href="{{ route('logout') }}" onclick="event.preventDefault();
                   document.getElementById('logout-form').submit();">
                                           <span class="link-collapse">{{ __('Logout') }}</span>
-                                        </a>
+                  </a>
 
                   <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
-                    </>
+                  </form>
                 </li>
               </ul>
             </div>
@@ -52,10 +52,10 @@
       </ul>
       <ul class="nav">
         <li class="nav-item active">
-          <a href="index.html">
-                  <i class="la flaticon-store" style="font-size:25px"></i>
-                  <p>Store</p>
-                </a>
+          <a href="{{route('catalogue.index')}}">
+            <i class="la flaticon-store" style="font-size:25px"></i>
+            <p>Store</p>
+          </a>
         </li>
         <li class="nav-section">
           <span class="sidebar-mini-icon">

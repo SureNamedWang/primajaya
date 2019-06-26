@@ -20,14 +20,32 @@ session_start();
 		</div>
 
 	</div>
-	@yield('script') {{--
+	@include('footer') {{--
 	<script type="text/javascript">
 		function formSubmit(clicked_id){
 		var x=clicked_id;
 		document.getElementById(x).submit();// Form submission
 	}
 	</script> --}}
-	@include('footer')
+	
 </body>
 
+@yield('script')
+<script>
+		@if (Session::has('message'))
+			swal({
+				title: "Selamat!",
+				text: "{{Session::get('message')}}",
+				icon: "success",
+			});
+		@endif
+		@if (Session::has('alert'))
+			swal({
+				title: "Kesalahan",
+				text: "{{ Session::get('alert') }}",
+				icon: "error",
+			});
+			console.log('alertif');
+		@endif
+	</script>
 </html>

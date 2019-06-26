@@ -61,6 +61,10 @@ class KeranjangController extends Controller
     public function store(Request $request)
     {
         //
+        if(!isset($request->ukuran)){
+            Session::flash('alert', "Untuk memesan barang anda minimal perlu memilih ukuran yang di inginkan.");
+            return Redirect::back();
+        }
         $user = Auth::user();
         if(null!=(CartsList::where('id_user',$user->id)->where('status',1)->first())){
 
@@ -92,17 +96,24 @@ class KeranjangController extends Controller
         
         if(isset($request->cbkLogo)){
             $keranjang->id_logo = $request->cbkLogo;
+            //dd($request->cbkLogo);
             if($request->cbkLogo==1){
+                if(isset($request->fileToUpload)){
                 
-                $path = $request->file('fileToUpload')->extension();
-                //dd($path);
-                if($path!='png' and $path!='jpg' and $path!='jpeg'){
-                    Session::flash('message', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
-                    return Redirect::back();
+                    $path = $request->file('fileToUpload')->extension();
+                    //dd($path);
+                    if($path!='png' and $path!='jpg' and $path!='jpeg'){
+                        Session::flash('alert', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
+                        return Redirect::back();
+                    }
+                    else{
+                        $path = $request->file('fileToUpload')->store('logo', 'public');
+                        $keranjang->desain=$path;
+                    }
                 }
                 else{
-                    $path = $request->file('fileToUpload')->store('logo', 'public');
-                    $keranjang->desain=$path;
+                    Session::flash('alert', "Logo tidak terupload silahkan masukkan gambar logo yang di inginkan.");
+                    return Redirect::back();
                 }
             }
             
@@ -118,6 +129,7 @@ class KeranjangController extends Controller
         //dd($totalHarga);
         $keranjang->save();
         //dd($keranjang);
+        Session::flash('message', "Barang yang anda pilih telah di masukkan ke keranjang.");
         return redirect('/cart');
     }
 
