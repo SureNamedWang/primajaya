@@ -64,9 +64,15 @@
           <h4 class="text-section">Menu</h4>
         </li>
         <li class="nav-item">
-          <a href="#base">
+          <a href="{{route('cart.index')}}">
                   <i class="la flaticon-shopping-bag" style="font-size:25px"></i>
                   <p>Keranjang Belanja</p>
+                </a>
+        </li>
+        <li class="nav-item">
+          <a href="{{route('orders.index')}}">
+                  <i class="la flaticon-file-1" style="font-size:25px"></i>
+                  <p>Orders</p>
                 </a>
         </li>
       </ul>
