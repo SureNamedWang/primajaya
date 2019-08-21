@@ -12,6 +12,7 @@
           <div class="card-header">
             <div class="row">
                 <div class="col-6">
+                    <h5>Ukuran</h5>
                     <select class="form-control" name="ukuran">
                         <option value="">Pilih Ukuran</option>
                         @foreach ($ukuran as $ukuran)
@@ -20,7 +21,7 @@
                     </select>
                 </div>
                 <div class="col-6">
-                    <button class="btn btn-block btn-info mb-3" type="button" id="btnTambah">Tambah Tipe Ukuran</button>
+                    {{-- <button class="btn btn-block btn-info mb-3" type="button" id="btnTambah">Tambah Tipe Ukuran</button> --}}
                 </div>
             </div>
         </div>
@@ -72,11 +73,11 @@
 </form>
 </div>
 
-<script type="text/javascript">
+{{-- <script type="text/javascript">
     $('#btnTambah').on('click', function(){
         $( "#tableRow" ).clone().appendTo('tbody')
     })
-</script>
+</script> --}}
 
 @endif
 @endsection

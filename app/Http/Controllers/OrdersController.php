@@ -20,10 +20,10 @@ class OrdersController extends Controller
         $user = Auth::user();
         //dd($user);
         if($user->admin==0){
-            $orders = Orders::where('id_user',$user->id)->get();   
+            $orders = Orders::where('id_user',$user->id)->orderBy('created_at','desc')->get();   
         }
         else{
-            $orders=Orders::All();
+            $orders=Orders::orderBy('created_at','desc')->get();
         }
         return view('orders')->with(compact('orders','user'));
     }

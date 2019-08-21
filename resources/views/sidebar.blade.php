@@ -75,6 +75,16 @@
                   <p>Orders</p>
                 </a>
         </li>
+        @isset($user)
+        @if($user->admin==1)
+        <li class="nav-item">
+          <a href="{{route('barang.index')}}">
+                  <i class="la flaticon-box-1" style="font-size:25px"></i>
+                  <p>Barang</p>
+                </a>
+        </li>
+        @endif
+        @endisset
       </ul>
     </div>
   </div>

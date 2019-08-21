@@ -13,9 +13,5 @@ class CartsListTableSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('carts_list')->insert([
-            'id_user' => 1,
-            'status' => 1,
-        ]);
     }
 }

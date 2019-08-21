@@ -55,7 +55,13 @@
                                 @endif
                             </td>
                             <td>{{$item->jumlah}}</td>
+                            @if($userCart->status==0)
                             <td>Rp. {{number_format($item->harga)}}</td>
+                            @else
+                            
+                            <td>Rp. {{number_format(($item->keranjangHarga->harga)*$item->jumlah)}}</td>
+                            @endif
+                            
                             @if($userCart->status!=0)
                             <td class="text-right">
                                 <form action="{{route('cart.destroy', ['id' => $item->id])}}" method="post">

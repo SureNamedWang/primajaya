@@ -143,11 +143,20 @@ class KeranjangController extends Controller
     {
         //
         $user = Auth::user();
-        $userCart = CartsList::where('id_user',$user->id)->where('id',$id)->first();
-        //dd($userCart);
-        $cart = Keranjang::where('id_carts_list',$userCart->id)->get();
-        //dd($cart);
-        return view('cart')->with(compact('cart','userCart'));
+        if($user->admin==0){
+            $userCart = CartsList::where('id_user',$user->id)->where('id',$id)->first();
+            //dd($userCart);
+            $cart = Keranjang::where('id_carts_list',$userCart->id)->get();
+            //dd($cart);
+        }
+        else{
+            $userCart = CartsList::where('id',$id)->first();
+            //dd($userCart);
+            $cart = Keranjang::where('id_carts_list',$userCart->id)->get();
+            //dd($cart);
+        }
+        
+        return view('cart')->with(compact('cart','userCart','user'));
     }
 
     /**
