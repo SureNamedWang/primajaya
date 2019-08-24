@@ -9,7 +9,7 @@ use App\Harga;
 use App\Ukuran;
 use App\AddonKain;
 use App\AddonLogo;
-use App\masterUkuran;
+use App\MasterUkuran;
 use App\tipeUkuran;
 use Auth;
 use Session;
@@ -40,7 +40,7 @@ class BarangController extends Controller
     {
         //
         $user= Auth::user();
-        $ukuran=masterUkuran::all();
+        $ukuran=MasterUkuran::all();
         $tipe=tipeUkuran::all();
         return view('tambahbarang')->with(compact('user','ukuran','tipe'));
     }
