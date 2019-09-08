@@ -50,7 +50,6 @@
 							<div class="form-group col-sm-12 center">
 								<header style="font-weight: bolder;">Pilih Ukuran</header>
 								<select onchange="hitungHarga()" id="hUkuran" class="form-control" name="ukuran">
-									<option data-techname="0" value="">Ukuran</option>
 									@foreach ($products->hargaUkuranProduct as $harga)
 									<option data-techname="{{$harga->harga}}" value="{{$harga->id}}">
 										{{$harga->hargaUkuran->MasterUkuran->ukuran}} - {{$harga->hargaTipe->nama}} - IDR.{{number_format($harga->harga)}}

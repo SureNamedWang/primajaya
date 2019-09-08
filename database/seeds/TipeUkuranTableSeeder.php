@@ -22,5 +22,11 @@ class TipeUkuranTableSeeder extends Seeder
         DB::table('tipe_ukuran')->insert([
             'nama' => 'Kain',
         ]);
+        DB::table('tipe_ukuran')->insert([
+            'nama' => 'Parasut',
+        ]);
+        DB::table('tipe_ukuran')->insert([
+            'nama' => 'Parasol',
+        ]);
     }
 }

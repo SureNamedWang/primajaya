@@ -114,14 +114,24 @@ class HargaTableSeeder extends Seeder
             'harga' => 1900000,
         ]);
         DB::table('harga')->insert([
-        	'id_ukuran' => 7,
-            'id_tipe' => 2,
-            'harga' => 1400000,
+        	'id_ukuran' => 8,
+            'id_tipe' => 4,
+            'harga' => 500000,
         ]);
         DB::table('harga')->insert([
             'id_ukuran' => 8,
-            'id_tipe' => 3,
-            'harga' => 1000000,
+            'id_tipe' => 5,
+            'harga' => 700000,
+        ]);
+        DB::table('harga')->insert([
+        	'id_ukuran' => 9,
+            'id_tipe' => 4,
+            'harga' => 700000,
+        ]);
+        DB::table('harga')->insert([
+            'id_ukuran' => 9,
+            'id_tipe' => 5,
+            'harga' => 950000,
         ]);
     }
 }

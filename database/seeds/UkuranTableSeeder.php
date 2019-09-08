@@ -42,7 +42,11 @@ class UkuranTableSeeder extends Seeder
         ]);
         DB::table('ukuran')->insert([
             'id_products' => 2,
-            'id_mukuran' => 1,
+            'id_mukuran' => 8,
+        ]);
+        DB::table('ukuran')->insert([
+            'id_products' => 2,
+            'id_mukuran' => 9,
         ]);
     }
 }

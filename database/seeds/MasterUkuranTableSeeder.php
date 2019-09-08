@@ -34,17 +34,11 @@ class MasterUkuranTableSeeder extends Seeder
         DB::table('master_ukuran')->insert([
             'ukuran' => '4x6',
         ]);
-        // DB::table('master_ukuran')->insert([
-        //     'ukuran' => 'parasut 1.3m',
-        // ]);
-        // DB::table('master_ukuran')->insert([
-        //     'ukuran' => 'parasut 1.5m',
-        // ]);
-        // DB::table('master_ukuran')->insert([
-        //     'ukuran' => 'parasol 1.3m',
-        // ]);
-        // DB::table('master_ukuran')->insert([
-        //     'ukuran' => 'parasol 1.5m',
-        // ]);
+        DB::table('master_ukuran')->insert([
+            'ukuran' => 'standard 1.3m',
+        ]);
+        DB::table('master_ukuran')->insert([
+            'ukuran' => 'jumbo 1.5m',
+        ]);
     }
 }
