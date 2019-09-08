@@ -16,7 +16,6 @@
                             <th scope="col"> </th>
                             <th scope="col">Barang</th>
                             <th scope="col">Ukuran</th>
-                            <th scope="col">Tipe Kain</th>
                             <th scope="col">Logo</th>
                             <th scope="col">Desain</th>
                             <th scope="col">Jumlah</th>
@@ -33,13 +32,6 @@
                             <td><img src="{{asset('storage/'.$item->keranjangProducts->gambarProduct->where('thumbnail', 1)->first()->gambar)}}" style="height: 50px;width: 50px;" /> </td>
                             <td>{{$item->keranjangProducts->nama}}</td>
                             <td>{{$item->keranjangHarga->hargaUkuran->MasterUkuran->ukuran}}</td>
-                            <td>
-                            @if(isset($item->id_kain))
-                                {{$item->keranjangKain->nama}}
-                            @else
-                                <i class="fa fa-window-minimize"></i>   
-                            @endif
-                            </td>
                             <td>
                                 @if(isset($item->id_logo))
                                 <i class="fa fa-check"></i>
