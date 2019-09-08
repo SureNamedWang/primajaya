@@ -15,11 +15,10 @@ class CreateKeranjangTable extends Migration
     {
         Schema::create('keranjang', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('id_carts_list');
+            $table->integer('id_orders');
             $table->integer('id_products');
             $table->integer('jumlah');
             $table->integer('id_harga');
-            $table->integer('id_kain')->nullable();
             $table->integer('id_logo')->nullable();
             $table->string('desain', 255)->nullable();
             $table->integer('harga');
