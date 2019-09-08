@@ -30,9 +30,9 @@
                 <div class="form-check">
                     <label class="form-check-label" for="radio{{$gbr->id}}">
                         @if($gbr->thumbnail==1)
-                        <input type="radio" data-techname="{{$gbr->gambar}}" class="form-check-input" id="radio{{$gbr->id}}" name="rdoAddonKain" value="{{$gbr->id}}" checked>
+                        <input type="radio" data-techname="{{$gbr->gambar}}" class="form-check-input" id="radio{{$gbr->id}}" name="rdoGambar" value="{{$gbr->id}}" checked>
                         @else
-                        <input type="radio" data-techname="{{$gbr->gambar}}" class="form-check-input" id="radio{{$gbr->id}}" name="rdoAddonKain" value="{{$gbr->id}}">
+                        <input type="radio" data-techname="{{$gbr->gambar}}" class="form-check-input" id="radio{{$gbr->id}}" name="rdoGambar" value="{{$gbr->id}}">
                         @endif
                         <div class="w3-container">
                             <div class="w3-card-4">

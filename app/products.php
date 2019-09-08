@@ -14,9 +14,6 @@ class Products extends Model
     public function ukuranProduct(){
     	return $this->hasMany('App\Ukuran', 'id_products', 'id');
     }
-    public function addonKainProduct(){
-        return $this->hasMany('App\AddonKain', 'id_products', 'id');
-    }
     public function addonLogoProduct(){
         return $this->hasMany('App\AddonLogo', 'id_products', 'id');
     }

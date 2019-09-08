@@ -7,7 +7,6 @@ use App\Products;
 use App\Gambar;
 use App\Harga;
 use App\Ukuran;
-use App\AddonKain;
 use App\AddonLogo;
 use App\MasterUkuran;
 use App\tipeUkuran;

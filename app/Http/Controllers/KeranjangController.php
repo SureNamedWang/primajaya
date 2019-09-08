@@ -8,7 +8,6 @@ use App\Keranjang;
 use App\Products;
 use App\Ukuran;
 use App\Harga;
-use App\AddonKain;
 use App\AddonLogo;
 use App\Orders;
 use Auth;
@@ -88,10 +87,6 @@ class KeranjangController extends Controller
         if(isset($request->ukuran)){
             $keranjang->id_harga = $request->ukuran;
             $hargaBarang = Harga::find($request->ukuran)->harga;    
-        }
-        if(isset($request->rdoAddonKain)){
-            $keranjang->id_kain = $request->rdoAddonKain;
-            $hargaKain = AddonKain::find($request->rdoAddonKain)->harga;    
         }
         
         if(isset($request->cbkLogo)){

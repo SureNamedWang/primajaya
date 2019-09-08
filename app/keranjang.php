@@ -17,11 +17,6 @@ class Keranjang extends Model
         return $this->hasOne('App\Products', 'id', 'id_products');
     }
 
-    public function keranjangKain()
-    {
-        return $this->hasOne('App\AddonKain', 'id', 'id_kain');
-    }
-
     public function keranjangLogo()
     {
         return $this->hasOne('App\AddonLogo', 'id', 'id_logo');

@@ -58,21 +58,6 @@
 									@endforeach
 								</select>
 							</div>
-							@if(count($products->addonKainProduct)>=1)
-							<div class="form-group col-sm-12 center">
-								<header style="font-weight: bolder">Material Kain</header>
-							</div>
-							<div class="form-group col-sm-12 center">
-								@foreach ($products->addonKainProduct as $kain)
-								<div class="form-check">
-									<label class="form-check-label" for="radio{{$kain->id}}">
-										<input type="radio" onchange="hitungHarga()" data-techname="{{$kain->harga}}" class="form-check-input" id="radioKain" name="rdoAddonKain" value="{{$kain->id}}">
-										{{ucwords($kain->nama)}} - IDR.{{number_format($kain->harga)}}
-									</label>
-								</div>
-								@endforeach
-							</div>
-							@endif
 							<hr>
 							@if(count($products->addonLogoProduct)>=1)
 							<div class="form-group col-sm-12 center">
