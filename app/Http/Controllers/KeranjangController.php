@@ -83,7 +83,6 @@ class KeranjangController extends Controller
         $keranjang->jumlah = $request->jumlah;
         
         $hargaBarang=0;
-        $hargaKain=0;
         if(isset($request->ukuran)){
             $keranjang->id_harga = $request->ukuran;
             $hargaBarang = Harga::find($request->ukuran)->harga;    
@@ -118,9 +117,10 @@ class KeranjangController extends Controller
             $hargaLogo = 0;
         }
 
-        $totalHarga = $hargaBarang+$hargaKain+$hargaLogo;
+        $totalHarga = $hargaBarang+$hargaLogo;
         $totalHarga = $totalHarga*$request->jumlah;
-        $keranjang->harga = $totalHarga;
+        $keranjang->harga = $hargaBarang;
+        $keranjang->total_harga=$totalHarga;
         //dd($totalHarga);
         $keranjang->save();
         //dd($keranjang);
