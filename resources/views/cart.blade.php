@@ -28,10 +28,14 @@
                         $totalHarga=0;
                         @endphp
                         @foreach ($cart as $item)
+                        @php
+                            $barang=$produk->where('id',$item->id_products)->first();
+                            $hBarang=$harga->where('id',$item->id_harga)->first();
+                        @endphp
                         <tr>
-                            <td><img src="{{asset('storage/'.$item->keranjangProducts->gambarProduct->where('thumbnail', 1)->first()->gambar)}}" style="height: 50px;width: 50px;" /> </td>
-                            <td>{{$item->keranjangProducts->nama}}</td>
-                            <td>{{$item->keranjangHarga->hargaUkuran->MasterUkuran->ukuran}}</td>
+                            <td><img src="{{asset('storage/'.$barang->gambarProduct->where('thumbnail', 1)->first()->gambar)}}" style="height: 50px;width: 50px;" /> </td>
+                            <td>{{$barang->nama}}</td>
+                            <td>{{$hBarang->hargaUkuran->MasterUkuran->ukuran}}</td>
                             <td>
                                 @if(isset($item->id_logo))
                                 <i class="fa fa-check"></i>
@@ -47,14 +51,14 @@
                                 @endif
                             </td>
                             <td>{{$item->jumlah}}</td>
-                            @if($userCart->status==0)
+                            @if($cart->first()->status==0)
                             <td>Rp. {{number_format($item->harga)}}</td>
                             @else
                             
-                            <td>Rp. {{number_format(($item->keranjangHarga->harga)*$item->jumlah)}}</td>
+                            <td>Rp. {{number_format(($hBarang->harga)*$item->jumlah)}}</td>
                             @endif
                             
-                            @if($userCart->status!=0)
+                            {{-- @if($userCart->status!=0)
                             <td class="text-right">
                                 <form action="{{route('cart.destroy', ['id' => $item->id])}}" method="post">
                                     {{method_field('DELETE')}}
@@ -64,7 +68,7 @@
                                     </button>
                                 </form>
                             </td>
-                            @endif
+                            @endif --}}
                         </tr>
                         @php
                         $totalHarga=$totalHarga+$item->harga;
@@ -106,14 +110,14 @@
         </div>
         <div class="col mb-2">
             <div class="row">
-                @if($userCart->status==0)
+                @if($cart->first()->status==0)
                 <div class="col-sm-12  col-md-6">
                     <a href="{{ url('/orders') }}">
                         <button class="btn btn-block btn-danger">Back</button>
                     </a>
                 </div>
                 @endif
-                @if($cart->count()!=0 and $userCart->status!=0)
+                @if($cart->count()!=0 and $cart->first()->status!=0)
                 <div class="col-sm-12  col-md-6">
                     <a href="{{ url('/catalogue') }}">
                         <button class="btn btn-block btn-danger">Continue Shopping</button>

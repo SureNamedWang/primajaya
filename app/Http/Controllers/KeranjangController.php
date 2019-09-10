@@ -25,19 +25,36 @@ class KeranjangController extends Controller
     {
         //
         $user = Auth::user();
-        if(null!=(CartsList::where('id_user',$user->id)->where('status',1)->first())){
+        // if(null!=(CartsList::where('id_user',$user->id)->where('status',1)->first())){
 
-        }    
-        else{
-            $newUserCart=new CartsList();
-            $newUserCart->id_user=$user->id;
-            $newUserCart->status=1;
-            $newUserCart->save();
-        }
-        $userCart = CartsList::where('id_user',$user->id)->where('status',1)->first();
-        $cart = Keranjang::where('id_carts_list',$userCart->id)->get();
+        // }    
+        // else{
+        //     $newUserCart=new CartsList();
+        //     $newUserCart->id_user=$user->id;
+        //     $newUserCart->status=1;
+        //     $newUserCart->save();
+        // }
+        // $userCart = CartsList::where('id_user',$user->id)->where('status',1)->first();
+        // $cart = Keranjang::where('id_carts_list',$userCart->id)->get();
         //dd($cart);
-        return view('cart')->with(compact('cart','userCart','user'));
+
+        $keranjangCookie=\Cookie::get('keranjang');
+        $cart=json_decode($keranjangCookie);
+        //dd($cart);
+        $products=array();
+        $price=array();
+        foreach ($cart as $keranjang) {
+            # code...
+            $products[]=$keranjang->id_products;
+            $price[]=$keranjang->id_harga;
+        }
+        //dd($size);
+        //dd($products);
+        $produk=Products::whereIn('id',$products)->get();
+        $harga=Harga::whereIn('id',$price)->get();
+        //dd($produk->where('id',1)->first());
+        return view('cart')->with(compact('cart','harga','produk','user'));
+        //return view('cart')->with(compact('cart','userCart','user'));
         //return view('orders')->with(compact('cart'));
     }
 
@@ -78,7 +95,15 @@ class KeranjangController extends Controller
         
         $keranjang = new Keranjang();
         //id keranjang ambil dari yang aktif, belum ada caranya
-        $keranjang->id_carts_list =$userCart->id;
+        if(isset($keranjangCookie)){
+            $keranjang->id=count($keranjangCookie);
+        }
+        else{
+            $keranjang->id=0;
+        }
+        //$keranjang->id_carts_list =$userCart->id;
+        //$keranjang->id_orders=0;
+        $keranjang->id_user=Auth::user()->id;
         $keranjang->id_products = $request->idBarang;
         $keranjang->jumlah = $request->jumlah;
         
@@ -122,10 +147,18 @@ class KeranjangController extends Controller
         $keranjang->harga = $hargaBarang;
         $keranjang->total_harga=$totalHarga;
         //dd($totalHarga);
-        $keranjang->save();
+        if(isset($keranjangCookie)){
+            array_push($keranjangCookie,$keranjang);
+            $array_json=json_encode($keranjangCookie);
+        }
+        else{
+            $arrKeranjang=array($keranjang);
+            $array_json=json_encode($arrKeranjang);
+        }
+        //$keranjang->save();
         //dd($keranjang);
         Session::flash('message', "Barang yang anda pilih telah di masukkan ke keranjang.");
-        return redirect('/cart');
+        return redirect('/cart')->withCookie(cookie()->forever('keranjang',$array_json,43200));
     }
 
     /**
@@ -138,18 +171,20 @@ class KeranjangController extends Controller
     {
         //
         $user = Auth::user();
-        if($user->admin==0){
-            $userCart = CartsList::where('id_user',$user->id)->where('id',$id)->first();
-            //dd($userCart);
-            $cart = Keranjang::where('id_carts_list',$userCart->id)->get();
-            //dd($cart);
-        }
-        else{
-            $userCart = CartsList::where('id',$id)->first();
-            //dd($userCart);
-            $cart = Keranjang::where('id_carts_list',$userCart->id)->get();
-            //dd($cart);
-        }
+        // if($user->admin==0){
+        //     $userCart = CartsList::where('id_user',$user->id)->where('id',$id)->first();
+        //     //dd($userCart);
+        //     $cart = Keranjang::where('id_carts_list',$userCart->id)->get();
+        //     //dd($cart);
+        // }
+        // else{
+        //     $userCart = CartsList::where('id',$id)->first();
+        //     //dd($userCart);
+        //     $cart = Keranjang::where('id_carts_list',$userCart->id)->get();
+        //     //dd($cart);
+        // }
+        $keranjangCookie=\Cookie::get('keranjang');
+        $cart=json_decode($keranjangCookie);
         
         return view('cart')->with(compact('cart','userCart','user'));
     }
