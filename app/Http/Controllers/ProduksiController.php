@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Keranjang;
 use App\Produksi;
 use App\Orders;
 use App\User;
@@ -88,10 +89,16 @@ class ProduksiController extends Controller
         //
         $user = Auth::user();
         //dd($id);
-        $produksi = Produksi::where('id_orders',$id)->get();
-        //dd($produksi);
-        //dd($pembayaran);
-        return view('produksi')->with(compact('produksi','user','id'));
+        $barang = Keranjang::with('keranjangProduksi')->where('id_orders',$id)->get();
+        //dd($barang);
+        return view('produksi')->with(compact('barang','user','id'));
+    }
+
+    public function showDetailProduksi($id){
+        $user=Auth::user();
+        $barang = Keranjang::with('keranjangProduksi')->where('id_keranjang',$id)->get();
+        //dd($barang);
+        return view('produksi')->with(compact('barang','user','id'));
     }
 
     /**

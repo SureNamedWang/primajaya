@@ -9,8 +9,8 @@ class Produksi extends Model
     //
     protected $table = 'produksi';
 
-    public function produksiOrders()
+    public function produksiKeranjang()
     {
-        return $this->hasOne('App\Orders', 'id', 'id_orders');
+        return $this->hasOne('App\Keranjang', 'id', 'id_keranjang');
     }
 }

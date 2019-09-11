@@ -31,4 +31,8 @@ class Keranjang extends Model
     {
         return $this->hasOne('App\Gambar', 'id', 'id_gambar');
     }
+    public function keranjangProduksi()
+    {
+        return $this->hasMany('App\Produksi', 'id_keranjang', 'id');
+    }
 }
