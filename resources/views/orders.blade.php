@@ -95,7 +95,7 @@
                                 <!-- /endModal -->
                             @endif
                             @if($item->dp<=$item->total_pembayaran)
-                            <td><a href="{{route('produksi.show', ['id' => $item->id])}}" class="btn btn-sm btn-info">Detail Produksi</a></td>
+                            <td><a href="{{route('produksi.show', ['id' => $item->id])}}" class="btn btn-sm btn-info">Produksi</a></td>
                             @endif
                         </tr>
                         @endforeach

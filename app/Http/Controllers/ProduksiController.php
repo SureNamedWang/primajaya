@@ -94,11 +94,12 @@ class ProduksiController extends Controller
         return view('produksi')->with(compact('barang','user','id'));
     }
 
-    public function showDetailProduksi($id){
-        $user=Auth::user();
-        $barang = Keranjang::with('keranjangProduksi')->where('id_keranjang',$id)->get();
+    public function showDetailProduksi($id,$idBrg){
+        $user = Auth::user();
+        //dd($id);
+        $barang=Produksi::where('id_keranjang',$idBrg)->get();
         //dd($barang);
-        return view('produksi')->with(compact('barang','user','id'));
+        return view('detailProduksi')->with(compact('barang','user','idBrg', 'id'));
     }
 
     /**

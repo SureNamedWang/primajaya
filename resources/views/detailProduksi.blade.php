@@ -27,8 +27,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($barang as $keranjang)
-                        @foreach ($keranjang->keranjangProduksi as $produksi)
+                        @foreach ($barang as $produksi)
                         <tr>
                             @if($user->admin==1)
                             <td>{{$produksi->id_karyawan}}</td>
@@ -40,7 +39,6 @@
                             </td>
                             <td>{{$produksi->progress}}</td>
                         </tr>
-                        @endforeach
                         @endforeach
                         <tr>
                             <td></td>
@@ -110,7 +108,7 @@
                         </div>
                         <!-- /endModal -->
                         @endif
-                        <td><a href="{{route('orders.index')}}" class="btn btn-block btn-info">List Order</a></td>
+                        <td><a href="{{route('produksi.show', ['id' => $id])}}" class="btn btn-block btn-info">List Barang</a></td>
                     </tr>
 
                 </tbody>

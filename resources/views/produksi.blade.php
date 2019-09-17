@@ -16,100 +16,26 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            @if($user->admin==1)
-                            <th scope="col">OrderID</th>
-                            <th scope="col">Karyawan</th>
-                            @endif
-                            <th scope="col">Waktu</th>
-                            <th scope="col">Detail Kegiatan</th>
-                            <th scope="col">Bukti</th>
+                            <th scope="col">Nama Barang</th>
+                            <th scope="col">Jumlah</th>
                             <th scope="col">Progress</th>
+                            <th scope="col">Detail Produksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($barang as $keranjang)
-                        @foreach ($keranjang->keranjangProduksi as $produksi)
+                        @foreach ($barang as $item)
                         <tr>
-                            @if($user->admin==1)
-                            <td>{{$produksi->id_karyawan}}</td>
-                            @endif
-                            <td>{{$produksi->created_at}}</td>
-                            <td>{{$produksi->detail_kegiatan}}</td>
-                            <td>
-                                <img src="{{asset('storage/'.$produksi->foto)}}" style="height: 50px;width: 50px;">
-                            </td>
-                            <td>{{$produksi->progress}}</td>
+                            <td>{{$item->keranjangProducts->nama}}</td>
+                            <td>{{$item->jumlah}}</td>
+                            <td>0 %</td>
+                            <td><a href="{{route('detailProduksi', ['id' => $id, 'idBrg' => $item->id])}}" class="btn btn-sm btn-info">Lihat Detail Produksi</a></td>
                         </tr>
                         @endforeach
-                        @endforeach
                         <tr>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td></td>
-                            <td></td>
-                            @if($user->admin==1)
-                            <td><button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#modalPembayaran">Upload</button></td>
-                            <!-- The Modal -->
-                            <div class="modal" id="modalPembayaran">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <!-- Modal Header -->
-                                        <div class="modal-header">
-                                          <h4 class="modal-title">Masukkan Detail Produksi</h4>
-                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                      </div>
-                                      <!-- Modal body -->
-                                      <form method="post" action="{{route('produksi.store')}}" enctype="multipart/form-data">
-                                        {{csrf_field()}}
-                                        <div class="modal-body">
-                                            <div class="form-group col-sm-12">
-                                                <input type="hidden" name="OrderID" value="{{$id}}">
-                                                <input type="hidden" name="admin" value="{{$user->id}}">
-                                            </div>
-                                            <div class="form-group col-sm-12">
-                                                <div class="form-label-group">
-                                                    <input type="text" name="karyawan" required>
-                                                    <label for="karyawan">ID Karyawan</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-sm-12">
-                                                <div class="form-label-group">
-                                                    <input type="datetime-local" name="waktu" required>
-                                                    <label for="waktu">Waktu</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-sm-12">
-                                                <div class="form-label-group">
-                                                    <h6>Detail Kegiatan</h6>
-                                                    <textarea name="detail" cols="50" rows="5"></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-sm-12">
-                                                <div class="form-label-group">
-                                                    <input type="number" name="progress" min="0" max="100" required>
-                                                    <label for="progress">Progress</label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-sm-12">
-                                                <h6 style="bolder">Upload Gambar:</h6>
-                                                <input class="input-group-btn" type="file" name="fileToUpload">
-                                            </div>
-                                        </div>
-
-                                        <!-- Modal footer -->
-                                        <div class="modal-footer">
-                                            <input type="submit" name="upload" class="btn btn-info" value="upload"></button>
-
-                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /endModal -->
-                        @endif
                         <td><a href="{{route('orders.index')}}" class="btn btn-block btn-info">List Order</a></td>
                     </tr>
 

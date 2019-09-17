@@ -24,6 +24,8 @@ Route::resource('/pembayaran', 'PembayaranController');
 
 Route::resource('/produksi', 'ProduksiController');
 
+Route::get('/detailProduksi/{id}/{idBrg}', 'ProduksiController@showDetailProduksi')->name('detailProduksi');
+
 Route::resource('/barang', 'BarangController');
 
 Route::get('/ajaxTipe', 'BarangController@ajaxTipe')->name('ajaxTipe');
