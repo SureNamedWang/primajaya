@@ -23,7 +23,7 @@
                             <th scope="col">Waktu</th>
                             <th scope="col">Detail Kegiatan</th>
                             <th scope="col">Bukti</th>
-                            <th scope="col">Progress</th>
+                            <th scope="col">Total Barang Jadi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -63,7 +63,7 @@
                                         {{csrf_field()}}
                                         <div class="modal-body">
                                             <div class="form-group col-sm-12">
-                                                <input type="hidden" name="OrderID" value="{{$id}}">
+                                                <input type="hidden" name="idBarang" value="{{$idBrg}}">
                                                 <input type="hidden" name="admin" value="{{$user->id}}">
                                             </div>
                                             <div class="form-group col-sm-12">
@@ -74,8 +74,14 @@
                                             </div>
                                             <div class="form-group col-sm-12">
                                                 <div class="form-label-group">
-                                                    <input type="datetime-local" name="waktu" required>
-                                                    <label for="waktu">Waktu</label>
+                                                    <input type="datetime-local" name="waktu_awal" required>
+                                                    <label for="waktu">Jam Mulai</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-12">
+                                                <div class="form-label-group">
+                                                    <input type="datetime-local" name="waktu_awal" required>
+                                                    <label for="waktu">Jam Selesai</label>
                                                 </div>
                                             </div>
                                             <div class="form-group col-sm-12">
@@ -86,13 +92,17 @@
                                             </div>
                                             <div class="form-group col-sm-12">
                                                 <div class="form-label-group">
-                                                    <input type="number" name="progress" min="0" max="100" required>
-                                                    <label for="progress">Progress</label>
+                                                <input type="number" name="progress" min="0" max="{{$jumBarang->jumlah}}" required>
+                                                    <label for="progress">Jumlah Barang Jadi</label>
                                                 </div>
                                             </div>
                                             <div class="form-group col-sm-12">
-                                                <h6 style="bolder">Upload Gambar:</h6>
+                                                <h6 style="bolder">Upload Foto Awal:</h6>
                                                 <input class="input-group-btn" type="file" name="fileToUpload">
+                                            </div>
+                                            <div class="form-group col-sm-12">
+                                                <h6 style="bolder">Upload Foto Akhir:</h6>
+                                                <input class="input-group-btn" type="file" name="fileToUpload2">
                                             </div>
                                         </div>
 

@@ -43,9 +43,12 @@ class ProduksiController extends Controller
     public function store(Request $request)
     {
         //
+        $user=Auth::user();
         $produksi=new Produksi();
-        $produksi->id_orders = $request->OrderID;
+        $produksi->id_admin = $user->id;
+        $produksi->id_keranjang = $request->idBarang;
         $produksi->id_karyawan = $request->karyawan;
+        
         $path = $request->file('fileToUpload')->extension();
         //dd($path);
         if($path!='png' and $path!='jpg' and $path!='jpeg'){
@@ -55,11 +58,25 @@ class ProduksiController extends Controller
         else{
             $path = $request->file('fileToUpload')->store('produksi', 'public');
             //dd($path);
-            $produksi->foto = $path;
+            $produksi->foto_awal = $path;
         }
-        $produksi->waktu = $request->waktu;
+        
+        $path2 = $request->file('fileToUpload2')->extension();
+        //dd($path);
+        if($path2!='png' and $path2!='jpg' and $path2!='jpeg'){
+            Session::flash('message', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
+            return Redirect::back();
+        }
+        else{
+            $path2 = $request->file('fileToUpload2')->store('produksi', 'public');
+            //dd($path);
+            $produksi->foto_akhir = $path;
+        }
+
+        $produksi->waktu_awal = $request->waktu_awal;
+        $produksi->waktu_akhir = $request->waktu_akhir;
         $produksi->detail_kegiatan = $request->detail;
-        $produksi->progress=$request->progress;
+        $produksi->jumlah=$request->progress;
         $produksi->id_admin=$request->admin;
         //dd($produksi);
         $produksi->save();
@@ -99,7 +116,17 @@ class ProduksiController extends Controller
         //dd($id);
         $barang=Produksi::where('id_keranjang',$idBrg)->get();
         //dd($barang);
-        return view('detailProduksi')->with(compact('barang','user','idBrg', 'id'));
+        $jumBarang=Keranjang::select('jumlah')->where('id',$idBrg)->first();
+        //dd($jumBarang);
+        $jumBrgSkrg=Produksi::where('id_keranjang',$idBrg)
+        ->selectRaw('sum(jumlah) as jumlah')
+        ->first();
+        if($jumBrgSkrg->jumlah==null){
+            $jumBrgSkrg->jumlah=0;
+        }
+        $jumBarang->jumlah=$jumBarang->jumlah-$jumBrgSkrg->jumlah;
+        //dd($jumBarang);
+        return view('detailProduksi')->with(compact('barang','user','idBrg', 'jumBarang', 'id'));
     }
 
     /**

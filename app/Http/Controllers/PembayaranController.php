@@ -108,7 +108,7 @@ class PembayaranController extends Controller
         $order->total_pembayaran+=$request->jumlah;
 
         if($order->total_pembayaran>=$order->dp){
-            $order->status="Sedang Diproses";
+            $order->status="Produksi";
         }
         //dd($order->total_pembayaran);
 
