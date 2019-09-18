@@ -15,14 +15,13 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('id_carts_list');
-            $table->integer('id_user');
+            $table->bigInteger('id_user');
             $table->integer('subtotal');
             $table->integer('biaya_kirim');
             $table->integer('total');
             $table->integer('dp');
             $table->integer('total_pembayaran');
-            $table->string('status', 255);
+            $table->enum('status', ['Pending', 'Produksi', 'Pengiriman', 'Selesai']);
             $table->timestamps();
         });
     }

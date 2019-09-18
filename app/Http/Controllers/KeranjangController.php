@@ -25,20 +25,9 @@ class KeranjangController extends Controller
     {
         //
         $user = Auth::user();
-        if(null!=(CartsList::where('id_user',$user->id)->where('status',1)->first())){
-
-        }    
-        else{
-            $newUserCart=new CartsList();
-            $newUserCart->id_user=$user->id;
-            $newUserCart->status=1;
-            $newUserCart->save();
-        }
-        $userCart = CartsList::where('id_user',$user->id)->where('status',1)->first();
-        $cart = Keranjang::where('id_carts_list',$userCart->id)->get();
+        $cart = Keranjang::where('id_user',$user->id)->where('id_orders',null)->get();
         //dd($cart);
-        return view('cart')->with(compact('cart','userCart','user'));
-        //return view('orders')->with(compact('cart'));
+        return view('cart')->with(compact('cart','user'));
     }
 
     /**
@@ -65,20 +54,10 @@ class KeranjangController extends Controller
             return Redirect::back();
         }
         $user = Auth::user();
-        if(null!=(CartsList::where('id_user',$user->id)->where('status',1)->first())){
-
-        }    
-        else{
-            $newUserCart=new CartsList();
-            $newUserCart->id_user=$user->id;
-            $newUserCart->status=1;
-            $newUserCart->save();
-        }
-        $userCart = CartsList::where('id_user',$user->id)->where('status',1)->first();
         
         $keranjang = new Keranjang();
         //id keranjang ambil dari yang aktif, belum ada caranya
-        $keranjang->id_carts_list =$userCart->id;
+        $keranjang->id_user=$user->id;
         $keranjang->id_products = $request->idBarang;
         $keranjang->jumlah = $request->jumlah;
         
@@ -138,20 +117,10 @@ class KeranjangController extends Controller
     {
         //
         $user = Auth::user();
-        if($user->admin==0){
-            $userCart = CartsList::where('id_user',$user->id)->where('id',$id)->first();
-            //dd($userCart);
-            $cart = Keranjang::where('id_carts_list',$userCart->id)->get();
-            //dd($cart);
-        }
-        else{
-            $userCart = CartsList::where('id',$id)->first();
-            //dd($userCart);
-            $cart = Keranjang::where('id_carts_list',$userCart->id)->get();
-            //dd($cart);
-        }
+        $cart = Keranjang::where('id_orders',$id)->where('id_user',$user->id)->get();
         
-        return view('cart')->with(compact('cart','userCart','user'));
+        //dd($cart);
+        return view('cart')->with(compact('cart','user','id'));
     }
 
     /**
@@ -175,22 +144,32 @@ class KeranjangController extends Controller
     public function update(Request $request, $id)
     {
         //
-        //dd($request->subtotal);
-        $data=CartsList::find($id);
-        $data->status=0;
-        
+        $user = Auth::user();
         $order=new Orders();
-        $order->id_carts_list=$data->id;
-        $order->id_user=$data->id_user;
+        
+        $order->id_user=$user->id;
         $order->subtotal=$request->subtotal;
         $order->biaya_kirim=0;
         $order->total=$order->subtotal+$order->biaya_kirim;
         $order->dp=$order->total*30/100;
-        $order->status="pending";
+        $order->status="Pending";
         $order->total_pembayaran=0;
         //dd($order);
-        $data->save();
-        $order->save();
+        if($order->total_pembayaran==0){
+            Session::flash('alert', "Tidak ada barang dalam keranjang.");
+            return redirect()->route('cart.index');        
+        }
+        else{
+            $order->save();
+        
+            $barang=Keranjang::where('id_user',$user->id)->where('id_orders',null)->where('deleted_at',null)->get();
+            foreach($barang as $items){
+                $items->id_orders=$order->id;
+                $items->save();
+            }
+        }
+        
+
         return redirect()->route('orders.index');
     }
 

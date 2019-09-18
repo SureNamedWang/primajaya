@@ -47,14 +47,15 @@
                                 @endif
                             </td>
                             <td>{{$item->jumlah}}</td>
-                            @if($userCart->status==0)
-                            <td>Rp. {{number_format($item->harga)}}</td>
+                            @isset($id)
                             @else
-                            
+                            <td>Rp. {{number_format($item->harga)}}</td>
+                            @endisset
                             <td>Rp. {{number_format(($item->keranjangHarga->harga)*$item->jumlah)}}</td>
-                            @endif
+                            {{-- @endif --}}
                             
-                            @if($userCart->status!=0)
+                            @isset($id)
+                            @else
                             <td class="text-right">
                                 <form action="{{route('cart.destroy', ['id' => $item->id])}}" method="post">
                                     {{method_field('DELETE')}}
@@ -64,10 +65,10 @@
                                     </button>
                                 </form>
                             </td>
-                            @endif
+                            @endisset
                         </tr>
                         @php
-                        $totalHarga=$totalHarga+$item->harga;
+                        $totalHarga=$totalHarga+$item->total_harga;
                         @endphp
                         @endforeach
                         <tr>
@@ -106,28 +107,28 @@
         </div>
         <div class="col mb-2">
             <div class="row">
-                @if($userCart->status==0)
+                @isset($id)
                 <div class="col-sm-12  col-md-6">
                     <a href="{{ url('/orders') }}">
                         <button class="btn btn-block btn-danger">Back</button>
                     </a>
                 </div>
-                @endif
-                @if($cart->count()!=0 and $userCart->status!=0)
+                
+                @else
                 <div class="col-sm-12  col-md-6">
                     <a href="{{ url('/catalogue') }}">
                         <button class="btn btn-block btn-danger">Continue Shopping</button>
                     </a>
                 </div>
                 <div class="col-sm-12 col-md-6 text-right">
-                    <form method="post" action="{{ route('cart.update', ['id' => $userCart->id])}}">
+                    <form method="post" action="{{ route('cart.update', ['id' => '0'])}}">
                         {{method_field('PATCH')}}
                         {{csrf_field()}}
                         <input type="hidden" name="subtotal" value="{{$totalHarga}}">
                         <input type="submit" class="btn btn-block btn-success" value="Check Out">
                     </form>
                 </div>
-                @endif
+                @endisset
             </div>
         </div>
     </div>

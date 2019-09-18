@@ -15,8 +15,9 @@ class CreateKeranjangTable extends Migration
     {
         Schema::create('keranjang', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('id_orders');
-            $table->integer('id_products');
+            $table->bigInteger('id_user');
+            $table->bigInteger('id_orders')->nullable();
+            $table->bigInteger('id_products');
             $table->integer('jumlah');
             $table->integer('id_harga');
             $table->integer('id_logo')->nullable();
