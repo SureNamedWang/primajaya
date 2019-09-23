@@ -155,7 +155,7 @@ class KeranjangController extends Controller
         $order->status="Pending";
         $order->total_pembayaran=0;
         //dd($order);
-        if($order->total_pembayaran==0){
+        if($order->total==0){
             Session::flash('alert', "Tidak ada barang dalam keranjang.");
             return redirect()->route('cart.index');        
         }

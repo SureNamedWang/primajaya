@@ -22,7 +22,9 @@ class CreateProduksiTable extends Migration
             $table->integer('jumlah');
             $table->string('detail_kegiatan',255)->nullable();
             $table->string('foto_awal',255)->nullable();
+            $table->datetime('waktu_mulai');
             $table->string('foto_akhir',255)->nullable();
+            $table->datetime('waktu_selesai')->nullable();
             $table->timestamps();
         });
     }
