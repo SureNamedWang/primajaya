@@ -28,22 +28,27 @@ Route::get('/detailProduksi/{id}/{idBrg}', 'ProduksiController@showDetailProduks
 
 Route::resource('/barang', 'BarangController');
 
-Route::get('/ajaxTipe', 'BarangController@ajaxTipe')->name('ajaxTipe');
+Route::get('/ajaxBahan', 'BahanController@ajaxBahan')->name('ajaxBahan');
 
-Route::get('/tipe/{id}', 'BarangController@tipe')->name('tipe');
+Route::get('/bahan/{id}', 'BahanController@updateBahansView')->name('updateBahansView');
+
+Route::post('updateBahanProses', 'BahanController@updateBahanProses')->name('updateBahanProses');
 
 Route::get('/gambar/{id}', 'BarangController@gambar')->name('gambar');
 
+Route::get('/tipe/{id}', 'BarangController@tipe')->name('tipe');
+
 Route::get('/update/tipe/{id}', 'BarangController@updateTipeView')->name('updateTipeView');
+
+Route::get('/ajaxTipe', 'BarangController@ajaxTipe')->name('ajaxTipe');
+
+Route::post('updateTipeProses', 'BarangController@updateTipeProses')->name('updateTipeProses');
 
 Route::post('/tambah/barang', 'BarangController@storeBarang')->name('storeBarang');
 
 Route::post('editBarang', 'BarangController@editBarang')->name('editBarang');
 
 Route::post('/tambah/tipe', 'BarangController@storeTipe')->name('storeTipe');
-
-Route::post('updateTipeProses', 'BarangController@updateTipeProses')->name('updateTipeProses');
-
 
 
 Auth::routes();
