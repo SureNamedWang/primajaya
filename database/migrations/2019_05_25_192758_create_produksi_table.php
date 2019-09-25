@@ -16,15 +16,16 @@ class CreateProduksiTable extends Migration
         Schema::create('produksi', function (Blueprint $table) {
             //
             $table->bigIncrements('id');
-            $table->integer('id_admin');
-            $table->integer('id_keranjang');
-            $table->integer('id_karyawan');
+            $table->bigInteger('id_admin',20);
+            $table->bigInteger('id_keranjang',20);
+            $table->bigInteger('id_karyawan'),20;
             $table->integer('jumlah');
             $table->string('detail_kegiatan',255)->nullable();
             $table->string('foto_awal',255)->nullable();
             $table->datetime('waktu_mulai');
             $table->string('foto_akhir',255)->nullable();
             $table->datetime('waktu_selesai')->nullable();
+            $table->double('progress');
             $table->timestamps();
         });
     }

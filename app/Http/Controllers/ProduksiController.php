@@ -122,7 +122,12 @@ class ProduksiController extends Controller
         $user = Auth::user();
         //dd($id);
         $barang = Keranjang::with('keranjangProduksi')->where('id_orders',$id)->get();
-        //dd($barang);
+        //dd($barang->keranjangProduksi);
+        // for($i=0;$i<count($barang);$i++){
+        //     $progress[$i]=Produksi::where('id_keranjang',$barang[$i]->id)->last();
+        //     //dd($progress);
+        // }
+        // dd($progress);
         return view('produksi')->with(compact('barang','user','id'));
     }
 
@@ -227,16 +232,20 @@ class ProduksiController extends Controller
         if($jumBrgSkrg->jumlah==null){
             $jumBrgSkrg->jumlah=0;
         }
-        
+        //dd($jumBrgSkrg->jumlah);
+        //dd($produksi->jumlah);
+        //dd($jumBarang);
         //<--- hitung selisih --->
         if($produksi->jumlah!=$request->progress){
             $jumBrgSkrg->jumlah=$jumBrgSkrg->jumlah-$produksi->jumlah;
             $produksi->jumlah=$request->progress;
+            $jumBrgSkrg->jumlah=$jumBrgSkrg->jumlah+$request->progress;
         }
+        
         //<--- end hitung selisih --->
         $produksi->progress=$jumBrgSkrg->jumlah/$jumBarang->jumlah;
         //<--- end hitung progress --->
-
+        
         $produksi->id_admin=$request->admin;
         //dd($produksi);
         $produksi->save();

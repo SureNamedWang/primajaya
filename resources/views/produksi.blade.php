@@ -27,7 +27,11 @@
                         <tr>
                             <td>{{$item->keranjangProducts->nama}}</td>
                             <td>{{$item->jumlah}}</td>
-                            <td>0 %</td>
+                            @if($item->keranjangProduksi->last())
+                            <td>{{$item->keranjangProduksi->last()->progress*100}}%</td>
+                            @else
+                            <td>0%</td>
+                            @endif
                             <td><a href="{{route('detailProduksi', ['id' => $id, 'idBrg' => $item->id])}}" class="btn btn-sm btn-info">Lihat Detail Produksi</a></td>
                         </tr>
                         @endforeach
