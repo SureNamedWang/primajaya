@@ -80,7 +80,7 @@ class ProduksiController extends Controller
         //<--- hitung progress --->
         $jumBarang=Keranjang::select('jumlah')->where('id',$request->idBarang)->first();
         //dd($jumBarang);
-        $jumBrgSkrg=Produksi::where('id_keranjang',$idBrg)
+        $jumBrgSkrg=Produksi::where('id_keranjang',$request->idBarang)
         ->selectRaw('sum(jumlah) as jumlah')
         ->first();
         if($jumBrgSkrg->jumlah==null){
@@ -93,7 +93,7 @@ class ProduksiController extends Controller
         $produksi->save();
 
         $Orders = Orders::find($request->OrderID);
-        $pembeli = User::find($user->id);
+        $pembeli = User::find($Orders->id_user);
 
         Mail::send('email', [], function ($m) use ($path,$pembeli) {
             $m->from('noreply@primajaya.com', 'Prima Jaya');

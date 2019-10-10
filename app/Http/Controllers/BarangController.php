@@ -125,30 +125,48 @@ class BarangController extends Controller
     public function tipe($id){
         //dd($id);
         $user= Auth::user();
-        $ukuran=Ukuran::where('id_products',$id)->get();
+        //$ukuran=Ukuran::where('id_products',$id)->get();
+        $mukuran=MasterUkuran::all();
         $tipe=tipeUkuran::all();
-        return view('tambahtipe')->with(compact('user','ukuran','tipe'));
+        return view('tambahtipe')->with(compact('user','mukuran','tipe','id'));
     }
 
     public function storeTipe(Request $request){
         //Dari Tambah Ukuran
+        //dd($request->Input());
         $pesan="";
-        $err=Harga::where('id_ukuran', $request->ukuran)->whereIn('id_tipe', $request->tipe)->get();
-        //dd($err);
-        foreach ($err as $key => $value) {
-            # code...
-            //dd($value);
-            $pesan =$pesan."Tipe ".$value->hargaTipe->nama." sudah ada untuk barang ini \n";
+        
+        $ukuran=Ukuran::where('id_mukuran', $request->mukuran)->where('id_products',$request->id)->first();
+        //dd($ukuran);
+        if($ukuran!=null){
+            $err=Harga::where('id_ukuran', $ukuran->id)->whereIn('id_tipe', $request->tipe)->get();
+            //dd($err);
+            foreach ($err as $key => $value) {
+                # code...
+                //dd($value);
+                $pesan =$pesan."Tipe ".$value->hargaTipe->nama." sudah ada untuk barang dengan ukuran ini \n";
+            }   
         }
         if($pesan!=""){
             Session::flash('message', $pesan);
             return Redirect::back();
         }
         else{
+            if($ukuran==null){
+                $newUkuran = new Ukuran();
+                $newUkuran->id_products=$request->id;
+                $newUkuran->id_mukuran=$request->mukuran;
+                $newUkuran->save();
+            }
             foreach ($request->tipe as $key => $value) {
                 # code...
-                $data=new Harga();
-                $data->id_ukuran=$request->ukuran;
+                $data = new Harga();
+                if($ukuran==null){
+                    $data->id_ukuran=$newUkuran->id;
+                }
+                else{
+                    $data->id_ukuran=$ukuran->id;
+                }
                 $data->id_tipe=$value;
                 $data->harga=$request->harga[$key];
 

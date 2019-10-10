@@ -8,15 +8,16 @@
 <div class="form-group col-sm-12">
     <form method="post" action="{{route('storeTipe')}}" enctype="multipart/form-data">
         {{csrf_field()}}
+        <input type="hidden" name="id" value="{{$id}}">
         <div class="card">
           <div class="card-header">
             <div class="row">
                 <div class="col-6">
                     <h5>Ukuran</h5>
-                    <select class="form-control" name="ukuran">
+                    <select class="form-control" name="mukuran">
                         <option value="">Pilih Ukuran</option>
-                        @foreach ($ukuran as $ukuran)
-                        <option value="{{$ukuran->id}}">{{$ukuran->MasterUkuran->ukuran}}</option>
+                        @foreach ($mukuran as $ukuran)
+                        <option value="{{$ukuran->id}}">{{$ukuran->ukuran}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -26,7 +27,6 @@
             </div>
         </div>
         <div class="card-body">
-            <input type="hidden" name="id" value="1">
             <input type="hidden" name="asal" value="tambahUkuran">
             <div class="table-responsive">
                 <table class="table table-striped">
