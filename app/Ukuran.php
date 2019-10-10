@@ -15,7 +15,4 @@ class Ukuran extends Model
     public function MasterUkuran(){
     	return $this->belongsTo('App\MasterUkuran', 'id_mukuran', 'id');
     }
-    public function BahansUkuran(){
-    	return $this->hasMany('App\Bahan', 'id_ukuran', 'id');
-    }
 }
