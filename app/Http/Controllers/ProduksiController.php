@@ -98,7 +98,7 @@ class ProduksiController extends Controller
         $produksi->save();
 
         $Orders = Orders::find($request->OrderID);
-        $pembeli = User::find($user->id);
+        $pembeli = User::find($Orders->id_user);
 
         Mail::send('email', [], function ($m) use ($path,$pembeli) {
             $m->from('noreply@primajaya.com', 'Prima Jaya');
