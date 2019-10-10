@@ -20,13 +20,7 @@ session_start();
 		</div>
 
 	</div>
-	@include('footer') {{--
-	<script type="text/javascript">
-		function formSubmit(clicked_id){
-		var x=clicked_id;
-		document.getElementById(x).submit();// Form submission
-	}
-	</script> --}}
+	@include('footer')
 	
 </body>
 

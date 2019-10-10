@@ -61,35 +61,40 @@ class ProduksiController extends Controller
             //dd($path);
             $produksi->foto_awal = $path;
         }
+        if($request->file('fileToUpload2')!=null){    
+            $path2 = $request->file('fileToUpload2')->extension();
+            
+            if($path2!='png' and $path2!='jpg' and $path2!='jpeg'){
+                Session::flash('message', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
+                return Redirect::back();
+            }
+            else{
+                $path2 = $request->file('fileToUpload2')->store('produksi', 'public');
+                //dd($path);
+                $produksi->foto_akhir = $path2;
+            }
+        }
         
-        $path2 = $request->file('fileToUpload2')->extension();
-        //dd($path);
-        if($path2!='png' and $path2!='jpg' and $path2!='jpeg'){
-            Session::flash('message', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
-            return Redirect::back();
-        }
-        else{
-            $path2 = $request->file('fileToUpload2')->store('produksi', 'public');
-            //dd($path);
-            $produksi->foto_akhir = $path2;
-        }
 
         $produksi->waktu_mulai = $request->waktu_awal;
         $produksi->waktu_selesai = $request->waktu_akhir;
         $produksi->detail_kegiatan = $request->detail;
+        $produksi->jumlah=$request->progress;
         //<--- hitung progress --->
         $jumBarang=Keranjang::select('jumlah')->where('id',$request->idBarang)->first();
         //dd($jumBarang);
-        $jumBrgSkrg=Produksi::where('id_keranjang',$idBrg)
+        $jumBrgSkrg=Produksi::where('id_keranjang',$request->idBarang)
         ->selectRaw('sum(jumlah) as jumlah')
         ->first();
         if($jumBrgSkrg->jumlah==null){
             $jumBrgSkrg->jumlah=0;
         }
-        $produksi->jumlah=$jumBrgSkrg->jumlah/$jumBarang->jumlah;
+        $jumBrgSkrg->jumlah=$jumBrgSkrg->jumlah+$request->progress;
+        $produksi->progress=$jumBrgSkrg->jumlah/$jumBarang->jumlah;
         //<--- end hitung progress --->
         $produksi->id_admin=$request->admin;
         //dd($produksi);
+
         $produksi->save();
 
         $Orders = Orders::find($request->OrderID);
