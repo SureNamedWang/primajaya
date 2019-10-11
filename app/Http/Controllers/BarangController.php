@@ -144,11 +144,11 @@ class BarangController extends Controller
             foreach ($err as $key => $value) {
                 # code...
                 //dd($value);
-                $pesan =$pesan."Tipe ".$value->hargaTipe->nama." sudah ada untuk barang dengan ukuran ini \n";
+                $pesan ="Tipe ".$value->hargaTipe->nama." sudah ada untuk barang dengan ukuran ini \n";
             }   
         }
         if($pesan!=""){
-            Session::flash('message', $pesan);
+            Session::flash('alert', 'Tipe pesanan dengan ukuran ini sudah ada pada barang');
             return Redirect::back();
         }
         else{

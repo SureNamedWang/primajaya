@@ -18,6 +18,8 @@ Route::resource('/catalogue', 'ProductController');
 
 Route::resource('/cart', 'KeranjangController');
 
+Route::post('editKeranjang', 'KeranjangController@editKeranjang')->name('editKeranjang');
+
 Route::resource('/orders', 'OrdersController');
 
 Route::resource('/pembayaran', 'PembayaranController');

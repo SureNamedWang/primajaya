@@ -5,6 +5,9 @@
 @if (Session::has('message'))
    <div class="alert alert-info">{{ Session::get('message') }}</div>
 @endif
+@if (Session::has('alert'))
+<div class="alert alert-danger">{{ Session::get('alert') }}</div>
+@endif
 <div class="form-group col-sm-12">
     <form method="post" action="{{route('storeTipe')}}" enctype="multipart/form-data">
         {{csrf_field()}}

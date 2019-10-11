@@ -16,8 +16,8 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            @if($user->admin==1)
                             <th scope="col">OrderID</th>
+                            @if($user->admin==1)
                             <th scope="col">Pembeli</th>
                             @endif
                             <th scope="col">Tanggal Beli</th>
@@ -36,16 +36,16 @@
                     <tbody>
                         @foreach ($orders as $item)
                         <tr>
-                            @if($user->admin==1)
                             <td>{{$item->id}}</td>
-                            <td>{{$item->id_user}}</td>
+                            @if($user->admin==1)
+                            <td>{{$item->OrdersUsers->name}}</td>
                             @endif
                             <td>{{$item->created_at}}</td>
-                            <td>{{$item->subtotal}}</td>
-                            <td>{{$item->biaya_kirim}}</td>
-                            <td>{{$item->total}}</td>
-                            <td>{{$item->dp}}</td>
-                            <td>{{$item->total_pembayaran}}</td>
+                            <td>Rp. {{number_format($item->subtotal)}}</td>
+                            <td>Rp. {{number_format($item->biaya_kirim)}}</td>
+                            <td>Rp. {{number_format($item->total)}}</td>
+                            <td>Rp. {{number_format($item->dp)}}</td>
+                            <td>Rp. {{number_format($item->total_pembayaran)}}</td>
                             <td>{{$item->status}}</td>
                             <td><a href="{{route('pembayaran.update', ['id' => $item->id])}}" class="btn btn-sm btn-danger">Detail Pembayaran</a></td>
                             @if($user->admin!=1)

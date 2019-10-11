@@ -48,18 +48,36 @@ class KeranjangController extends Controller
      */
     public function store(Request $request)
     {
+        if(isset($request->email)){
+            if(Auth::attempt(['email'=>$request->email,'password'=>$request->password]))
+            {
+
+            }
+            else{
+                return Redirect::back()->withInput();
+            }
+        }
         //
         if(!isset($request->ukuran)){
             Session::flash('alert', "Untuk memesan barang anda minimal perlu memilih ukuran yang di inginkan.");
             return Redirect::back();
         }
         $user = Auth::user();
-        
-        $keranjang = new Keranjang();
-        //id keranjang ambil dari yang aktif, belum ada caranya
-        $keranjang->id_user=$user->id;
-        $keranjang->id_products = $request->idBarang;
-        $keranjang->jumlah = $request->jumlah;
+        $keranjangUser=Keranjang::where('id_user', $user->id)->where('id_orders',null)->get();
+        //dd($keranjangUser)
+        foreach($keranjangUser as $kUser){
+            if($kUser->id_products==$request->idBarang&&$kUser->id_harga==$request->ukuran&&$kUser->deleted_at==null){
+                $keranjang=Keranjang::where('id',$kUser->id)->first();
+                $keranjang->jumlah=$keranjang->jumlah+$request->jumlah;
+                //dd($keranjang);
+            }    
+        }
+        if(!isset($keranjang)){
+            $keranjang = new Keranjang();
+            $keranjang->id_user=$user->id;
+            $keranjang->id_products = $request->idBarang;
+            $keranjang->jumlah = $request->jumlah;
+        }
         
         $hargaBarang=0;
         if(isset($request->ukuran)){
@@ -89,8 +107,12 @@ class KeranjangController extends Controller
                     return Redirect::back();
                 }
             }
-            
-            $hargaLogo = AddonLogo::find($request->cbkLogo)->harga;
+            if($request->cbkLogo==!0){
+                $hargaLogo = AddonLogo::find($request->cbkLogo)->harga;
+            }
+            else{
+                $hargaLogo=0;
+            }
         }
         else{
             $hargaLogo = 0;
@@ -123,15 +145,66 @@ class KeranjangController extends Controller
         return view('cart')->with(compact('cart','user','id'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+    public function editKeranjang(Request $request){
+        $keranjang = Keranjang::find($request->idKeranjang);
+        //dd($keranjang);
+        $user = Auth::user();
+        
+        $keranjang->jumlah = $request->jumlah;
+        $hargaBarang=0;
+
+        if(isset($request->ukuran)){
+            $keranjang->id_harga = $request->ukuran;
+            $hargaBarang = Harga::find($request->ukuran)->harga;    
+        }
+        
+        if(isset($request->cbkLogo)){
+            $keranjang->id_logo = $request->cbkLogo;
+            //dd($request->cbkLogo);
+            if($request->cbkLogo==1){
+                if(isset($request->fileToUpload)){
+                
+                    $path = $request->file('fileToUpload')->extension();
+                    //dd($path);
+                    if($path!='png' and $path!='jpg' and $path!='jpeg'){
+                        Session::flash('alert', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
+                        return Redirect::back();
+                    }
+                    else{
+                        $path = $request->file('fileToUpload')->store('logo', 'public');
+                        $keranjang->desain=$path;
+                    }
+                }
+                else{
+                    Session::flash('alert', "Logo tidak terupload silahkan masukkan gambar logo yang di inginkan.");
+                    return Redirect::back();
+                }
+            }
+            if($request->cbkLogo==!0){
+                $hargaLogo = AddonLogo::find($request->cbkLogo)->harga;
+            }
+            else{
+                $hargaLogo=0;    
+                $keranjang->desain=null;
+                $keranjang->id_logo=null;
+            }
+        }
+        else{
+            $hargaLogo = 0;
+            $keranjang->desain=null;
+            $keranjang->id_logo=null;
+        }
+
+        $totalHarga = $hargaBarang+$hargaLogo;
+        $totalHarga = $totalHarga*$request->jumlah;
+        $keranjang->harga = $hargaBarang;
+        $keranjang->total_harga=$totalHarga;
+        //dd($keranjang);
+        //dd($totalHarga);
+        $keranjang->save();
+        //dd($keranjang);
+        Session::flash('message', "Detail barang berhasil diubah.");
+        return redirect('/cart');
     }
 
     /**
@@ -172,6 +245,17 @@ class KeranjangController extends Controller
 
         return redirect()->route('orders.index');
     }
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+        
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -188,6 +272,6 @@ class KeranjangController extends Controller
     }
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('store');
     }
 }

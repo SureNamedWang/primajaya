@@ -47,7 +47,7 @@
   <!-- Logo Header -->
   <div class="logo-header mt-1">
     <a href="{{ url('/catalogue') }}" class="logo">
-      <img src="{{asset('storage/primajaya.jpg')}}" alt="navbar brand" class="navbar-brand" style="width:100%;height:50px">  
+      <img src="{{asset('storage/primajaya.jpg')}}" alt="navbar brand" class="navbar-brand" style="width:50%;height:50px">  
     </a>
     <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false"
       aria-label="Toggle navigation">

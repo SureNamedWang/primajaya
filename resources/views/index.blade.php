@@ -34,9 +34,9 @@ session_start();
 			});
 		@endif
 		@if (Session::has('alert'))
-			swal({
+		swal({
 				title: "Kesalahan",
-				text: "{{ Session::get('alert') }}",
+				text: "{{Session::get('alert')}}",
 				icon: "error",
 			});
 			console.log('alertif');
