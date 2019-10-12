@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Pembayaran;
+use App\log_pembayaran;
 use App\Orders;
 use Auth;
 use Session;
@@ -46,7 +47,7 @@ class PembayaranController extends Controller
         $path = $request->file('fileToUpload')->extension();
         //dd($path);
         if($path!='png' and $path!='jpg' and $path!='jpeg'){
-            Session::flash('message', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
+            Session::flash('alert', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
             return Redirect::back();
         }
         else{
@@ -55,8 +56,9 @@ class PembayaranController extends Controller
             $pembayaran->bukti=$path;
         }
         $pembayaran->jumlah = 0;
-        $pembayaran->approval = 0;
+        $pembayaran->approval = 'Pending';
         $pembayaran->save();
+        Session::flash('message', "Bukti Pembayaran telah berhasil dimasukkan!");
         return redirect('/pembayaran/'.$request->OrderID);
     }
 
@@ -97,21 +99,51 @@ class PembayaranController extends Controller
     {
         //
         //dd($request->input());
-
+        $user=Auth::user();
         $data=Pembayaran::find($id);
-        if($request->approval="Approved"){
-            $data->approval = 1;
+        $logPembayaran=new log_pembayaran();
+        if($data->approval!=$request->approval){
+            $logPembayaran=new log_pembayaran();
+            $logPembayaran->kategori='Approval';
+            $logPembayaran->data_awal=$data->approval;
+            $logPembayaran->data_baru=$request->approval;
+            $logPembayaran->admin=$user->id;
+            $logPembayaran->id_pembayaran=$id;
+            $logPembayaran->save();
         }
-        $data->jumlah = $request->jumlah;
-
+        $data->approval=$request->approval;
         $order=Orders::find($data->id_orders);
+        if($data->jumlah!=$request->jumlah){
+            $logPembayaran=new log_pembayaran();
+            $logPembayaran->kategori='jumlah';
+            $logPembayaran->data_awal=$data->jumlah;
+            $logPembayaran->data_baru=$request->jumlah;
+            $logPembayaran->admin=$user->id;
+            $logPembayaran->id_pembayaran=$id;
+            $logPembayaran->save();
+        }
+        $order->total_pembayaran=$order->total_pembayaran-$data->jumlah;
         $order->total_pembayaran+=$request->jumlah;
 
         if($order->total_pembayaran>=$order->dp){
             $order->status="Produksi";
         }
-        //dd($order->total_pembayaran);
-
+        if(isset($request->keterangan)){
+            if($data->keterangan!=$request->keterangan){
+                $logPembayaran=new log_pembayaran();
+                $logPembayaran->kategori='keterangan';
+                $logPembayaran->data_awal=$data->keterangan;
+                if($logPembayaran->data_awal==null){
+                    $logPembayaran->data_awal="null";
+                }
+                $logPembayaran->data_baru=$request->keterangan;
+                $logPembayaran->admin=$user->id;
+                $logPembayaran->id_pembayaran=$id;
+                $logPembayaran->save();
+            }
+            $data->keterangan=$request->keterangan;
+        }
+        $data->jumlah = $request->jumlah;
         $data->save();
         $order->save();
 

@@ -1,15 +1,15 @@
 @extends('index')
 @section('content')
-@if (Session::has('message'))
-   <div class="alert alert-info">{{ Session::get('message') }}</div>
-@endif
 <section class="jumbotron text-center">
     <div class="container">
         <h1 class="jumbotron-heading">Pembayaran</h1>
     </div>
 </section>
 @if (Session::has('message'))
-<div class="alert alert-info">{{ Session::get('message') }}</div>
+   <div class="alert alert-info">{{ Session::get('message') }}</div>
+@endif
+@if (Session::has('alert'))
+<div class="alert alert-info">{{ Session::get('alert') }}</div>
 @endif
 <div class="container mb-4">
     <div class="row">
@@ -26,8 +26,10 @@
                             @if($user->admin==1)
                             <th scope="col">Tanggal Approval</th>
                             @endif
-                            <th></th>
-                            <th></th>
+                            <th scope="col">Keterangan</th>
+                            @if($user->admin==1)
+                            <th scope="col">Aksi</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -37,19 +39,21 @@
                             <td>
                                 <img src="{{asset('storage/'.$item->bukti)}}" style="height: 50px;width: 50px;">
                             </td>
-                            <td>{{$item->jumlah}}</td>
+                            <td>Rp. {{number_format($item->jumlah)}}</td>
                             <td>
-                                @if($item->approval==1)
+                                @if($item->approval=='Approved')
                                 <i class="fa fa-check"></i>
-                                @else
+                                @elseif($item->approval=='Pending')
                                 <i class="fa fa-window-minimize"></i>
+                                @elseif($item->approval=='Denied')
+                                <i class="fa fa-times"></i>
                                 @endif
                             </td>
                             <td>{{$item->created_at}}</td>
                             @if($user->admin==1)
                             <td>{{$item->updated_at}}</td>
                             @endif
-                            <td></td>
+                            <td>{{$item->keterangan}}</td>
                             @if($user->admin==1)
                             <td><button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal{{$item->id}}">Approval</button></td>
 
@@ -75,16 +79,22 @@
                                             </div>
                                             <div class="form-group col-sm-12">
                                                 <div class="form-label-group">
-                                                    <input type="number" name="jumlah" required>
+                                                <input type="number" min=0 name="jumlah" value="{{$item->jumlah}}" required>
                                                     <label for="jumlah">Jumlah</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-12">
+                                                <div class="form-label-group">
+                                                <input type="text" id="keterangan" name="keterangan" value="{{$item->keterangan}}" required>
+                                                    <label for="keterangan">Keterangan</label>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <!-- Modal footer -->
                                         <div class="modal-footer">
-                                            <input type="submit" name="approval" class="btn btn-info" value="Approve"></button>
-
+                                            <input type="submit" name="approval" class="btn btn-info" value="Approved">
+                                            <input type="submit" name="approval" class="btn btn-warning" value="Denied">
                                             <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
                                         </div>
                                     </form>
@@ -112,16 +122,21 @@
                                     <!-- Modal Header -->
                                     <div class="modal-header">
                                       <h4 class="modal-title" style="bolder">Upload Bukti Pembayaran</h4>
+                                      
                                       <button type="button" class="close" data-dismiss="modal">&times;</button>
                                   </div>
                                   <!-- Modal body -->
                                   <form method="post" action="{{route('pembayaran.store')}}" enctype="multipart/form-data">
                                     {{csrf_field()}}
                                     <div class="modal-body">
-                                        <div class="form-group col-sm-12">
+                                        <div class="input-file input-file-image mx-auto">
                                             <input type="hidden" name="OrderID" value="{{$id}}">
                                             Upload Bukti Pembayaran
-                                            <input class="input-group-btn" type="file" name="fileToUpload">
+                                            <img class="img-upload-preview" width="150" src="http://placehold.it/150x150" alt="preview">
+                                            <input type="file" class="form-control form-control-file" id="uploadImg" name="fileToUpload" accept="image/*">
+                                            <label for="uploadImg" class=" label-input-file btn btn-primary">Upload new Image</label>
+                                            <br>
+                                            <label for="uploadImg" class="form-check-label">(format file jpg/jpeg/png)</label>
                                         </div>
                                     </div>
 

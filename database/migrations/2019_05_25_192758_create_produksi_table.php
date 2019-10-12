@@ -16,9 +16,9 @@ class CreateProduksiTable extends Migration
         Schema::create('produksi', function (Blueprint $table) {
             //
             $table->bigIncrements('id');
-            $table->bigInteger('id_admin',20);
-            $table->bigInteger('id_keranjang',20);
-            $table->bigInteger('id_karyawan'),20;
+            $table->bigInteger('id_admin');
+            $table->bigInteger('id_keranjang');
+            $table->bigInteger('id_karyawan');
             $table->integer('jumlah');
             $table->string('detail_kegiatan',255)->nullable();
             $table->string('foto_awal',255)->nullable();

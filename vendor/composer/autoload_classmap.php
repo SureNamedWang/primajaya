@@ -49,6 +49,7 @@ return array(
     'App\\Providers\\RouteServiceProvider' => $baseDir . '/app/Providers/RouteServiceProvider.php',
     'App\\Ukuran' => $baseDir . '/app/Ukuran.php',
     'App\\User' => $baseDir . '/app/User.php',
+    'App\\log_pembayaran' => $baseDir . '/app/log_pembayaran.php',
     'App\\tipeUkuran' => $baseDir . '/app/tipeUkuran.php',
     'BahanTableSeeder' => $baseDir . '/database/seeds/BahanTableSeeder.php',
     'BeyondCode\\DumpServer\\DumpServerCommand' => $vendorDir . '/beyondcode/laravel-dump-server/src/DumpServerCommand.php',

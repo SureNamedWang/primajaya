@@ -13,9 +13,10 @@
     <div class="row">
         <div class="col-12">
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table id="tblOrders-datatables" class="table table-striped">
                     <thead>
                         <tr>
+                            <th scope="col">Opsi</th>
                             <th scope="col">OrderID</th>
                             @if($user->admin==1)
                             <th scope="col">Pembeli</th>
@@ -27,15 +28,30 @@
                             <th scope="col">DP Minimal</th>
                             <th scope="col">Total Di Bayar</th>
                             <th scope="col">Status</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($orders as $item)
                         <tr>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Opsi
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="{{route('pembayaran.update', ['id' => $item->id])}}">Pembayaran</a>
+                                        @if($user->admin!=1)
+                                        <a class="dropdown-item" href="{{route('cart.show', ['id' => $item->id])}}">Detail Order</a>
+                                        @endif
+                                        @if($item->dp<=$item->total_pembayaran)
+                                        <a class="dropdown-item" href="{{route('produksi.show', ['id' => $item->id])}}">Produksi</a>
+                                        @endif
+                                        @if($user->admin==1)
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#myModal{{$item->id}}">Pengiriman</a>
+                                        @endif
+                                    </div>
+                                </div>
+                            </td>
                             <td>{{$item->id}}</td>
                             @if($user->admin==1)
                             <td>{{$item->OrdersUsers->name}}</td>
@@ -47,12 +63,7 @@
                             <td>Rp. {{number_format($item->dp)}}</td>
                             <td>Rp. {{number_format($item->total_pembayaran)}}</td>
                             <td>{{$item->status}}</td>
-                            <td><a href="{{route('pembayaran.update', ['id' => $item->id])}}" class="btn btn-sm btn-danger">Detail Pembayaran</a></td>
-                            @if($user->admin!=1)
-                            <td><a href="{{route('cart.show', ['id' => $item->id])}}" class="btn btn-sm btn-info">Detail Order</a></td>
-                            @endif
                             @if($user->admin==1)
-                                <td><button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal{{$item->id}}">Ubah Biaya Kirim</button></td>
                                 
                                 <!-- The Modal -->
                                 <div class="modal" id="myModal{{$item->id}}">
@@ -96,9 +107,6 @@
                                 </div>
                                 <!-- /endModal -->
                             @endif
-                            @if($item->dp<=$item->total_pembayaran)
-                            <td><a href="{{route('produksi.show', ['id' => $item->id])}}" class="btn btn-sm btn-info">Produksi</a></td>
-                            @endif
                         </tr>
                         @endforeach
                     </tbody>
@@ -108,5 +116,12 @@
     </div>
 </div>
 
-
+@endsection
+@section('script')
+<script type="text/javascript">
+    $(document).ready(function() {
+		$('#tblOrders-datatables').DataTable({
+		});
+    })
+</script>
 @endsection

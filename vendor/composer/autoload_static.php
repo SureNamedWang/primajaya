@@ -423,6 +423,7 @@ class ComposerStaticInitbdd3290153730b6e15901e3ba3f6f0fc
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
         'App\\Ukuran' => __DIR__ . '/../..' . '/app/Ukuran.php',
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',
+        'App\\log_pembayaran' => __DIR__ . '/../..' . '/app/log_pembayaran.php',
         'App\\tipeUkuran' => __DIR__ . '/../..' . '/app/tipeUkuran.php',
         'BahanTableSeeder' => __DIR__ . '/../..' . '/database/seeds/BahanTableSeeder.php',
         'BeyondCode\\DumpServer\\DumpServerCommand' => __DIR__ . '/..' . '/beyondcode/laravel-dump-server/src/DumpServerCommand.php',
