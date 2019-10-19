@@ -65,7 +65,7 @@
                                         <div class="modal-content">
                                             <!-- Modal Header -->
                                             <div class="modal-header">
-                                                <h4 class="modal-title">Login</h4>
+                                                <h4 class="modal-title">Edit</h4>
                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                             </div>
     

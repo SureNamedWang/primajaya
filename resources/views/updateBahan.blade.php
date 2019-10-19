@@ -9,7 +9,7 @@
 <div class="alert alert-danger">{{ Session::get('alert') }}</div>
 @endif
 <div class="form-group col-sm-12">
-    <form method="post" action="{{route('updateTipeProses')}}" enctype="multipart/form-data">
+    <form method="post" action="{{route('updateBahanProses')}}" enctype="multipart/form-data">
         {{csrf_field()}}
         <div class="card">
           <div class="card-header">
@@ -17,8 +17,10 @@
                 <div class="col-6">
                     <select id="cboUkuran" onchange="cboUkuranFucntion()" class="form-control" name="ukuran">
                         <option value="">Pilih Ukuran</option>
-                        @foreach ($ukuran as $ukuran)
-                        <option value="{{$ukuran->id}}">{{$ukuran->MasterUkuran->ukuran}}</option>
+                        @foreach ($barang->ukuranProduct as $ukuran)
+                        @foreach($ukuran->hargaUkuran as $harga)
+                        <option value="{{$harga->id}}">{{$ukuran->Masterukuran->ukuran}} {{$harga->hargaTipe->nama}}</option>
+                        @endforeach
                         @endforeach
                     </select>
                 </div>
@@ -32,8 +34,8 @@
                 <table id="tabelTipe" class="table table-striped">
                     <thead>
                         <tr>
-                            <th scope="col">Tipe</th>
-                            <th scope="col">Harga</th>
+                            <th scope="col">Bahan</th>
+                            <th scope="col">Jumlah</th>
                         </tr>
                     </thead>
                     <tbody id="tbody">
@@ -55,7 +57,7 @@
     function cboUkuranFucntion() {
         var selUkuran = $('#cboUkuran').find('option:selected').val();
         $.ajax({
-            url: "{{ route('ajaxTipe') }}",
+            url: "{{ route('ajaxBahan') }}",
             method:'GET',
             data:{id:selUkuran},
             success: function(result){
@@ -68,14 +70,14 @@
                     '<td>'+
                         '<div class="form-group col-sm-12">'+
                             '<div class="form-label-group">'+
-                                '<input type="text" name="tipe" value="'+element.id_tipe+'" disabled>'+
+                                '<input type="text" name="bahan" value="'+element.id_master_bahan+'" disabled>'+
                             '</div>'+
                         '</div>'+
                     '</td>'+
                     '<td>'+
                         '<div class="form-group col-sm-12">'+
                             '<div class="form-label-group">'+
-                                '<input type="text" name="harga[]" value="'+element.harga+'">'+
+                                '<input type="number" name="jumlah[]" value="'+element.jumlah+'">'+
                             '</div>'+
                         '</div>'+
                     '</td>'+

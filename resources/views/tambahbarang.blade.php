@@ -5,7 +5,7 @@
    <div class="alert alert-info">{{ Session::get('message') }}</div>
 @endif
 
-@if($user->admin==1)
+@if($user->admin!='User')
 <div class="container">
     <div class="row">
         <div class="col-sm-2">

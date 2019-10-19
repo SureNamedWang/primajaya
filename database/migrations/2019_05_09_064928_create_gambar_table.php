@@ -18,6 +18,7 @@ class CreateGambarTable extends Migration
             $table->integer('id_products');
             $table->string('gambar', 255);
             $table->boolean('thumbnail');
+            $table->softDeletes();
         });
     }
 

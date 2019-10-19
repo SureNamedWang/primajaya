@@ -16,7 +16,7 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            @if($user->admin==1)
+                            @if($user->admin!='User')
                             <th scope="col">Karyawan</th>
                             @endif
                             <th scope="col">Waktu Mulai</th>
@@ -25,7 +25,7 @@
                             <th scope="col">Foto Akhir</th>
                             <th scope="col">Detail Kegiatan</th>
                             <th scope="col">Total Barang Jadi</th>
-                            @if($user->admin==1)
+                            @if($user->admin!='User')
                                 <th scope="col">Edit Produksi</th>
                             @endif
                         </tr>
@@ -33,8 +33,8 @@
                     <tbody>
                         @foreach ($barang as $produksi)
                         <tr>
-                            @if($user->admin==1)
-                            <td>{{$produksi->id_karyawan}}</td>
+                            @if($user->admin!='User')
+                            <td>{{$produksi->produksiKaryawan->nama}}</td>
                             @endif
                             <td>{{$produksi->waktu_mulai}}</td>
                             <td>
@@ -73,8 +73,13 @@
                                                 </div>
                                                 <div class="form-group col-sm-12">
                                                     <div class="form-label-group">
-                                                    <input type="text" name="karyawan" value="{{$produksi->id_karyawan}}" required>
-                                                        <label for="karyawan">ID Karyawan</label>
+                                                        <select class="form-control" name="karyawan" required>
+                                                            <option value="">Pilih Karyawan</option>
+                                                            @foreach ($karyawan as $pekerja)
+                                                            <option value="{{$pekerja->id}}">{{$pekerja->nama}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        <label for="karyawan">Karyawan</label>
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-sm-12">
@@ -132,7 +137,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            @if($user->admin==1)
+                            @if($user->admin!='User')
                             <td><button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#modalInsertProduksi">Upload</button></td>
                             @endif
                             
@@ -166,8 +171,13 @@
                     </div>
                     <div class="form-group col-sm-12">
                         <div class="form-label-group">
-                            <input type="text" name="karyawan" required>
-                            <label for="karyawan">ID Karyawan</label>
+                            <select class="form-control" name="karyawan" required>
+                                <option value="">Pilih Karyawan</option>
+                                @foreach ($karyawan as $pekerja)
+                                <option value="{{$pekerja->id}}">{{$pekerja->departemen}} {{$pekerja->divisi}} {{$pekerja->nama}}</option>
+                                @endforeach
+                            </select>
+                            <label for="karyawan">Karyawan</label>
                         </div>
                     </div>
                     <div class="form-group col-sm-12">

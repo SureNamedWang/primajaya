@@ -23,11 +23,11 @@
                             <th scope="col">Jumlah Bayar</th>
                             <th scope="col">Approval</th>
                             <th scope="col">Tanggal Upload</th>
-                            @if($user->admin==1)
+                            @if($user->admin!='User')
                             <th scope="col">Tanggal Approval</th>
                             @endif
                             <th scope="col">Keterangan</th>
-                            @if($user->admin==1)
+                            @if($user->admin!='User')
                             <th scope="col">Aksi</th>
                             @endif
                         </tr>
@@ -50,11 +50,11 @@
                                 @endif
                             </td>
                             <td>{{$item->created_at}}</td>
-                            @if($user->admin==1)
+                            @if($user->admin!='User')
                             <td>{{$item->updated_at}}</td>
                             @endif
                             <td>{{$item->keterangan}}</td>
-                            @if($user->admin==1)
+                            @if($user->admin!='User')
                             <td><button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal{{$item->id}}">Approval</button></td>
 
                             <!-- The Modal -->
@@ -113,7 +113,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        @if($user->admin!=1)
+                        @if($user->admin!='Admin')
                         <td><button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#modalPembayaran">Upload</button></td>
                         <!-- The Modal -->
                         <div class="modal" id="modalPembayaran">

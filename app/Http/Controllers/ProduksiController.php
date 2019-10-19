@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\karyawan;
 use App\Keranjang;
 use App\Produksi;
 use App\Orders;
@@ -138,11 +139,10 @@ class ProduksiController extends Controller
 
     public function showDetailProduksi($id,$idBrg){
         $user = Auth::user();
-        //dd($id);
+        $karyawan = karyawan::where('divisis_id',1)->orWhere('divisis_id',2)->get();
+        //dd($karyawan);
         $barang=Produksi::where('id_keranjang',$idBrg)->get();
-        //dd($barang);
         $jumBarang=Keranjang::select('jumlah')->where('id',$idBrg)->first();
-        //dd($jumBarang);
         $jumBrgSkrg=Produksi::where('id_keranjang',$idBrg)
         ->selectRaw('sum(jumlah) as jumlah')
         ->first();
@@ -151,7 +151,7 @@ class ProduksiController extends Controller
         }
         $jumBarang->jumlah=$jumBarang->jumlah-$jumBrgSkrg->jumlah;
         //dd($jumBarang);
-        return view('detailProduksi')->with(compact('barang','user','idBrg', 'jumBarang', 'id'));
+        return view('detailProduksi')->with(compact('barang','karyawan','user','idBrg', 'jumBarang', 'id'));
     }
 
     /**

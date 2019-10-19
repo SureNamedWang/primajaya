@@ -18,7 +18,7 @@
                         <tr>
                             <th scope="col">Opsi</th>
                             <th scope="col">OrderID</th>
-                            @if($user->admin==1)
+                            @if($user->admin!='User')
                             <th scope="col">Pembeli</th>
                             @endif
                             <th scope="col">Tanggal Beli</th>
@@ -40,20 +40,20 @@
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" href="{{route('pembayaran.update', ['id' => $item->id])}}">Pembayaran</a>
-                                        @if($user->admin!=1)
+                                        @if($user->admin!='Admin')
                                         <a class="dropdown-item" href="{{route('cart.show', ['id' => $item->id])}}">Detail Order</a>
                                         @endif
                                         @if($item->dp<=$item->total_pembayaran)
                                         <a class="dropdown-item" href="{{route('produksi.show', ['id' => $item->id])}}">Produksi</a>
                                         @endif
-                                        @if($user->admin==1)
+                                        @if($user->admin!='User')
                                         <a class="dropdown-item" data-toggle="modal" data-target="#myModal{{$item->id}}">Pengiriman</a>
                                         @endif
                                     </div>
                                 </div>
                             </td>
                             <td>{{$item->id}}</td>
-                            @if($user->admin==1)
+                            @if($user->admin!='User')
                             <td>{{$item->OrdersUsers->name}}</td>
                             @endif
                             <td>{{$item->created_at}}</td>
@@ -63,7 +63,7 @@
                             <td>Rp. {{number_format($item->dp)}}</td>
                             <td>Rp. {{number_format($item->total_pembayaran)}}</td>
                             <td>{{$item->status}}</td>
-                            @if($user->admin==1)
+                            @if($user->admin!='User')
                                 
                                 <!-- The Modal -->
                                 <div class="modal" id="myModal{{$item->id}}">

@@ -14,8 +14,12 @@
             <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
                   <span>
                   {{ Auth::user()->name }}
-                  @if(Auth::user()->admin==1)
+                  @if(Auth::user()->admin=='Admin')
                     <span class="user-level">Administrator</span>
+                  @elseif(Auth::user()->admin=='Pemilik')
+                    <span class="user-level">Owner</span>
+                  @elseif(Auth::user()->admin=='User')
+                    <span class="user-level">User</span>
                   @endif
                     <span class="caret"></span>
                   </span>
@@ -51,7 +55,7 @@
         @endguest
       </ul>
       <ul class="nav">
-        <li class="nav-item active">
+        <li class="nav-item">
           <a href="{{route('catalogue.index')}}">
             <i class="la flaticon-store" style="font-size:25px"></i>
             <p>Store</p>
@@ -65,23 +69,31 @@
         </li>
         <li class="nav-item">
           <a href="{{route('cart.index')}}">
-                  <i class="la flaticon-shopping-bag" style="font-size:25px"></i>
-                  <p>Keranjang Belanja</p>
-                </a>
+            <i class="la flaticon-shopping-bag" style="font-size:25px"></i>
+            <p>Keranjang Belanja</p>
+          </a>
         </li>
         <li class="nav-item">
           <a href="{{route('orders.index')}}">
-                  <i class="la flaticon-file-1" style="font-size:25px"></i>
-                  <p>Orders</p>
-                </a>
+            <i class="la flaticon-file-1" style="font-size:25px"></i>
+            <p>Orders</p>
+          </a>
         </li>
         @isset($user)
-        @if($user->admin==1)
+        @if($user->admin!='User')
         <li class="nav-item">
           <a href="{{route('barang.index')}}">
-                  <i class="la flaticon-box-1" style="font-size:25px"></i>
-                  <p>Barang</p>
-                </a>
+            <i class="la flaticon-box-1" style="font-size:25px"></i>
+            <p>Barang</p>
+          </a>
+        </li>
+        @endif
+        @if($user->admin=="Pemilik")
+        <li class="nav-item">
+          <a href="{{route('karyawan.index')}}">
+            <i class="la flaticon-users" style="font-size:25px"></i>
+            <p>Karyawan</p>
+          </a>
         </li>
         @endif
         @endisset

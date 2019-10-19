@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Bahan;
 use App\Products;
 use App\Gambar;
 use App\Harga;
 use App\Ukuran;
 use App\AddonLogo;
+use App\MasterBahan;
 use App\MasterUkuran;
 use App\tipeUkuran;
 use Auth;
@@ -128,53 +130,97 @@ class BarangController extends Controller
         //$ukuran=Ukuran::where('id_products',$id)->get();
         $mukuran=MasterUkuran::all();
         $tipe=tipeUkuran::all();
-        return view('tambahtipe')->with(compact('user','mukuran','tipe','id'));
+        $barang=Products::find($id)->load('ukuranProduct.hargaUkuran');
+        $bahans=MasterBahan::all();
+        return view('tambahtipe')->with(compact('user','barang','bahans','mukuran','tipe','id'));
     }
 
     public function storeTipe(Request $request){
-        //Dari Tambah Ukuran
-        //dd($request->Input());
         $pesan="";
-        
+        //dd($request->input());
         $ukuran=Ukuran::where('id_mukuran', $request->mukuran)->where('id_products',$request->id)->first();
         //dd($ukuran);
         if($ukuran!=null){
-            $err=Harga::where('id_ukuran', $ukuran->id)->whereIn('id_tipe', $request->tipe)->get();
+            $err=Harga::where('id_ukuran', $ukuran->id)->whereIn('id_tipe', $request->tipe)->first();
             //dd($err);
-            foreach ($err as $key => $value) {
-                # code...
-                //dd($value);
-                $pesan ="Tipe ".$value->hargaTipe->nama." sudah ada untuk barang dengan ukuran ini \n";
-            }   
+            if($err!=null){
+                //dd($err);
+                foreach ($err as $key => $value) {
+                    # code...
+                    //dd($value);
+                    $pesan ="Tipe sudah ada untuk barang dengan ukuran ini \n";
+                }
+            }
+            else{
+                //Kalau ada ukuran tapi ga ada tipe
+                //dd($err);
+                foreach ($request->tipe as $key => $value) {
+                    # code...
+                    $data = new Harga();
+                    if($ukuran==null){
+                        $data->id_ukuran=$newUkuran->id;
+                    }
+                    else{
+                        $data->id_ukuran=$ukuran->id;
+                    }
+                    $data->id_tipe=$value;
+                    $data->harga=$request->harga[$key];
+    
+                    $data->save();
+
+                    $newBahan = new Bahan();
+                    $newBahan->id_harga=$data->id;
+                    $newBahan->id_master_bahan=$request->bahan;
+                    $newBahan->jumlah=$request->jumlah;
+                    $newBahan->save();
+                }
+
+                $pesan = "Data berhasil disimpan";
+                Session::flash('message', $pesan);
+                return Redirect::back();
+            }
         }
+        //dd($pesan);
         if($pesan!=""){
             Session::flash('alert', 'Tipe pesanan dengan ukuran ini sudah ada pada barang');
+            //dd($pesan);
             return Redirect::back();
         }
         else{
+            //dd($ukuran);
             if($ukuran==null){
+                
                 $newUkuran = new Ukuran();
                 $newUkuran->id_products=$request->id;
                 $newUkuran->id_mukuran=$request->mukuran;
                 $newUkuran->save();
-            }
-            foreach ($request->tipe as $key => $value) {
-                # code...
-                $data = new Harga();
-                if($ukuran==null){
-                    $data->id_ukuran=$newUkuran->id;
-                }
-                else{
-                    $data->id_ukuran=$ukuran->id;
-                }
-                $data->id_tipe=$value;
-                $data->harga=$request->harga[$key];
 
-                $data->save();
+                foreach ($request->tipe as $key => $value) {
+                    # code...
+                    $data = new Harga();
+                    if($ukuran==null){
+                        $data->id_ukuran=$newUkuran->id;
+                    }
+                    else{
+                        $data->id_ukuran=$ukuran->id;
+                    }
+                    $data->id_tipe=$value;
+                    $data->harga=$request->harga[$key];
+    
+                    $data->save();
+
+                    $newBahan = new Bahan();
+                    $newBahan->id_harga=$data->id;
+                    $newBahan->id_master_bahan=$request->bahan;
+                    $newBahan->jumlah=$request->jumlah;
+                    $newBahan->save();
+                }
+
+                $pesan = "Data berhasil disimpan";
+                Session::flash('message', $pesan);
+                return Redirect::back();
             }
-            $pesan = "Data berhasil disimpan";
-            Session::flash('message', $pesan);
-            return Redirect::back();
+            
         }
     }
 
@@ -216,11 +262,65 @@ class BarangController extends Controller
     }
 
     public function gambar($id){
-        $gambar=Gambar::where('id_products',$id)->get();
+        $gambar=Gambar::where('id_products',$id)->where('deleted_at',null)->get();
         //dd($gambar);
         $user= Auth::user();
         $idBarang=$id;
         return view('insertGambar')->with(compact('gambar','user','idBarang'));
+    }
+
+    public function storeGambar(Request $request){
+        $gambar=new Gambar();
+        
+        $path = $request->file('fileToUpload')->extension();
+                //dd($path);
+            if($path!='png' and $path!='jpg' and $path!='jpeg'){
+                Session::flash('alert', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
+                return Redirect::back();
+            }
+            else{
+                $path = $request->file('fileToUpload')->store('barang', 'public');
+                $gambar->id_products=$request->idBarang;
+                $gambar->gambar=$path;
+                $gambar->thumbnail=0;
+
+                $gambar->save();
+                Session::flash('message', "Gambar berhasil ditambahkan");
+                return Redirect::back();
+            }
+    }
+
+    public function editGambar(Request $request){
+        //dd($request->input());
+        if(isset($request->pilihThumbnail)){
+            $gambarAwal=Gambar::where('id_products',$request->idBarang)->where('thumbnail',1)->first();
+            $gambarAwal->thumbnail=0;
+            $gambarAwal->save();
+            $gambar=Gambar::where('id', $request->rdoGambar)->first();
+            $gambar->thumbnail=1;
+            $gambar->save();
+            Session::flash('message', "Thumbnail telah berhasil diganti");
+            return Redirect::back();
+        }
+        elseif(isset($request->hapusGambar)){
+            
+            $gambar=Gambar::where('id',$request->rdoGambar)->first();
+            if($gambar->thumbnail==1){
+                Session::flash('alert', "Anda tidak bisa menghapus gambar yang menjadi thumbnail barang");
+                return Redirect::back();        
+            }
+            $gambar->delete();
+            Session::flash('message', "Gambar berhasil dihapus");
+            return Redirect::back();
+        }
+        else{
+            Session::flash('alert', "Terjadi kesalahan saat memproses kegiatan");
+            return Redirect::back();
+        }
+    }
+
+    public function deleteGambar(Request $request){
+        
     }
 
     public function ajaxTipe(Request $request){

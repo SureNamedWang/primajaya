@@ -9,7 +9,7 @@
 <div class="alert alert-danger">{{ Session::get('alert') }}</div>
 @endif
 <div class="form-group col-sm-12">
-    <form method="post" action="{{route('storeTipe')}}" enctype="multipart/form-data">
+    <form method="post" action="{{route('storeBahan')}}" enctype="multipart/form-data">
         {{csrf_field()}}
         <input type="hidden" name="id" value="{{$id}}">
         <div class="card">
@@ -17,10 +17,12 @@
             <div class="row">
                 <div class="col-6">
                     <h5>Ukuran</h5>
-                    <select class="form-control" name="mukuran">
+                    <select class="form-control" name="ukuran">
                         <option value="">Pilih Ukuran</option>
-                        @foreach ($mukuran as $ukuran)
-                        <option value="{{$ukuran->id}}">{{$ukuran->ukuran}}</option>
+                        @foreach ($barang->ukuranProduct as $ukuran)
+                        @foreach($ukuran->hargaUkuran as $harga)
+                        <option value="{{$harga->id}}">{{$ukuran->Masterukuran->ukuran}} {{$harga->hargaTipe->nama}}</option>
+                        @endforeach
                         @endforeach
                     </select>
                 </div>
@@ -35,8 +37,6 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th scope="col">Tipe</th>
-                            <th scope="col">Harga</th>
                             <th scope="col">Bahan</th>
                             <th scope="col">Jumlah</th>
                         </tr>
@@ -44,25 +44,6 @@
                     <tbody id="tbody">
 
                         <tr id="tableRow">
-                            <td>
-                                <div class="form-group col-sm-12">
-                                    <div class="form-label-group">
-                                        <select class="form-control" name="tipe[]">
-                                            <option value="">Pilih Tipe</option>
-                                            @foreach ($tipe as $tipe)
-                                            <option value="{{$tipe->id}}">{{$tipe->nama}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="form-group col-sm-12">
-                                    <div class="form-label-group">
-                                        <input type="text" name="harga[]" required>
-                                    </div>
-                                </div>
-                            </td>
                             <td>
                                 <div class="form-group col-sm-12">
                                     <div class="form-label-group">
@@ -74,6 +55,7 @@
                                         </select>
                                     </div>
                                 </div>
+
                             </td>
                             <td>
                                 <div class="form-group col-sm-12">

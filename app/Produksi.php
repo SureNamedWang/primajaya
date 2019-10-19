@@ -13,4 +13,8 @@ class Produksi extends Model
     {
         return $this->hasOne('App\Keranjang', 'id', 'id_keranjang');
     }
+    public function produksiKaryawan()
+    {
+        return $this->hasOne('App\karyawan', 'id', 'id_karyawan');
+    }
 }

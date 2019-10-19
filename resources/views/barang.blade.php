@@ -1,7 +1,7 @@
 @extends('index')
 @section('content')
 
-@if($user->admin==1)
+@if($user->admin!='User')
 <section class="jumbotron text-center">
     <div class="container">
         <h1 class="jumbotron-heading">List Barang</h1>

@@ -18,6 +18,8 @@ Route::resource('/catalogue', 'ProductController');
 
 Route::resource('/cart', 'KeranjangController');
 
+Route::resource('/karyawan', 'KaryawanController');
+
 Route::post('editKeranjang', 'KeranjangController@editKeranjang')->name('editKeranjang');
 
 Route::resource('/orders', 'OrdersController');
@@ -32,9 +34,13 @@ Route::resource('/barang', 'BarangController');
 
 Route::get('/ajaxTipe', 'BarangController@ajaxTipe')->name('ajaxTipe');
 
-Route::get('/tipe/{id}', 'BarangController@tipe')->name('tipe');
+Route::get('/insert/tipe/{id}', 'BarangController@tipe')->name('tipe');
 
 Route::get('/gambar/{id}', 'BarangController@gambar')->name('gambar');
+
+Route::post('/tambah/gambar', 'BarangController@storeGambar')->name('storeGambar');
+
+Route::post('/edit/gambar', 'BarangController@editGambar')->name('editGambar');
 
 Route::get('/update/tipe/{id}', 'BarangController@updateTipeView')->name('updateTipeView');
 
@@ -46,7 +52,15 @@ Route::post('/tambah/tipe', 'BarangController@storeTipe')->name('storeTipe');
 
 Route::post('updateTipeProses', 'BarangController@updateTipeProses')->name('updateTipeProses');
 
+Route::get('/ajaxBahan', 'BahanController@ajaxBahan')->name('ajaxBahan');
 
+Route::get('/insert/bahan/{id}', 'BahanController@insertBahan')->name('insertBahanView');
+
+Route::post('/tambah/bahan', 'BahanController@storeBahan')->name('storeBahan');
+
+Route::get('/bahan/update/{id}', 'BahanController@updateBahansView')->name('updateBahansView');
+
+Route::post('updateBahanProses', 'BahanController@updateBahanProses')->name('updateBahanProses');
 
 Auth::routes();
 
