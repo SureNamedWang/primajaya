@@ -27,7 +27,7 @@ class BahanController extends Controller
         //
     }
 
-    public function insertBahan($id){
+    public function storeBahanView($id){
         //dd($id);
         $user= Auth::user();
         $barang=Products::find($id)->load('ukuranProduct.hargaUkuran');

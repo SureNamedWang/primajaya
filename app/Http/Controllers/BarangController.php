@@ -124,7 +124,7 @@ class BarangController extends Controller
 
     }
 
-    public function tipe($id){
+    public function storeTipeView($id){
         //dd($id);
         $user= Auth::user();
         //$ukuran=Ukuran::where('id_products',$id)->get();
@@ -142,20 +142,20 @@ class BarangController extends Controller
         //dd($ukuran);
         if($ukuran!=null){
             $err=Harga::where('id_ukuran', $ukuran->id)->whereIn('id_tipe', $request->tipe)->first();
-            //dd($err);
             if($err!=null){
-                //dd($err);
-                foreach ($err as $key => $value) {
-                    # code...
-                    //dd($value);
-                    $pesan ="Tipe sudah ada untuk barang dengan ukuran ini \n";
+                $bahans=Bahan::where('id_harga',$data->id)->where('id_master_bahan',$request->bahan);
+                if($bahans!=null){
+                    Session::flash('alert', 'Barang dengan ukuran,tipe, dan bahan ini sudah ada');
+                    return Redirect::back();
+                }
+                else{
+                    Session::flash('alert', 'Barang dengan ukuran dan tipe ini sudah ada! \n Untuk menambah bahan baru silahkan pilih tambah bahan pada halaman barang');
+                    return Redirect::back();
                 }
             }
             else{
-                //Kalau ada ukuran tapi ga ada tipe
-                //dd($err);
+                //Kalau ada ukuran tapi ga ada tipe yang diinputkan
                 foreach ($request->tipe as $key => $value) {
-                    # code...
                     $data = new Harga();
                     if($ukuran==null){
                         $data->id_ukuran=$newUkuran->id;
@@ -175,14 +175,14 @@ class BarangController extends Controller
                     $newBahan->save();
                 }
 
-                $pesan = "Data berhasil disimpan";
+                $pesan = "Data tipe baru berhasil disimpan";
                 Session::flash('message', $pesan);
                 return Redirect::back();
             }
         }
         //dd($pesan);
         if($pesan!=""){
-            Session::flash('alert', 'Tipe pesanan dengan ukuran ini sudah ada pada barang');
+            Session::flash('alert', 'Tipe/Bahan dengan ukuran ini sudah ada pada barang');
             //dd($pesan);
             return Redirect::back();
         }

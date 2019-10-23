@@ -36,8 +36,10 @@
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" href="{{route('tipe', ['id' => $item->id])}}">Tambah Tipe</a>
-                                        <a class="dropdown-item" href="{{route('gambar', ['id' => $item->id])}}">List Gambar</a>
                                         <a class="dropdown-item" href="{{route('updateTipeView', ['id' => $item->id])}}">Update Tipe</a>
+                                        <a class="dropdown-item" href="{{route('storeBahanView', ['id' => $item->id])}}">Tambah Bahan</a>
+                                        <a class="dropdown-item" href="{{route('updateBahanView', ['id' => $item->id])}}">Update Bahan</a>
+                                        <a class="dropdown-item" href="{{route('gambar', ['id' => $item->id])}}">List Gambar</a>
                                         <a class="dropdown-item" data-toggle="modal" data-target="#myModal{{$item->id}}">Edit Barang</a>
                                     </div>
                                 </div>

@@ -32,33 +32,33 @@ Route::get('/detailProduksi/{id}/{idBrg}', 'ProduksiController@showDetailProduks
 
 Route::resource('/barang', 'BarangController');
 
-Route::get('/ajaxTipe', 'BarangController@ajaxTipe')->name('ajaxTipe');
-
-Route::get('/insert/tipe/{id}', 'BarangController@tipe')->name('tipe');
-
-Route::get('/gambar/{id}', 'BarangController@gambar')->name('gambar');
-
-Route::post('/tambah/gambar', 'BarangController@storeGambar')->name('storeGambar');
-
-Route::post('/edit/gambar', 'BarangController@editGambar')->name('editGambar');
-
-Route::get('/update/tipe/{id}', 'BarangController@updateTipeView')->name('updateTipeView');
-
-Route::post('/tambah/barang', 'BarangController@storeBarang')->name('storeBarang');
+Route::post('insertBarangProses', 'BarangController@storeBarang')->name('storeBarang');
 
 Route::post('editBarang', 'BarangController@editBarang')->name('editBarang');
 
-Route::post('/tambah/tipe', 'BarangController@storeTipe')->name('storeTipe');
+Route::get('/gambar/{id}', 'BarangController@gambar')->name('gambar');
+
+Route::post('/gambar/tambah', 'BarangController@storeGambar')->name('storeGambar');
+
+Route::post('/gambar/edit', 'BarangController@editGambar')->name('editGambar');
+
+Route::get('/tipe/update/{id}', 'BarangController@updateTipeView')->name('updateTipeView');
+
+Route::get('/ajaxTipe', 'BarangController@ajaxTipe')->name('ajaxTipe');
+
+Route::get('/tipe/tambah/{id}', 'BarangController@storeTipeView')->name('tipe');
+
+Route::post('/tipe/tambah', 'BarangController@storeTipe')->name('storeTipe');
 
 Route::post('updateTipeProses', 'BarangController@updateTipeProses')->name('updateTipeProses');
 
 Route::get('/ajaxBahan', 'BahanController@ajaxBahan')->name('ajaxBahan');
 
-Route::get('/insert/bahan/{id}', 'BahanController@insertBahan')->name('insertBahanView');
+Route::get('/bahan/tambah/{id}', 'BahanController@storeBahanView')->name('storeBahanView');
 
-Route::post('/tambah/bahan', 'BahanController@storeBahan')->name('storeBahan');
+Route::post('insertBahanProses', 'BahanController@storeBahan')->name('storeBahan');
 
-Route::get('/bahan/update/{id}', 'BahanController@updateBahansView')->name('updateBahansView');
+Route::get('/bahan/update/{id}', 'BahanController@updateBahansView')->name('updateBahanView');
 
 Route::post('updateBahanProses', 'BahanController@updateBahanProses')->name('updateBahanProses');
 

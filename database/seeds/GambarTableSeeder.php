@@ -15,23 +15,33 @@ class GambarTableSeeder extends Seeder
         //
         DB::table('gambar')->insert([
             'id_products' => 1,
-            'gambar' => 'barang/la.jpg',
+            'gambar' => 'barang/barang1-1.jpg',
             'thumbnail' => 1,
         ]);
         DB::table('gambar')->insert([
             'id_products' => 1,
-            'gambar' => 'barang/ny.jpg',
+            'gambar' => 'barang/barang1-2.jpg',
             'thumbnail' => 0,
         ]);
         DB::table('gambar')->insert([
             'id_products' => 1,
-            'gambar' => 'barang/ny.jpg',
+            'gambar' => 'barang/barang1-3.jpg',
+            'thumbnail' => 0,
+        ]);
+        DB::table('gambar')->insert([
+            'id_products' => 1,
+            'gambar' => 'barang/barang1-4.jpg',
             'thumbnail' => 0,
         ]);
         DB::table('gambar')->insert([
             'id_products' => 2,
-            'gambar' => 'barang/chicago.jpg',
+            'gambar' => 'barang/barang2-1.jpg',
             'thumbnail' => 1,
+        ]);
+        DB::table('gambar')->insert([
+            'id_products' => 2,
+            'gambar' => 'barang/barang2-2.jpg',
+            'thumbnail' => 0,
         ]);
     }
 }
