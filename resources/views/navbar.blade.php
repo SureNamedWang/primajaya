@@ -70,7 +70,7 @@
     <div class="container-fluid">
       <ul class="navbar-nav topbar-nav ml-md-auto align-items-center mb-1 mt-1">
         <li>
-          @guest
+          
           <li class="nav-item dropdown hidden-caret">
             <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
               <div class="avatar-sm">
@@ -78,6 +78,20 @@
               </div>
             </a>
             <ul class="dropdown-menu dropdown-user animated fadeIn">
+              @guest
+              @else
+              <li>
+                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                document.getElementById('logout-form').submit();">
+                {{ __('Logout') }}
+                </a>
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                  @csrf
+                </form>
+              </li>
+              @endguest
+              @guest
               <li>
                 <a class="dropdown-item" href="{{ route('login') }}">{{ __('Login') }}</a>
               </li>
@@ -87,9 +101,9 @@
                 <a class="dropdown-item" href="{{ route('register') }}">{{ __('Register') }}</a>
               </li>
               @endif
+              @endguest
             </ul>
           </li>
-          @endguest
         </li>
 
       </ul>

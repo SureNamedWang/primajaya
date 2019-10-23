@@ -38,7 +38,7 @@
                         <span class="link-collapse">Edit Profile</span>
                       </a>
                 </li>
-                <li>
+                {{-- <li>
                   <a href="{{ route('logout') }}" onclick="event.preventDefault();
                   document.getElementById('logout-form').submit();">
                                           <span class="link-collapse">{{ __('Logout') }}</span>
@@ -47,7 +47,7 @@
                   <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
                   </form>
-                </li>
+                </li> --}}
               </ul>
             </div>
           </div>
