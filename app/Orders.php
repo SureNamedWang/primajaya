@@ -9,9 +9,9 @@ class Orders extends Model
     //
     protected $table = 'orders';
 
-    public function keranjangOrders()
+    public function ordersKeranjang()
     {
-        return $this->hasOne('App\Keranjang', 'id', 'id_carts_list');
+        return $this->hasMany('App\Keranjang', 'id_orders', 'id');
     }
     public function OrdersUsers()
     {

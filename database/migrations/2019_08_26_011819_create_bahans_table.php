@@ -15,8 +15,8 @@ class CreateBahansTable extends Migration
     {
         Schema::create('bahans', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('id_harga');
-            $table->integer('id_master_bahan');
+            $table->bigInteger('id_produk');
+            $table->bigInteger('id_master_bahan');
             $table->integer('jumlah');
             $table->timestamps();
         });

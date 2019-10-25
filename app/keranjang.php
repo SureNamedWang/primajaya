@@ -24,7 +24,7 @@ class Keranjang extends Model
 
     public function keranjangHarga()
     {
-        return $this->hasOne('App\Harga', 'id', 'id_harga');
+        return $this->hasOne('App\Harga', 'id', 'id_produk');
     }
 
     public function keranjangGambar()

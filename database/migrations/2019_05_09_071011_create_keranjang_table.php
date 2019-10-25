@@ -19,8 +19,8 @@ class CreateKeranjangTable extends Migration
             $table->bigInteger('id_orders')->nullable();
             $table->bigInteger('id_products');
             $table->integer('jumlah');
-            $table->integer('id_harga');
-            $table->integer('id_logo')->nullable();
+            $table->bigInteger('id_produk');
+            $table->bigInteger('id_logo')->nullable();
             $table->string('desain', 255)->nullable();
             $table->integer('harga');
             $table->integer('total_harga');

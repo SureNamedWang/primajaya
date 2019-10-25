@@ -13,7 +13,7 @@ class CreateHargaTable extends Migration
      */
     public function up()
     {
-        Schema::create('harga', function (Blueprint $table) {
+        Schema::create('produk', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('id_ukuran');
             $table->integer('id_tipe');

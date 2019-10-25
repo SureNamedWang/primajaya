@@ -13,7 +13,7 @@ class CreateTipeUkuranTable extends Migration
      */
     public function up()
     {
-        Schema::create('tipe_ukuran', function (Blueprint $table) {
+        Schema::create('master_tipe', function (Blueprint $table) {
             //
             $table->bigIncrements('id');
             $table->string('nama', 255);

@@ -13,19 +13,19 @@ class TipeUkuranTableSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('tipe_ukuran')->insert([
+        DB::table('master_tipe')->insert([
             'nama' => 'Komplit',
         ]);
-        DB::table('tipe_ukuran')->insert([
+        DB::table('master_tipe')->insert([
             'nama' => 'Rangka',
         ]);
-        DB::table('tipe_ukuran')->insert([
+        DB::table('master_tipe')->insert([
             'nama' => 'Kain',
         ]);
-        DB::table('tipe_ukuran')->insert([
+        DB::table('master_tipe')->insert([
             'nama' => 'Parasut',
         ]);
-        DB::table('tipe_ukuran')->insert([
+        DB::table('master_tipe')->insert([
             'nama' => 'Parasol',
         ]);
     }

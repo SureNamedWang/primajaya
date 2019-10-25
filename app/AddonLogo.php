@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class AddonLogo extends Model
 {
     //
-    protected $table = 'addon_logo';
+    protected $table = 'addon';
     public $timestamps = false;
 }

@@ -26,6 +26,16 @@ class ProduksiController extends Controller
         //
     }
 
+    public function laporanGaji(Request $request){
+        $user=Auth::user();
+        $start=$request->periode_awal.' 0:00:00';
+        $fin=$request->periode_akhir.' 23:59:59';
+        $produksi=Produksi::whereBetween('waktu_selesai',[$start,$fin])->get();
+        //$produksi=Produksi::first();
+        dd($produksi);
+        return view('laporanGaji')->with(compact('user','produksi','start','fin'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -126,15 +136,10 @@ class ProduksiController extends Controller
     {
         //
         $user = Auth::user();
-        //dd($id);
         $barang = Keranjang::with('keranjangProduksi')->where('id_orders',$id)->get();
-        //dd($barang->keranjangProduksi);
-        // for($i=0;$i<count($barang);$i++){
-        //     $progress[$i]=Produksi::where('id_keranjang',$barang[$i]->id)->last();
-        //     //dd($progress);
-        // }
-        // dd($progress);
-        return view('produksi')->with(compact('barang','user','id'));
+        $orders=Orders::find($id)->load('ordersKeranjang.keranjangHarga.hargaBahan');
+        dd($orders);
+        return view('produksi')->with(compact('barang','orders','user','id'));
     }
 
     public function showDetailProduksi($id,$idBrg){

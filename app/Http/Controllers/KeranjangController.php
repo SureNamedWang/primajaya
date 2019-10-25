@@ -66,7 +66,7 @@ class KeranjangController extends Controller
         $keranjangUser=Keranjang::where('id_user', $user->id)->where('id_orders',null)->get();
         //dd($keranjangUser)
         foreach($keranjangUser as $kUser){
-            if($kUser->id_products==$request->idBarang&&$kUser->id_harga==$request->ukuran&&$kUser->deleted_at==null){
+            if($kUser->id_products==$request->idBarang&&$kUser->id_produk==$request->ukuran&&$kUser->deleted_at==null){
                 $keranjang=Keranjang::where('id',$kUser->id)->first();
                 $keranjang->jumlah=$keranjang->jumlah+$request->jumlah;
                 //dd($keranjang);
@@ -81,7 +81,7 @@ class KeranjangController extends Controller
         
         $hargaBarang=0;
         if(isset($request->ukuran)){
-            $keranjang->id_harga = $request->ukuran;
+            $keranjang->id_produk = $request->ukuran;
             $hargaBarang = Harga::find($request->ukuran)->harga;    
         }
         
@@ -154,7 +154,7 @@ class KeranjangController extends Controller
         $hargaBarang=0;
 
         if(isset($request->ukuran)){
-            $keranjang->id_harga = $request->ukuran;
+            $keranjang->id_produk = $request->ukuran;
             $hargaBarang = Harga::find($request->ukuran)->harga;    
         }
         

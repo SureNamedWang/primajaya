@@ -39,7 +39,7 @@ class BahanController extends Controller
     public function storeBahan(Request $request){
         $pesan="";
         
-        $bahan=Bahan::where('id_master_bahan', $request->bahan)->where('id_harga',$request->ukuran)->first();
+        $bahan=Bahan::where('id_master_bahan', $request->bahan)->where('id_produk',$request->ukuran)->first();
         //dd($ukuran);
         if($bahan!=null){
             $pesan ="Sudah ada bahan untuk barang dengan ukuran ini \n";   
@@ -51,7 +51,7 @@ class BahanController extends Controller
         else{
             if($bahan==null){
                 $newBahan = new Bahan();
-                $newBahan->id_harga=$request->ukuran;
+                $newBahan->id_produk=$request->ukuran;
                 $newBahan->id_master_bahan=$request->bahan;
                 $newBahan->jumlah=$request->jumlah;
                 //$newBahan->harga=$request->harga;
@@ -72,7 +72,7 @@ class BahanController extends Controller
 
     public function ajaxBahan(Request $request){
         //dd($request->input());
-        $bahans=Bahan::where('id_harga',$request->id)->get();
+        $bahans=Bahan::where('id_produk',$request->id)->get();
         //dd($bahans);
 
         $bahans->transform(function ($bahan, $key) {

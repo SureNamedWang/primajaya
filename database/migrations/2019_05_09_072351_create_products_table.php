@@ -13,7 +13,7 @@ class CreateProductsTable extends Migration
      */
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('master_produk', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nama', 255);
             $table->text('detail');

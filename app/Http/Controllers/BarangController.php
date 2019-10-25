@@ -143,7 +143,7 @@ class BarangController extends Controller
         if($ukuran!=null){
             $err=Harga::where('id_ukuran', $ukuran->id)->whereIn('id_tipe', $request->tipe)->first();
             if($err!=null){
-                $bahans=Bahan::where('id_harga',$data->id)->where('id_master_bahan',$request->bahan);
+                $bahans=Bahan::where('id_produk',$data->id)->where('id_master_bahan',$request->bahan);
                 if($bahans!=null){
                     Session::flash('alert', 'Barang dengan ukuran,tipe, dan bahan ini sudah ada');
                     return Redirect::back();
@@ -169,7 +169,7 @@ class BarangController extends Controller
                     $data->save();
 
                     $newBahan = new Bahan();
-                    $newBahan->id_harga=$data->id;
+                    $newBahan->id_produk=$data->id;
                     $newBahan->id_master_bahan=$request->bahan;
                     $newBahan->jumlah=$request->jumlah;
                     $newBahan->save();
@@ -210,7 +210,7 @@ class BarangController extends Controller
                     $data->save();
 
                     $newBahan = new Bahan();
-                    $newBahan->id_harga=$data->id;
+                    $newBahan->id_produk=$data->id;
                     $newBahan->id_master_bahan=$request->bahan;
                     $newBahan->jumlah=$request->jumlah;
                     $newBahan->save();

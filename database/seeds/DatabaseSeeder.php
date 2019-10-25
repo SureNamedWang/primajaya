@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(UsersTableSeeder::class);
         $this->call(AddonLogoTableSeeder::class);
+        $this->call(MasterBahanTableSeeder::class);
         $this->call(BahanTableSeeder::class);
         $this->call(DepartemenTableSeeder::class);
         $this->call(DivisiTableSeeder::class);
@@ -22,7 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductsTableSeeder::class);
         $this->call(UkuranTableSeeder::class);
         $this->call(MasterUkuranTableSeeder::class);
-        $this->call(MasterBahanTableSeeder::class);
+        
         $this->call(TipeUkuranTableSeeder::class);
     }
 }

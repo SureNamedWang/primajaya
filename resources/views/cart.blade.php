@@ -86,7 +86,7 @@
                                                         <header style="font-weight: bolder;">Pilih Ukuran</header>
                                                         <select onchange="hitungHarga()" id="hUkuran" class="form-control" name="ukuran">
                                                             @foreach ($item->KeranjangProducts->hargaUkuranProduct as $harga)
-                                                            @if($harga->id==$item->id_harga)
+                                                            @if($harga->id==$item->id_produk)
                                                             <option data-techname="{{$harga->harga}}" value="{{$harga->id}}" selected>
                                                             @else
                                                             <option data-techname="{{$harga->harga}}" value="{{$harga->id}}">

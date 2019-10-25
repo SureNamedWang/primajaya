@@ -13,11 +13,11 @@ class ProductsTableSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('products')->insert([
+        DB::table('master_produk')->insert([
             'nama' => 'Tenda Display',
             'detail' => 'Tenda yang biasa digunakan untuk membuka stand baik dalam event/pameran maupun berdagang sehari-hari',
         ]);
-        DB::table('products')->insert([
+        DB::table('master_produk')->insert([
             'nama' => 'Tenda Cafe',
             'detail' => 'Meja yang dilengkapi dengan payung, cocok digunakan untuk bagian outdoor cafe/restoran. Bisa juga digunakan bagi kegiatan outdoor di belakang rumah anda seperti barbeque.',
         ]);

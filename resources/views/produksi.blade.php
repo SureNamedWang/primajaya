@@ -45,6 +45,53 @@
 
                 </tbody>
             </table>
+            @if($user->admin!="User")
+            <a class="btn btn-block btn-primary" data-toggle="modal" data-target="#mCekBahan">Check Bahan</a>
+            <!-- The Modal -->
+            <div class="modal" id="mCekBahan">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">List Bahan</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Nama Bahan</th>
+                                        <th scope="col">Jumlah</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($orders->ordersKeranjang as $ord)
+                                    @foreach ($ord->keranjangHarga as $produk)
+                                    @foreach ($produk->hargaBahan as $bahan)
+                                    <tr>
+                                    <td>a</td>
+                                    <td>b</td>
+                                    </tr>
+                                    @endforeach
+                                    @endforeach
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-info" value="Ubah"></button>
+
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /endModal -->
+            @endif
         </div>
     </div>
 </div>

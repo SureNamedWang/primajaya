@@ -13,7 +13,7 @@ class CreateAddonLogoTable extends Migration
      */
     public function up()
     {
-        Schema::create('addon_logo', function (Blueprint $table) {
+        Schema::create('addon', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('id_products');
             $table->string('nama', 255);

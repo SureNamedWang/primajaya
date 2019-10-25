@@ -8,7 +8,7 @@ class tipeUkuran extends Model
 {
     //
 
-    protected $table = 'tipe_ukuran';
+    protected $table = 'master_tipe';
     public $timestamps = false;
     
 }

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Harga extends Model
 {
     //
-	protected $table = 'harga';
+	protected $table = 'produk';
 	public $timestamps = false;
 	public function hargaUkuran()
 	{
@@ -17,5 +17,10 @@ class Harga extends Model
 	public function hargaTipe()
 	{
 		return $this->belongsTo('App\tipeUkuran', 'id_tipe', 'id');
+	}
+
+	public function hargaBahan()
+	{
+		return $this->hasMany('App\Bahan', 'id_produk', 'id');
 	}
 }
