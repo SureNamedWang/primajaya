@@ -97,11 +97,17 @@
         </li>
         @endif
         @endisset
+        <li class="nav-section">
+          <span class="sidebar-mini-icon">
+                  <i class="fa fa-ellipsis-h"></i>
+                </span>
+          <h4 class="text-section">Laporan</h4>
+        </li>
         <div class="user">
           <div class="info">
             <a data-toggle="collapse" href="#gajiCollapse" aria-expanded="true">
                   <span>
-                    <span class="user-level">Laporan Gaji</span>
+                    <span class="user-level">Gaji</span>
                     <span class="caret"></span>
                   </span>
                 </a>
@@ -115,7 +121,7 @@
                     <div class="form-group">
                         <div class="form-label-group">
                           <label>Periode Awal</label>
-                          <input id="periode_awal" class="form-control" type="date" name="periode_awal">  
+                          <input id="periode_awal" class="form-control p-0" type="date" name="periode_awal">  
                         </div>
                     </div>
                   </li>
@@ -123,12 +129,12 @@
                     <div class="form-group">
                       <div class="form-label-group">
                           <label>Periode Akhir</label>  
-                          <input class="form-control" type="date" name="periode_akhir">
+                          <input class="form-control p-0" type="date" name="periode_akhir">
                       </div>
                     </div>
                   </li>
                   <li>
-                    <input class="form-control btn-secondary" type="submit" name="submit" value="Lihat Laporan">
+                    <input class="btn" type="submit" name="submit" value="Lihat Laporan">
                   </li>
                 </form>
               </ul>

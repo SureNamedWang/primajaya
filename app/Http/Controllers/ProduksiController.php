@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Notifications\notifikasiKekuranganBahan;
+use App\Notifications\notifikasiETAbahan;
 use App\karyawan;
 use App\Keranjang;
 use App\Produksi;
@@ -138,8 +140,74 @@ class ProduksiController extends Controller
         $user = Auth::user();
         $barang = Keranjang::with('keranjangProduksi')->where('id_orders',$id)->get();
         $orders=Orders::find($id)->load('ordersKeranjang.keranjangHarga.hargaBahan');
-        dd($orders);
-        return view('produksi')->with(compact('barang','orders','user','id'));
+        $bahans=collect();
+        // dd($orders->ordersKeranjang->first()->keranjangHarga->hargaBahan);
+        foreach($orders->ordersKeranjang as $ord){
+            foreach($ord->keranjangHarga->hargaBahan as $bahan){
+                //dd($bahan->MasterBahan->nama);
+                if($bahans->get($bahan->MasterBahan->nama)==null){
+                    $bahans->put($bahan->MasterBahan->nama,$bahan->jumlah);
+                }
+                else{
+                    $jumlah=$bahans->get($bahan->MasterBahan->nama);
+                    $jumlah=$bahans->get($bahan->MasterBahan->nama)+$bahan->jumlah;
+                    $bahans[$bahan->MasterBahan->nama]=$jumlah;
+                }
+            }
+        }
+        //dd($bahans);
+        
+        return view('produksi')->with(compact('barang','bahans','user','id'));
+    }
+
+    public function notifyOwner(Request $request,$id){
+        if(isset($request->eta)){
+            //Notifikasi email
+            $owner = Auth::user();
+            $admin = User::where('admin','Admin')->first();
+            $admins = User::where('admin','Admin')->get();
+
+            $tgl=Carbon::createFromFormat('Y-m-d\\TH:i', $request->eta, 'Asia/Jakarta');
+            //dd($tgl->dayOfWeek);
+            $eta=collect();
+            $eta->put('id',$id);
+            $eta->put('nama',$owner->name);
+            $eta->put('email',$owner->email);
+            $eta->put('tanggal',$tgl);
+            //dd($eta);
+            $admin->notify(new notifikasiETAbahan($eta,$admins));
+            Session::flash('message', "Email telah terkirim ke semua admin!");
+            return Redirect::back();
+        }
+        
+        $user = Auth::user();
+        //dd($user);
+        $barang = Keranjang::with('keranjangProduksi')->where('id_orders',$id)->get();
+        $orders=Orders::find($id)->load('ordersKeranjang.keranjangHarga.hargaBahan');
+        $bahans=collect();
+        foreach($orders->ordersKeranjang as $ord){
+            foreach($ord->keranjangHarga->hargaBahan as $bahan){
+                if($bahans->get($bahan->MasterBahan->nama)==null){
+                    $bahans->put($bahan->MasterBahan->nama,$bahan->jumlah);
+                }
+                else{
+                    $jumlah=$bahans->get($bahan->MasterBahan->nama);
+                    $jumlah=$bahans->get($bahan->MasterBahan->nama)+$bahan->jumlah;
+                    $bahans[$bahan->MasterBahan->nama]=$jumlah;
+                }
+            }
+        }
+        
+        //Notifikasi email
+        $owner = User::where('admin','Pemilik')->first();
+        $bahans->id=$id;
+        $bahans->email=$user->email;
+        $bahans->nama=$user->name;
+        //dd($bahans);
+        $owner->notify(new notifikasiKekuranganBahan($bahans));
+
+        Session::flash('message', "Email telah terkirim ke pemilik!");
+        return Redirect::back();
     }
 
     public function showDetailProduksi($id,$idBrg){
