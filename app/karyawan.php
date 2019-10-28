@@ -11,4 +11,9 @@ class karyawan extends Model
 	{
 		return $this->hasOne('App\Divisi', 'id', 'divisis_id');
 	}
+
+	public function produksi()
+	{
+		return $this->hasMany('App\Produksi', 'id_karyawan', 'id');
+	}
 }

@@ -216,7 +216,7 @@
                 <!-- Modal footer -->
                 <div class="modal-footer">
                     <input type="submit" name="upload" class="btn btn-info" value="upload"></button>
-                    <input type="submit" name="upload" class="btn btn-info" value="upload2"></button>
+                    
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
                 </div>
             </form>

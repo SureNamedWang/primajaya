@@ -34,8 +34,67 @@ class ProduksiController extends Controller
         $fin=$request->periode_akhir.' 23:59:59';
         $produksi=Produksi::whereBetween('waktu_selesai',[$start,$fin])->get();
         //$produksi=Produksi::first();
-        dd($produksi);
-        return view('laporanGaji')->with(compact('user','produksi','start','fin'));
+        // dd($produksi);
+        $jumlah=0;
+        $gaji=collect();
+
+        // $karyawans=Karyawan::with('produksi')->whereIn('id', array(2,3))->get();
+        // dd($karyawans);
+
+        // dd($fin);
+        $karyawans=Karyawan::with(array('produksi' => function($query) use ($start,$fin){
+            $query->whereBetween('waktu_selesai',[$start,$fin])->orderBy('waktu_selesai','ASC');
+        }))->get();
+        //dd($karyawans);
+        $karyawans->transform(function ($karyawan, $key) {
+            $produksis = $karyawan->produksi;
+            $jumlah=0;
+            switch ($karyawan->karyawanDivisi->nama) {
+                case 'Rangka':
+                    $temporaryCollection = collect();
+                    foreach ($produksis as $produksi) {
+                        $waktu_selesai=Carbon::parse($produksi->waktu_selesai);
+                        $key = $waktu_selesai->format('dmY');
+                        $value=1;
+
+                        //kalau kerja diatas jam 6(18:00) kasih tambah pengali gaji
+                        if($waktu_selesai->hour>=18){
+                            $value = 2;
+                        }
+
+                        $temporaryCollection->put($key, $value);
+                    }
+
+                    foreach ($temporaryCollection as $value) {
+                        $jumlah += $value;
+                    }
+                    break;
+                case 'Kain':
+                    foreach ($produksis as $produksi) {
+                        $jumlah += $produksi->jumlah;
+                    }
+                    break;
+                default:
+                break;
+            }
+
+            if($jumlah!=0){
+                $karyawan->pengali_gaji = $jumlah;
+                $karyawan->total_gaji = $jumlah*$karyawan->gaji;    
+                return $karyawan;
+            }
+        });
+        $periode_awal=Carbon::parse($request->periode_awal);
+        $periode_akhir=Carbon::parse($request->periode_akhir);
+        $karyawans = $karyawans->filter(function ($karyawan, $key) {
+            if(isset($karyawan)){
+               return $karyawan; 
+            }
+        });
+
+        
+        //dd($karyawans);
+        return view('laporanGaji')->with(compact('user','karyawans','periode_awal','periode_akhir'));
     }
 
     /**
@@ -113,17 +172,17 @@ class ProduksiController extends Controller
         $Orders = Orders::find($request->OrderID);
         $pembeli = User::find($Orders->id_user);
 
-        Mail::send('email', [], function ($m) use ($path,$pembeli) {
-            $m->from('noreply@primajaya.com', 'Prima Jaya');
+        // Mail::send('email', [], function ($m) use ($path,$pembeli) {
+        //     $m->from('noreply@primajaya.com', 'Prima Jaya');
 
-            $m->to($pembeli->email)->subject('Pesanan Anda');
+        //     $m->to($pembeli->email)->subject('Pesanan Anda');
 
-            $m->attach(asset('storage/'.$path));
+        //     $m->attach(asset('storage/'.$path));
 
-            if(isset($path2)){
-                $m->attach(asset('storage/'.$path2));
-            }
-        });
+        //     if(isset($path2)){
+        //         $m->attach(asset('storage/'.$path2));
+        //     }
+        // });
 
         return redirect('/detailProduksi/'.$request->OrderID.'/'.$request->idBarang);
     }
@@ -212,9 +271,17 @@ class ProduksiController extends Controller
 
     public function showDetailProduksi($id,$idBrg){
         $user = Auth::user();
+        $cek=Keranjang::where('id',$idBrg)->where('id_orders',$id)->first();
+        //dd($cek);
+        if($cek==null){
+            Session::flash('alert', "Barang tidak ditemukan!");
+            return redirect('/produksi/'.$id);
+        }
+
         $karyawan = karyawan::where('divisis_id',1)->orWhere('divisis_id',2)->get();
         //dd($karyawan);
         $barang=Produksi::where('id_keranjang',$idBrg)->get();
+        
         $jumBarang=Keranjang::select('jumlah')->where('id',$idBrg)->first();
         $jumBrgSkrg=Produksi::where('id_keranjang',$idBrg)
         ->selectRaw('sum(jumlah) as jumlah')
