@@ -97,6 +97,8 @@
         </li>
         @endif
         @endisset
+        @guest @else
+        @if($user->admin=="Pemilik")
         <li class="nav-section">
           <span class="sidebar-mini-icon">
                   <i class="fa fa-ellipsis-h"></i>
@@ -139,6 +141,45 @@
                 </form>
               </ul>
             </div>
+          </div>
+
+          <div class="info">
+            <a data-toggle="collapse" href="#pemasukanCollapse" aria-expanded="true">
+              <span>
+                <span class="user-level">Pemasukan</span>
+                <span class="caret"></span>
+              </span>
+            </a>
+            <div class="clearfix"></div>
+
+            <div class="collapse in" id="pemasukanCollapse">
+              <ul class="nav">
+                <form method="post" action="{{ route('laporanPemasukan') }}">
+                  @csrf
+                  <li>
+                    <div class="form-group">
+                        <div class="form-label-group">
+                          <label>Periode Awal</label>
+                          <input id="periode_awal" class="form-control p-0" type="date" name="periode_awal">  
+                        </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="form-group">
+                      <div class="form-label-group">
+                          <label>Periode Akhir</label>  
+                          <input class="form-control p-0" type="date" name="periode_akhir">
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <input class="btn" type="submit" name="submit" value="Lihat Laporan">
+                  </li>
+                </form>
+              </ul>
+            </div>
+          @endif
+          @endguest
           </div>
         </div>
       </ul>

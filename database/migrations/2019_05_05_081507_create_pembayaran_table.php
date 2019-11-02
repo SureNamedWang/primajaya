@@ -20,6 +20,8 @@ class CreatePembayaranTable extends Migration
             $table->string('bukti', 255);
             $table->string('keterangan', 255)->nullable();
             $table->enum('approval', ['Pending', 'Approved', 'Denied'])->default('Pending');
+            $table->datetime('tanggal_bayar');
+            $table->datetime('tanggal_approval');
             $table->timestamps();
         });
     }

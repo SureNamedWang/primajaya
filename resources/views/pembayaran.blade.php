@@ -83,6 +83,12 @@
                                                     <label for="jumlah">Jumlah</label>
                                                 </div>
                                             </div>
+                                            <div class="form-group">
+                                                    <div class="form-label-group">
+                                                      <label>Tanggal Pembayaran</label>
+                                                      <input id="tanggal_pembayaran" class="form-control" type="datetime-local" name="tanggal_pembayaran">  
+                                                    </div>
+                                                </div>
                                             <div class="form-group col-sm-12">
                                                 <div class="form-label-group">
                                                 <input type="text" id="keterangan" name="keterangan" value="{{$item->keterangan}}" required>

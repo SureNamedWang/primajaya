@@ -26,6 +26,8 @@ Route::resource('/orders', 'OrdersController');
 
 Route::resource('/pembayaran', 'PembayaranController');
 
+Route::post('/laporan/pemasukan', 'PembayaranController@showLaporanPemasukan')->name('laporanPemasukan');
+
 Route::resource('/produksi', 'ProduksiController');
 
 Route::post('/laporan/gaji', 'ProduksiController@laporanGaji')->name('laporanGaji');

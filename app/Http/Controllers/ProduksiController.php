@@ -33,15 +33,9 @@ class ProduksiController extends Controller
         $start=$request->periode_awal.' 0:00:00';
         $fin=$request->periode_akhir.' 23:59:59';
         $produksi=Produksi::whereBetween('waktu_selesai',[$start,$fin])->get();
-        //$produksi=Produksi::first();
-        // dd($produksi);
+        
         $jumlah=0;
         $gaji=collect();
-
-        // $karyawans=Karyawan::with('produksi')->whereIn('id', array(2,3))->get();
-        // dd($karyawans);
-
-        // dd($fin);
         $karyawans=Karyawan::with(array('produksi' => function($query) use ($start,$fin){
             $query->whereBetween('waktu_selesai',[$start,$fin])->orderBy('waktu_selesai','ASC');
         }))->get();

@@ -9,6 +9,7 @@ use App\Orders;
 use Auth;
 use Session;
 use Redirect;
+use Carbon\Carbon;
 
 class PembayaranController extends Controller
 {
@@ -32,6 +33,22 @@ class PembayaranController extends Controller
         //
     }
 
+    public function showLaporanPemasukan(Request $request){
+        $user=Auth::user();
+        $start=$request->periode_awal.' 0:00:00';
+        $fin=$request->periode_akhir.' 23:59:59';
+        $pembayaran=Pembayaran::whereBetween('tanggal_bayar',[$start,$fin])->get();
+        //dd($pembayaran);
+
+        $pembayaran->transform(function ($bayar,$key){
+            $bayar->tanggal_bayar=Carbon::parse($bayar->tanggal_bayar);
+            return $bayar;
+        });
+
+        $awal=Carbon::parse($start);
+        $akhir=Carbon::parse($fin);
+        return view('laporanPemasukan')->with(compact('user','pembayaran','awal','akhir'));
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -101,8 +118,8 @@ class PembayaranController extends Controller
         //dd($request->input());
         $user=Auth::user();
         $data=Pembayaran::find($id);
-        $logPembayaran=new log_pembayaran();
         if($data->approval!=$request->approval){
+            
             $logPembayaran=new log_pembayaran();
             $logPembayaran->kategori='Approval';
             $logPembayaran->data_awal=$data->approval;
@@ -110,10 +127,25 @@ class PembayaranController extends Controller
             $logPembayaran->admin=$user->id;
             $logPembayaran->id_pembayaran=$id;
             $logPembayaran->save();
+            $data->approval=$request->approval;
+
+            $logPembayaran=new log_pembayaran();
+            $logPembayaran->kategori='tanggal_approval';
+            $logPembayaran->data_awal=$data->tanggal_approval;
+            $logPembayaran->data_baru=Carbon::now()->timezone('Asia/Jakarta');
+            $logPembayaran->admin=$user->id;
+            $logPembayaran->id_pembayaran=$id;
+            $logPembayaran->save();
+            $data->tanggal_approval=Carbon::now()->timezone('Asia/Jakarta');
+
         }
-        $data->approval=$request->approval;
-        $order=Orders::find($data->id_orders);
+        
         if($data->jumlah!=$request->jumlah){
+            $data->jumlah = $request->jumlah;
+            $order=Orders::find($data->id_orders);
+            $order->total_pembayaran=$order->total_pembayaran-$data->jumlah;
+            $order->total_pembayaran+=$request->jumlah;
+            //log
             $logPembayaran=new log_pembayaran();
             $logPembayaran->kategori='jumlah';
             $logPembayaran->data_awal=$data->jumlah;
@@ -122,12 +154,22 @@ class PembayaranController extends Controller
             $logPembayaran->id_pembayaran=$id;
             $logPembayaran->save();
         }
-        $order->total_pembayaran=$order->total_pembayaran-$data->jumlah;
-        $order->total_pembayaran+=$request->jumlah;
 
         if($order->total_pembayaran>=$order->dp){
             $order->status="Produksi";
         }
+
+        if($data->tanggal_bayar!=$request->tanggal_pembayaran){
+            $data->tanggal_bayar=$request->tanggal_pembayaran;
+            $logPembayaran=new log_pembayaran();
+            $logPembayaran->kategori='tanggal_bayar';
+            $logPembayaran->data_awal=$data->tanggal_bayar;
+            $logPembayaran->data_baru=$request->tanggal_pembayaran;
+            $logPembayaran->admin=$user->id;
+            $logPembayaran->id_pembayaran=$id;
+            $logPembayaran->save();
+        }
+
         if(isset($request->keterangan)){
             if($data->keterangan!=$request->keterangan){
                 $logPembayaran=new log_pembayaran();
@@ -143,7 +185,7 @@ class PembayaranController extends Controller
             }
             $data->keterangan=$request->keterangan;
         }
-        $data->jumlah = $request->jumlah;
+        
         $data->save();
         $order->save();
 

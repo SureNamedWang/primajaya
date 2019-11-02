@@ -16,7 +16,7 @@ class CreateLogPembayaransTable extends Migration
         Schema::create('log_pembayarans', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('kategori',255);
-            $table->string('data_awal',255);
+            $table->string('data_awal',255)->nullable();
             $table->string('data_baru',255);
             $table->bigInteger('admin');
             $table->bigInteger('id_pembayaran');
