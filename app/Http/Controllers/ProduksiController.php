@@ -192,6 +192,7 @@ class ProduksiController extends Controller
         //
         $user = Auth::user();
         $barang = Keranjang::with('keranjangProduksi')->where('id_orders',$id)->get();
+        //dd($barang);
         $orders=Orders::find($id)->load('ordersKeranjang.keranjangHarga.hargaBahan');
         $bahans=collect();
         // dd($orders->ordersKeranjang->first()->keranjangHarga->hargaBahan);
@@ -376,6 +377,8 @@ class ProduksiController extends Controller
         //dd($jumBarang);
         //<--- hitung selisih --->
         if($produksi->jumlah!=$request->progress){
+            //dd($jumBrgSkrg->jumlah);
+            //dd($produksi->jumlah);
             $jumBrgSkrg->jumlah=$jumBrgSkrg->jumlah-$produksi->jumlah;
             $produksi->jumlah=$request->progress;
             $jumBrgSkrg->jumlah=$jumBrgSkrg->jumlah+$request->progress;

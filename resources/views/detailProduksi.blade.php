@@ -76,7 +76,11 @@
                                                         <select class="form-control" name="karyawan" required>
                                                             <option value="">Pilih Karyawan</option>
                                                             @foreach ($karyawan as $pekerja)
+                                                            @if($pekerja->id==$produksi->id_karyawan)
+                                                            <option value="{{$pekerja->id}}" selected>{{$pekerja->nama}}</option>
+                                                            @else
                                                             <option value="{{$pekerja->id}}">{{$pekerja->nama}}</option>
+                                                            @endif
                                                             @endforeach
                                                         </select>
                                                         <label for="karyawan">Karyawan</label>

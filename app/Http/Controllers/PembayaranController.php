@@ -159,13 +159,14 @@ class PembayaranController extends Controller
             $data->keterangan=$request->keterangan;
         }
         if($data->jumlah!=$request->jumlah){
-            $data->jumlah = $request->jumlah;
+            //$data->jumlah = $request->jumlah;
             $order=Orders::find($data->id_orders);
             $order->total_pembayaran=$order->total_pembayaran-$data->jumlah;
             if($order->total_pembayaran<0){
                 $order->total_pembayaran=0;
             }
             $order->total_pembayaran+=$request->jumlah;
+            
             //log
             $logPembayaran=new log_pembayaran();
             $logPembayaran->kategori='jumlah';
@@ -174,6 +175,7 @@ class PembayaranController extends Controller
             $logPembayaran->admin=$user->id;
             $logPembayaran->id_pembayaran=$id;
             $logPembayaran->save();
+            $data->jumlah=$request->jumlah;
         }
 
         if(isset($order)){   

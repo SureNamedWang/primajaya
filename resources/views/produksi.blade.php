@@ -33,7 +33,7 @@
                             <td>{{$item->keranjangHarga->hargaTipe->nama}}</td>
                             <td>{{$item->jumlah}}</td>
                             @if($item->keranjangProduksi->last())
-                            <td>{{$item->keranjangProduksi->last()->progress*100}}%</td>
+                            <td>{{$item->keranjangProduksi->sortBy('updated_at')->last()->progress*100}}%</td>
                             @else
                             <td>0%</td>
                             @endif
