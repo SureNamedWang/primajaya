@@ -62,7 +62,7 @@
 							<div class="form-group col-sm-12 center">
 								<header style="font-weight: bolder">Addon</header>
 								<div class="form-check">
-									<input type="radio" onchange="hitungHarga()" data-techname="0" class="form-check-input" id="checkLogo" name="cbkLogo" value="0" checked>
+									<input type="radio" onchange="hitungHarga()" data-techname="0" class="form-check-input" id="checkLogo" name="cbkLogo" value='null' checked>
 									<label class="form-check-label" for="checkLogo0">
 										{{ucwords('Tanpa Addon')}} - IDR.{{number_format(0)}}
 									</label>

@@ -64,14 +64,23 @@ class KeranjangController extends Controller
         }
         $user = Auth::user();
         $keranjangUser=Keranjang::where('id_user', $user->id)->where('id_orders',null)->get();
-        //dd($keranjangUser)
+        //dd($request->input());
+        //dd($keranjangUser);
         foreach($keranjangUser as $kUser){
             if($kUser->id_products==$request->idBarang&&$kUser->id_produk==$request->ukuran&&$kUser->deleted_at==null){
-                $keranjang=Keranjang::where('id',$kUser->id)->first();
-                $keranjang->jumlah=$keranjang->jumlah+$request->jumlah;
-                //dd($keranjang);
+                if(!isset($keranjang)){
+                    if($kUser->id_logo==null&&$request->cbkLogo=='null'){
+                        $keranjang=Keranjang::where('id',$kUser->id)->where('id_logo',null)->first();
+                        $keranjang->jumlah=$keranjang->jumlah+$request->jumlah;
+                    }
+                    if($kUser->id_logo==2&&$request->cbkLogo==2){
+                        $keranjang=Keranjang::where('id',$kUser->id)->where('id_logo',$request->cbkLogo)->first();
+                        $keranjang->jumlah=$keranjang->jumlah+$request->jumlah;
+                    }
+                }
             }    
         }
+        //dd($keranjang);
         if(!isset($keranjang)){
             $keranjang = new Keranjang();
             $keranjang->id_user=$user->id;
@@ -85,7 +94,7 @@ class KeranjangController extends Controller
             $hargaBarang = Harga::find($request->ukuran)->harga;    
         }
         
-        if(isset($request->cbkLogo)){
+        if(isset($request->cbkLogo)&&$request->cbkLogo!='null'){
             $keranjang->id_logo = $request->cbkLogo;
             //dd($request->cbkLogo);
             if($request->cbkLogo==1){
@@ -107,7 +116,8 @@ class KeranjangController extends Controller
                     return Redirect::back();
                 }
             }
-            if($request->cbkLogo==!0){
+            //dd($request->input());
+            if($request->cbkLogo!='null'){
                 $hargaLogo = AddonLogo::find($request->cbkLogo)->harga;
             }
             else{
@@ -158,7 +168,7 @@ class KeranjangController extends Controller
             $hargaBarang = Harga::find($request->ukuran)->harga;    
         }
         
-        if(isset($request->cbkLogo)){
+        if(isset($request->cbkLogo)&&$request->cbkLogo!='null'){
             $keranjang->id_logo = $request->cbkLogo;
             //dd($request->cbkLogo);
             if($request->cbkLogo==1){
@@ -180,7 +190,8 @@ class KeranjangController extends Controller
                     return Redirect::back();
                 }
             }
-            if($request->cbkLogo==!0){
+            dd($request->input());
+            if($request->cbkLogo!='null'){
                 $hargaLogo = AddonLogo::find($request->cbkLogo)->harga;
             }
             else{

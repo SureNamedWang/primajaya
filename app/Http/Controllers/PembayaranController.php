@@ -37,7 +37,7 @@ class PembayaranController extends Controller
         $user=Auth::user();
         $start=$request->periode_awal.' 0:00:00';
         $fin=$request->periode_akhir.' 23:59:59';
-        $pembayaran=Pembayaran::whereBetween('tanggal_bayar',[$start,$fin])->get();
+        $pembayaran=Pembayaran::whereBetween('tanggal_bayar',[$start,$fin])->where('approval','Approved')->get();
         //dd($pembayaran);
 
         $pembayaran->transform(function ($bayar,$key){
@@ -74,6 +74,8 @@ class PembayaranController extends Controller
         }
         $pembayaran->jumlah = 0;
         $pembayaran->approval = 'Pending';
+        $pembayaran->tanggal_bayar=Carbon::now('Asia/Jakarta');
+        //dd($pembayaran);
         $pembayaran->save();
         Session::flash('message', "Bukti Pembayaran telah berhasil dimasukkan!");
         return redirect('/pembayaran/'.$request->OrderID);
@@ -118,6 +120,7 @@ class PembayaranController extends Controller
         //dd($request->input());
         $user=Auth::user();
         $data=Pembayaran::find($id);
+        
         if($data->approval!=$request->approval){
             
             $logPembayaran=new log_pembayaran();
@@ -139,36 +142,6 @@ class PembayaranController extends Controller
             $data->tanggal_approval=Carbon::now()->timezone('Asia/Jakarta');
 
         }
-        
-        if($data->jumlah!=$request->jumlah){
-            $data->jumlah = $request->jumlah;
-            $order=Orders::find($data->id_orders);
-            $order->total_pembayaran=$order->total_pembayaran-$data->jumlah;
-            $order->total_pembayaran+=$request->jumlah;
-            //log
-            $logPembayaran=new log_pembayaran();
-            $logPembayaran->kategori='jumlah';
-            $logPembayaran->data_awal=$data->jumlah;
-            $logPembayaran->data_baru=$request->jumlah;
-            $logPembayaran->admin=$user->id;
-            $logPembayaran->id_pembayaran=$id;
-            $logPembayaran->save();
-        }
-
-        if($order->total_pembayaran>=$order->dp){
-            $order->status="Produksi";
-        }
-
-        if($data->tanggal_bayar!=$request->tanggal_pembayaran){
-            $data->tanggal_bayar=$request->tanggal_pembayaran;
-            $logPembayaran=new log_pembayaran();
-            $logPembayaran->kategori='tanggal_bayar';
-            $logPembayaran->data_awal=$data->tanggal_bayar;
-            $logPembayaran->data_baru=$request->tanggal_pembayaran;
-            $logPembayaran->admin=$user->id;
-            $logPembayaran->id_pembayaran=$id;
-            $logPembayaran->save();
-        }
 
         if(isset($request->keterangan)){
             if($data->keterangan!=$request->keterangan){
@@ -185,11 +158,51 @@ class PembayaranController extends Controller
             }
             $data->keterangan=$request->keterangan;
         }
+        if($data->jumlah!=$request->jumlah){
+            $data->jumlah = $request->jumlah;
+            $order=Orders::find($data->id_orders);
+            $order->total_pembayaran=$order->total_pembayaran-$data->jumlah;
+            if($order->total_pembayaran<0){
+                $order->total_pembayaran=0;
+            }
+            $order->total_pembayaran+=$request->jumlah;
+            //log
+            $logPembayaran=new log_pembayaran();
+            $logPembayaran->kategori='jumlah';
+            $logPembayaran->data_awal=$data->jumlah;
+            $logPembayaran->data_baru=$request->jumlah;
+            $logPembayaran->admin=$user->id;
+            $logPembayaran->id_pembayaran=$id;
+            $logPembayaran->save();
+        }
+
+        if(isset($order)){   
+            if($order->total_pembayaran>=$order->dp){
+                $order->status="Produksi";
+            }
+            else if($order->total_pembayaran<$order->dp){
+                $order->status="Pending";
+            }
+        }
+        
+
+        if($data->tanggal_bayar!=$request->tanggal_pembayaran){
+            $data->tanggal_bayar=$request->tanggal_pembayaran;
+            $logPembayaran=new log_pembayaran();
+            $logPembayaran->kategori='tanggal_bayar';
+            $logPembayaran->data_awal=$data->tanggal_bayar;
+            $logPembayaran->data_baru=$request->tanggal_pembayaran;
+            $logPembayaran->admin=$user->id;
+            $logPembayaran->id_pembayaran=$id;
+            $logPembayaran->save();
+        }
+        if(isset($order)){
+            $order->save();
+        }
         
         $data->save();
-        $order->save();
 
-        return redirect('/pembayaran/'.$order->id);
+        return redirect('/pembayaran/'.$data->pembayaranOrders->id);
     }
 
     /**

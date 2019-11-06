@@ -33,7 +33,7 @@
                             <td>{{$item->keranjangProducts->nama}}</td>
                             <td>{{$item->keranjangHarga->hargaUkuran->MasterUkuran->ukuran}}</td>
                             <td>
-                                @if(isset($item->id_logo))
+                                @if($item->id_logo!=null)
                                 <i class="fa fa-check"></i>
                                 @else
                                 <i class="fa fa-window-minimize"></i>
@@ -101,10 +101,10 @@
                                                     <div class="form-group col-sm-12 center">
                                                         <header style="font-weight: bolder">Addon</header>
                                                         <div class="form-check">
-                                                            @if($item->id_logo==null||$item->id_logo==0)
-                                                            <input type="radio" onchange="hitungHarga()" data-techname="0" class="form-check-input" id="checkLogo" name="cbkLogo" value="0" checked>
+                                                            @if($item->id_logo==null)
+                                                            <input type="radio" onchange="hitungHarga()" data-techname="0" class="form-check-input" id="checkLogo" name="cbkLogo" value="null" checked>
                                                             @else
-                                                            <input type="radio" onchange="hitungHarga()" data-techname="0" class="form-check-input" id="checkLogo" name="cbkLogo" value="0">
+                                                            <input type="radio" onchange="hitungHarga()" data-techname="0" class="form-check-input" id="checkLogo" name="cbkLogo" value="null">
                                                             @endif
                                                             <label class="form-check-label" for="checkLogo0">
                                                                 {{ucwords('Tanpa Addon')}} - IDR.{{number_format(0)}}

@@ -178,10 +178,10 @@
                 </form>
               </ul>
             </div>
-          @endif
-          @endguest
           </div>
         </div>
+        @endif
+        @endguest
       </ul>
     </div>
   </div>

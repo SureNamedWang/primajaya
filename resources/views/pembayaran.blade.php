@@ -49,9 +49,9 @@
                                 <i class="fa fa-times"></i>
                                 @endif
                             </td>
-                            <td>{{$item->created_at}}</td>
+                            <td>{{$item->tanggal_bayar}}</td>
                             @if($user->admin!='User')
-                            <td>{{$item->updated_at}}</td>
+                            <td>{{$item->tanggal_approval}}</td>
                             @endif
                             <td>{{$item->keterangan}}</td>
                             @if($user->admin!='User')
@@ -86,7 +86,7 @@
                                             <div class="form-group">
                                                     <div class="form-label-group">
                                                       <label>Tanggal Pembayaran</label>
-                                                      <input id="tanggal_pembayaran" class="form-control" type="datetime-local" name="tanggal_pembayaran">  
+                                                      <input id="tanggal_pembayaran" class="form-control" type="datetime-local" name="tanggal_pembayaran" value="{{Carbon\Carbon::parse($item->tanggal_bayar)->format('Y-m-d\\TH:i')}}">  
                                                     </div>
                                                 </div>
                                             <div class="form-group col-sm-12">
