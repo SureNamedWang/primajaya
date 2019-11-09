@@ -20,6 +20,7 @@
                         <tr>
                             <th scope="col">OrderID</th>
                             <th scope="col">Bukti</th>
+                            <th scope="col">Bank</th>
                             <th scope="col">Jumlah Bayar</th>
                             <th scope="col">Approval</th>
                             <th scope="col">Tanggal Upload</th>
@@ -39,6 +40,7 @@
                             <td>
                                 <img src="{{asset('storage/'.$item->bukti)}}" style="height: 50px;width: 50px;">
                             </td>
+                            <td>{{$item->bank}}</td>
                             <td>Rp. {{number_format($item->jumlah)}}</td>
                             <td>
                                 @if($item->approval=='Approved')
@@ -81,6 +83,17 @@
                                                 <div class="form-label-group">
                                                 <input type="number" min=0 name="jumlah" value="{{$item->jumlah}}" required>
                                                     <label for="jumlah">Jumlah</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-12">
+                                                <div class="form-label-group">
+                                                <select class="form-control" name="bank" required>
+                                                    <option value="" @if($item->bank==""||$item->bank==null) selected @endif>Pilih Bank</option>
+                                                    <option value="BCA" @if($item->bank=="BCA") selected @endif>BCA</option>
+                                                    <option value="Mandiri" @if($item->bank=="Mandiri") selected @endif>Mandiri</option>
+                                                    <option value="BNI" @if($item->bank=="BNI") selected @endif>BNI</option>
+                                                    <option value="BRI" @if($item->bank=="BRI") selected @endif>BRI</option>
+                                                </select>
                                                 </div>
                                             </div>
                                             <div class="form-group">

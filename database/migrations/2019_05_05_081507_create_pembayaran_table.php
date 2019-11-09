@@ -18,6 +18,7 @@ class CreatePembayaranTable extends Migration
             $table->integer('id_orders');
             $table->integer('jumlah');
             $table->string('bukti', 255);
+            $table->enum('bank', ['BCA', 'Mandiri', 'BNI', 'BRI'])->nullable();
             $table->string('keterangan', 255)->nullable();
             $table->enum('approval', ['Pending', 'Approved', 'Denied'])->default('Pending');
             $table->datetime('tanggal_bayar');

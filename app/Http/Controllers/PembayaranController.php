@@ -124,6 +124,10 @@ class PembayaranController extends Controller
     {
         //
         //dd($request->input());
+        if($request->bank==""||$request->bank==null){
+            Session::flash('alert', "Anda belum memilih Bank, silahkan pilih terlebih dahulu");
+            return Redirect::back();
+        }
         $user=Auth::user();
         $data=Pembayaran::find($id);
         
@@ -175,14 +179,24 @@ class PembayaranController extends Controller
             
             //log
             $logPembayaran=new log_pembayaran();
-            $logPembayaran->kategori='jumlah';
+            $logPembayaran->kategori='Jumlah';
             $logPembayaran->data_awal=$data->jumlah;
             $logPembayaran->data_baru=$request->jumlah;
             $logPembayaran->admin=$user->id;
             $logPembayaran->id_pembayaran=$id;
             $logPembayaran->save();
             $data->jumlah=$request->jumlah;
+
         }
+
+        $logPembayaran=new log_pembayaran();
+        $logPembayaran->kategori='Bank';
+        $logPembayaran->data_awal=$data->bank;
+        $logPembayaran->data_baru=$request->bank;
+        $logPembayaran->admin=$user->id;
+        $logPembayaran->id_pembayaran=$id;
+        $logPembayaran->save();
+        $data->bank=$request->bank;
 
         if(isset($order)){   
             if($order->total_pembayaran>=$order->dp){
