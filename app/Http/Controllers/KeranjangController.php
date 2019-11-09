@@ -190,7 +190,7 @@ class KeranjangController extends Controller
                     return Redirect::back();
                 }
             }
-            dd($request->input());
+            //dd($request->input());
             if($request->cbkLogo!='null'){
                 $hargaLogo = AddonLogo::find($request->cbkLogo)->harga;
             }

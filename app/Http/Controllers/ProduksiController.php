@@ -195,6 +195,7 @@ class ProduksiController extends Controller
         //dd($barang);
         $orders=Orders::find($id)->load('ordersKeranjang.keranjangHarga.hargaBahan');
         $bahans=collect();
+        //dd($orders);
         // dd($orders->ordersKeranjang->first()->keranjangHarga->hargaBahan);
         foreach($orders->ordersKeranjang as $ord){
             foreach($ord->keranjangHarga->hargaBahan as $bahan){
@@ -205,7 +206,7 @@ class ProduksiController extends Controller
                 else{
                     $jumlah=$bahans->get($bahan->MasterBahan->nama);
                     $jumlah=$bahans->get($bahan->MasterBahan->nama)+$bahan->jumlah;
-                    $bahans[$bahan->MasterBahan->nama]=$jumlah;
+                    $bahans[$bahan->MasterBahan->nama]+=$jumlah*$ord->jumlah;
                 }
             }
         }

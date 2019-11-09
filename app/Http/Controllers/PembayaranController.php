@@ -33,6 +33,12 @@ class PembayaranController extends Controller
         //
     }
 
+    public function showLogPembayaran(Request $request){
+        $user=Auth::user();
+        $logs=log_pembayaran::all();
+        return view('log_pembayaran')->with(compact('user','logs'));
+    }
+
     public function showLaporanPemasukan(Request $request){
         $user=Auth::user();
         $start=$request->periode_awal.' 0:00:00';

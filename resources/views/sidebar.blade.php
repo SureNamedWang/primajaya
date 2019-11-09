@@ -95,6 +95,12 @@
             <p>Karyawan</p>
           </a>
         </li>
+        <li class="nav-item">
+          <a href="{{route('logPembayaran')}}">
+            <i class="la flaticon-file" style="font-size:25px"></i>
+            <p>Log Pembayaran</p>
+          </a>
+        </li>
         @endif
         @endisset
         @guest @else

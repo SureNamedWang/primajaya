@@ -28,6 +28,8 @@ Route::resource('/pembayaran', 'PembayaranController');
 
 Route::post('/laporan/pemasukan', 'PembayaranController@showLaporanPemasukan')->name('laporanPemasukan');
 
+Route::get('/log/pembayaran', 'PembayaranController@showLogPembayaran')->name('logPembayaran');
+
 Route::resource('/produksi', 'ProduksiController');
 
 Route::post('/laporan/gaji', 'ProduksiController@laporanGaji')->name('laporanGaji');

@@ -13,4 +13,8 @@ class Pembayaran extends Model
     {
         return $this->hasOne('App\Orders', 'id', 'id_orders');
     }
+    public function pembayaranLog()
+    {
+        return $this->hasMany('App\log_pembayaran', 'id_pembayaran', 'id');
+    }
 }
