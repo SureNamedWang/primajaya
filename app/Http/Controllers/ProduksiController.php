@@ -28,6 +28,21 @@ class ProduksiController extends Controller
         //
     }
 
+    public function ubahStatusProduksi($id){
+        $orders=Orders::find($id);
+        if($orders->status=="Produksi"){
+            $orders->status="Quality Control";
+            Session::flash('message', "Produksi untuk Order ID:".$id." telah berhasil dihentikan");
+        }
+        else if($orders->status=="Quality Control"){
+            $orders->status="Produksi";
+            Session::flash('message', "Produksi untuk Order ID:".$id." telah berhasil dilanjutkan");
+        }
+        //dd($orders);
+        $orders->save();
+        return redirect('/produksi/'.$id);
+    }
+
     public function laporanGaji(Request $request){
         $user=Auth::user();
         $start=$request->periode_awal.' 0:00:00';
@@ -119,7 +134,7 @@ class ProduksiController extends Controller
         $path = $request->file('fileToUpload')->extension();
         //dd($path);
         if($path!='png' and $path!='jpg' and $path!='jpeg'){
-            Session::flash('message', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
+            Session::flash('alert', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
             return Redirect::back();
         }
         else{
@@ -131,7 +146,7 @@ class ProduksiController extends Controller
             $path2 = $request->file('fileToUpload2')->extension();
             
             if($path2!='png' and $path2!='jpg' and $path2!='jpeg'){
-                Session::flash('message', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
+                Session::flash('alert', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
                 return Redirect::back();
             }
             else{
@@ -163,8 +178,8 @@ class ProduksiController extends Controller
 
         $produksi->save();
 
-        $Orders = Orders::find($request->OrderID);
-        $pembeli = User::find($Orders->id_user);
+        // $Orders = Orders::find($request->OrderID);
+        // $pembeli = User::find($Orders->id_user);
 
         // Mail::send('email', [], function ($m) use ($path,$pembeli) {
         //     $m->from('noreply@primajaya.com', 'Prima Jaya');
@@ -178,6 +193,8 @@ class ProduksiController extends Controller
         //     }
         // });
 
+
+
         return redirect('/detailProduksi/'.$request->OrderID.'/'.$request->idBarang);
     }
 
@@ -190,8 +207,19 @@ class ProduksiController extends Controller
     public function show($id)
     {
         //
+        $jumlahBarangJadi=0;
+        $statusProduksi=0;
         $user = Auth::user();
         $barang = Keranjang::with('keranjangProduksi')->where('id_orders',$id)->get();
+        //dd(count($barang));
+        foreach($barang as $item){
+            if($item->keranjangProduksi->sortBy('updated_at')->last()->progress==1){
+                $jumlahBarangJadi++;
+            }
+        }
+        if($jumlahBarangJadi==count($barang)){
+            $statusProduksi=1;
+        }
         //dd($barang);
         $orders=Orders::find($id)->load('ordersKeranjang.keranjangHarga.hargaBahan');
         $bahans=collect();
@@ -212,7 +240,8 @@ class ProduksiController extends Controller
         }
         //dd($bahans);
         
-        return view('produksi')->with(compact('barang','bahans','user','id'));
+        $order=Orders::find($id);
+        return view('produksi')->with(compact('order','barang','statusProduksi','bahans','user','id'));
     }
 
     public function notifyOwner(Request $request,$id){
@@ -267,6 +296,7 @@ class ProduksiController extends Controller
 
     public function showDetailProduksi($id,$idBrg){
         $user = Auth::user();
+        $order=Orders::find($id);
         $cek=Keranjang::where('id',$idBrg)->where('id_orders',$id)->first();
         //dd($cek);
         if($cek==null){
@@ -287,7 +317,7 @@ class ProduksiController extends Controller
         }
         $jumBarang->jumlah=$jumBarang->jumlah-$jumBrgSkrg->jumlah;
         //dd($jumBarang);
-        return view('detailProduksi')->with(compact('barang','karyawan','user','idBrg', 'jumBarang', 'id'));
+        return view('detailProduksi')->with(compact('order','barang','karyawan','user','idBrg', 'jumBarang', 'id'));
     }
 
     /**

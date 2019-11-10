@@ -50,9 +50,11 @@
                             </td>
                             <td>{{$produksi->detail_kegiatan}}</td>
                             <td>{{$produksi->jumlah}}</td>
-
+                            @if($order->status=="Produksi")
                             <td><button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#modalEditProduksi{{$produksi->id}}">Edit</button></td>
-
+                            @else
+                            <td>{{"Produksi Dihentikan"}}</td>
+                            @endif
                             <div class="modal" id="modalEditProduksi{{$produksi->id}}">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -140,7 +142,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            @if($user->admin!='User')
+                            @if($user->admin!='User'&&$order->status=="Produksi")
                             <td><button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#modalInsertProduksi">Upload</button></td>
                             @endif
                             

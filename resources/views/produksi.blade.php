@@ -44,6 +44,11 @@
 
                 </tbody>
             </table>
+            @if($order->status=="Quality Control")
+            <a class="btn btn-block btn-round btn-primary" href="{{route('ubahStatusProduksi',['id'=>$id])}}">Lanjutkan Produksi</a>
+            @elseif($statusProduksi==1)
+            <a class="btn btn-block btn-round btn-primary" href="{{route('ubahStatusProduksi',['id'=>$id])}}">Selesaikan Produksi</a>
+            @endif
             @if($user->admin!="User")
             <a class="btn btn-block btn-round btn-secondary" style="color:white" data-toggle="modal" data-target="#mCekBahan">Check Bahan</a>
             <form action="{{route('notifyOwner', ['id' => $id])}}" method="post">

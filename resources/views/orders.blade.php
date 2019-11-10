@@ -46,7 +46,7 @@
                                         @if($item->dp<=$item->total_pembayaran)
                                         <a class="dropdown-item" href="{{route('produksi.show', ['id' => $item->id])}}">Produksi</a>
                                         @endif
-                                        @if($user->admin!='User')
+                                        @if($user->admin!='User'&&$item->status=="Quality Control")
                                         <a class="dropdown-item" data-toggle="modal" data-target="#myModal{{$item->id}}">Pengiriman</a>
                                         @endif
                                     </div>

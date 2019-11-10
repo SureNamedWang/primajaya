@@ -32,6 +32,8 @@ Route::get('/log/pembayaran', 'PembayaranController@showLogPembayaran')->name('l
 
 Route::resource('/produksi', 'ProduksiController');
 
+Route::get('/produksi/ubahStatus/{id}', 'ProduksiController@ubahStatusProduksi')->name('ubahStatusProduksi');
+
 Route::post('/laporan/gaji', 'ProduksiController@laporanGaji')->name('laporanGaji');
 
 Route::post('/notify/{id}', 'ProduksiController@notifyOwner')->name('notifyOwner');

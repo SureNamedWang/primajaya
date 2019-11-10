@@ -40,7 +40,12 @@
                             <td>
                                 <img src="{{asset('storage/'.$item->bukti)}}" style="height: 50px;width: 50px;">
                             </td>
-                            <td>{{$item->bank}}</td>
+                            <td>@if($item->bank!=null||$item->bank!="")
+                                {{$item->bank}}
+                                @else
+                                <i class="fa fa-window-minimize"></i>
+                                @endif
+                            </td>
                             <td>Rp. {{number_format($item->jumlah)}}</td>
                             <td>
                                 @if($item->approval=='Approved')

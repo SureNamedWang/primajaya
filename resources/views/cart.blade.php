@@ -165,9 +165,24 @@
                             </td>
                             @endisset
                         </tr>
+                        
+                        @if($item->id_logo!=null)
+                        <tr>
+                            <td></td>
+                            <td>{{$item->keranjangLogo->nama}}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{{$item->jumlah}}</td>
+                            <td>Rp. {{number_format($item->keranjangLogo->harga)}}</td>
+                            <td>Rp. {{number_format($item->keranjangLogo->harga*$item->jumlah)}}</td>
+                        </tr>
+                        @endif
+
                         @php
                         $totalHarga=$totalHarga+$item->total_harga;
                         @endphp
+
                         @endforeach
                         <tr>
                             <td></td>
