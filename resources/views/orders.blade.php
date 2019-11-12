@@ -46,7 +46,7 @@
                                         @if($item->dp<=$item->total_pembayaran)
                                         <a class="dropdown-item" href="{{route('produksi.show', ['id' => $item->id])}}">Produksi</a>
                                         @endif
-                                        @if($user->admin!='User'&&$item->status=="Quality Control")
+                                        @if($item->status=="Quality Control"||$item->status=="Pengiriman")
                                         <a class="dropdown-item" data-toggle="modal" data-target="#myModal{{$item->id}}">Pengiriman</a>
                                         @endif
                                     </div>
@@ -63,15 +63,13 @@
                             <td>Rp. {{number_format($item->dp)}}</td>
                             <td>Rp. {{number_format($item->total_pembayaran)}}</td>
                             <td>{{$item->status}}</td>
-                            @if($user->admin!='User')
-                                
                                 <!-- The Modal -->
                                 <div class="modal" id="myModal{{$item->id}}">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <!-- Modal Header -->
                                             <div class="modal-header">
-                                              <h4 class="modal-title">Ubah Ongkos Kirim</h4>
+                                              <h4 class="modal-title">Detail Pengiriman</h4>
                                               <button type="button" class="close" data-dismiss="modal">&times;</button>
                                             </div>
 
@@ -80,33 +78,52 @@
                                             {{method_field('PATCH')}}
                                             {{ csrf_field() }}
                                             <div class="modal-body">
+                                                <div class="form-group col-sm-12">
+                                                    <div class="form-label-group">
+                                                    <select class="form-control" name="pengirim" required @if($user->admin=="User") disabled @endif>
+                                                        <option value="">Pilih Jasa Pengiriman</option>
+                                                        <option value="CV.Prima Jaya Tenda" @if(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim=="CV.Prima Jaya Tenda") selected @endif>CV.Prima Jaya Tenda</option>
+                                                        <option value="Tiki" @if(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim=="Tiki") selected @endif>Tiki</option>
+                                                        <option value="JNE" @if(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim=="JNE") selected @endif>JNE</option>
+                                                        <option value="Pos" @if(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim=="Pos") selected @endif>Pos</option>
+                                                    </select>
+                                                    </div>
+                                                </div>
 
                                                 <div class="form-group col-sm-12">
                                                     <div class="form-label-group">                
-                                                        <input type="text" name="hargaAwal" value="{{$item->biaya_kirim}}" disabled>
-                                                        <label for="hargaAwal">Harga Awal</label>
+                                                        <input class="form-control" type="text" name="kode" @if(isset($item->ordersPengiriman->kode)&&$item->ordersPengiriman->kode!=null) value="{{$item->ordersPengiriman->kode}}" @endif @if($user->admin=="User") disabled @endif>
+                                                        <label for="kode">Kode Ekspedisi/Nomor Surat Jalan</label>
                                                     </div>
                                                 </div>
+
+                                                <div class="form-group">
+                                                    <div class="form-label-group">
+                                                        <label>Estimasi Waktu Sampai(Dalam Hari)</label>
+                                                        <input class="form-control" type="number" min=1 name="eta" @if(isset($item->ordersPengiriman->eta)&&$item->ordersPengiriman->eta!=null) value="{{$item->ordersPengiriman->eta}}" @endif @if($user->admin=="User") disabled @endif>  
+                                                    </div>
+                                                </div>
+
                                                 <div class="form-group col-sm-12">
                                                     <div class="form-label-group">                
-                                                        <input type="number" name="hargaBaru" required>
-                                                        <label for="hargaBaru">Harga Baru</label>
+                                                        <input type="number" name="biaya" min=0 value={{$item->biaya_kirim}} @if($user->admin=="User") disabled @endif required>
+                                                        <label for="biaya">Biaya Kirim</label>
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            @if($user->admin=="Admin")
                                             <!-- Modal footer -->
                                             <div class="modal-footer">
-                                                <input type="submit" class="btn btn-info" value="Ubah"></button>
+                                                <input type="submit" class="btn btn-info" value="Upload "></button>
 
                                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
                                             </div>
+                                            @endif
                                             </form>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- /endModal -->
-                            @endif
                         </tr>
                         @endforeach
                     </tbody>

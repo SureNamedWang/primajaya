@@ -57,6 +57,7 @@ return array(
     'App\\User' => $baseDir . '/app/User.php',
     'App\\karyawan' => $baseDir . '/app/karyawan.php',
     'App\\log_pembayaran' => $baseDir . '/app/log_pembayaran.php',
+    'App\\pengiriman' => $baseDir . '/app/pengiriman.php',
     'App\\penyimpanan_bahan' => $baseDir . '/app/penyimpanan_bahan.php',
     'App\\tipeUkuran' => $baseDir . '/app/tipeUkuran.php',
     'BahanTableSeeder' => $baseDir . '/database/seeds/BahanTableSeeder.php',

@@ -431,6 +431,7 @@ class ComposerStaticInitbdd3290153730b6e15901e3ba3f6f0fc
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',
         'App\\karyawan' => __DIR__ . '/../..' . '/app/karyawan.php',
         'App\\log_pembayaran' => __DIR__ . '/../..' . '/app/log_pembayaran.php',
+        'App\\pengiriman' => __DIR__ . '/../..' . '/app/pengiriman.php',
         'App\\penyimpanan_bahan' => __DIR__ . '/../..' . '/app/penyimpanan_bahan.php',
         'App\\tipeUkuran' => __DIR__ . '/../..' . '/app/tipeUkuran.php',
         'BahanTableSeeder' => __DIR__ . '/../..' . '/database/seeds/BahanTableSeeder.php',

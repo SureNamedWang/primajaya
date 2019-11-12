@@ -17,4 +17,8 @@ class Orders extends Model
     {
         return $this->hasOne('App\User', 'id', 'id_user');
     }
+    public function ordersPengiriman()
+    {
+        return $this->hasOne('App\pengiriman', 'orders_id', 'id');
+    }
 }
