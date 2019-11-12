@@ -195,25 +195,25 @@
                             <td></td>
                         </tr>
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td colspan="6"></td>
                             <td><strong>Sub-Total</strong></td>
                             <td><strong>Rp. {{number_format($totalHarga)}}</strong></td>
                         </tr>
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><strong>Total</strong></td>
-                            <td><strong>Rp. {{number_format($totalHarga)}}</strong></td>
+                            <td colspan="6"></td>
+                            <td><strong>DP Minimal</strong></td>
+                            <td><strong>Rp. {{number_format($totalHarga*30/100)}}</strong></td>
                         </tr>
+                        <tr>
+                            <td colspan=8>NB:</td>
+                        </tr>
+                        <tr>
+                            <td colspan="8">*Sub-total tidak mencakup biaya kirim, biaya kirim nantinya akan diinformasikan melalui email</td>
+                        </tr>
+                        <tr>
+                            <td colspan="8">*DP minimal adalah biaya yang harus anda bayarkan agar pesanan anda diproses</td>
+                        </tr>
+                        
                     </tbody>
                 </table>
             </div>
