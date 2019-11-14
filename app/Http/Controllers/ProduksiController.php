@@ -10,6 +10,8 @@ use App\Keranjang;
 use App\Produksi;
 use App\Orders;
 use App\User;
+use App\penyimpanan_bahan;
+use App\MasterBahan;
 use Carbon\Carbon;
 use Mail;
 use Auth;
@@ -26,6 +28,35 @@ class ProduksiController extends Controller
     public function index()
     {
         //
+    }
+
+    public function insertSisaBahan(Request $request){
+        //dd($request->except('_token'));
+        $user=Auth::user();
+        $sisas=penyimpanan_bahan::all();
+        $saved=0;
+        foreach($request->except('_token') as $bahan=>$jumlah){
+            $saved=0;
+            foreach($sisas as $sisa){
+                if($sisa->penyimpananMasterBahan->nama==$bahan){
+                    $sisa->jumlah+=$jumlah;
+                    $sisa->admin=$user->id;
+                    $sisa->save();
+                    $saved=1;
+                }
+            }
+            if($saved==0){
+                $newSisa=new penyimpanan_bahan();
+                $id=MasterBahan::where('nama',$bahan)->first();
+                $newSisa->master_bahans_id=$id->id;
+                $newSisa->jumlah=$jumlah;
+                $newSisa->admin=$user->id;
+                $newSisa->save();
+            }
+        }
+        $sisas=penyimpanan_bahan::all();
+        Session::flash('message', "Sisa Bahan Telah Berhasil Diupload!");
+        return Redirect::back();
     }
 
     public function ubahStatusProduksi($id){

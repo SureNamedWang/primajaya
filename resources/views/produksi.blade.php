@@ -44,9 +44,61 @@
 
                 </tbody>
             </table>
-            @if($order->status=="Quality Control")
+            @if($user->admin!="User"&&$order->status=="Quality Control")
             <a class="btn btn-block btn-round btn-primary" href="{{route('ubahStatusProduksi',['id'=>$id])}}">Lanjutkan Produksi</a>
-            @elseif($statusProduksi==1)
+            <a class="btn btn-block btn-round btn-success mb-2" style="color:white" data-toggle="modal" data-target="#mInsertSisa">Catat Sisa Bahan</a>
+            
+            <form action="{{route('insertSisaBahan')}}" method="post">
+                @csrf
+                <!-- The Modal -->
+                <div class="modal" id="mInsertSisa">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <!-- Modal Header -->
+                            <div class="modal-header">
+                                <h4 class="modal-title">Masukkan Bahan Sisa</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                @if($user->admin=="Admin")
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Nama Bahan</th>
+                                            <th scope="col">Jumlah</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{-- $item=value; --}}
+                                        @foreach ($bahans as $key => $item)                                    
+                                        <tr>
+                                            <td>{{$key}}</td>
+                                            <td>
+                                                <input type="text" class="form-control" name="{{$key}}" required value=0>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                @endif
+                            </div>
+
+                            <!-- Modal footer -->
+                            <div class="modal-footer">
+                                @if($user->admin=="Admin")
+                                <input type="submit" class="btn btn-info" value="Upload"></button>
+                                @endif
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /endModal -->
+            </form>
+
+            @elseif($user->admin!="User"&&$statusProduksi==1)
             <a class="btn btn-block btn-round btn-primary" href="{{route('ubahStatusProduksi',['id'=>$id])}}">Selesaikan Produksi</a>
             @endif
             @if($user->admin!="User")
