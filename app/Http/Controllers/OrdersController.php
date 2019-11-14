@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Mail;
 use Session;
 use Redirect;
+use Log;
 
 class OrdersController extends Controller
 {
@@ -34,6 +35,22 @@ class OrdersController extends Controller
         }
         //dd($pengiriman);
         return view('orders')->with(compact('orders','user'));
+    }
+
+    public function expiredOrder(){
+        $orders=Orders::all();
+        $expired=0;
+        foreach($orders as $order){
+            $tglBeli=Carbon::parse($order->created_at);
+            $tglExp=$tglBeli->addDay();
+            $tglSkrg=Carbon::now();
+            if($tglSkrg>=$tglExp&&$order->status=="Pending"){
+                $order->status="Expired";
+                $expired++;
+                $order->save();
+            }
+        }
+        Log::info('Ada '.$expired.' order yang expired');
     }
 
     /**
@@ -151,6 +168,6 @@ class OrdersController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => array('expiredOrder')]);
     }
 }

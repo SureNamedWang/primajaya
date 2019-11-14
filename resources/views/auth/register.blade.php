@@ -40,6 +40,22 @@
                         </div>
 
                         <div class="form-group row">
+                            <label for="telp" class="col-md-4 col-form-label text-md-right">No Telpon</label>
+
+                            <div class="col-md-6">
+                                <input id="telp" type="number" class="form-control" name="telp"  required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="alamat" class="col-md-4 col-form-label text-md-right">Alamat</label>
+
+                            <div class="col-md-6">
+                                <input id="alamat" type="text" class="form-control" name="alamat"  required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                             <div class="col-md-6">

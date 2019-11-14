@@ -24,6 +24,8 @@ Route::post('editKeranjang', 'KeranjangController@editKeranjang')->name('editKer
 
 Route::resource('/orders', 'OrdersController');
 
+Route::get('/order/expired/', 'OrdersController@expiredOrder')->name('expiredOrder');
+
 Route::resource('/pembayaran', 'PembayaranController');
 
 Route::post('/laporan/pemasukan', 'PembayaranController@showLaporanPemasukan')->name('laporanPemasukan');
