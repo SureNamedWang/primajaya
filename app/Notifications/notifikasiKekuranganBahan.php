@@ -18,9 +18,9 @@ class notifikasiKekuranganBahan extends Notification
      *
      * @return void
      */
-    public function __construct($bahans)
+    public function __construct($sisa)
     {
-        $this->bahans = $bahans;
+        $this->bahans = $sisa;
     }
 
     /**
@@ -51,12 +51,18 @@ class notifikasiKekuranganBahan extends Notification
             ->line('Produksi untuk Order ID: '.$this->bahans->id.' tidak bisa dilakukan karena kekurangan bahan:');
         foreach($this->bahans as $bahans=>$jumlah){
             if($bahans!='id'||$bahans!='email'||$bahans!='nama'){
-                $mail->line($bahans.' : '.$jumlah);
+                if($bahans=="besi"){
+                    $mail->line($bahans.' : '.$jumlah.' lenjer');
+                }
+                else{
+                    $mail->line($bahans.' : '.$jumlah.' roll');
+                }
+                
             }
         }
         $mail->action('Lihat Produksi', $url)
             ->line('Mohon segera lakukan pemesanan untuk melanjutkan proses produksi');
-        // dd($mail);
+        //dd($mail);
         return ($mail);
     }
 

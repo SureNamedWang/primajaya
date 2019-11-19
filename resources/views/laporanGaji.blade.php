@@ -29,6 +29,7 @@
                             <th scope="col">Departemen</th>
                             <th scope="col">Divisi</th>
                             <th scope="col">Gaji</th>
+                            <th scope="col">Detail</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -38,6 +39,75 @@
                             <td>{{$karyawan->karyawanDivisi->divisiDepartemen->nama}}</td>
                             <td>{{$karyawan->karyawanDivisi->nama}}</td>
                             <td>Rp. {{number_format($karyawan->total_gaji)}}</td>
+                            <td><a class="btn btn-secondary text-white" data-toggle="modal" data-target="#mDetailKerja{{$karyawan->id}}">Show Detail</a></td>
+
+                            <!-- The Modal -->
+                            <div class="modal" id="mDetailKerja{{$karyawan->id}}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Detail Kerja</h4>
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+            
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    @if($karyawan->karyawanDivisi->nama=="Rangka")
+                                                    Tanggal
+                                                    @elseif($karyawan->karyawanDivisi->nama=="Kain")
+                                                    ID Order
+                                                    @endif
+                                                </div>
+                                                <div class="col-md-6">
+                                                    @if($karyawan->karyawanDivisi->nama=="Rangka")
+                                                    Lembur
+                                                    @elseif($karyawan->karyawanDivisi->nama=="Kain")
+                                                    Jumlah
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    @if($karyawan->karyawanDivisi->nama=="Rangka")
+                                                        @foreach ($karyawan->tanggalKerja as $key => $item)                                    
+                                                            {{$key}}<hr>
+                                                        @endforeach     
+                                                    @else
+                                                        @foreach ($karyawan->jumlahKerja as $key => $item)
+                                                            {{$key}}&nbsp;&nbsp;<a class="btn btn-secondary" href={{route('produksi.show', ['id' => $key])}}>Lihat</a><hr>
+                                                        @endforeach
+                                                    @endif        
+                                                </div>
+                                                <div class="col-md-6">
+                                                        @if($karyawan->karyawanDivisi->nama=="Rangka")
+                                                            @foreach ($karyawan->tanggalKerja as $key => $item)                                     
+                                                            @if($karyawan->karyawanDivisi->nama=="Rangka"&&$item==2)
+                                                            <i class="fa fa-check"></i><hr>
+                                                            @elseif($karyawan->karyawanDivisi->nama=="Rangka"&&$item==1)
+                                                            <i class="fa fa-times"></i><hr>
+                                                            @endif
+                                                            @endforeach
+                                                        @else
+                                                            @foreach ($karyawan->jumlahKerja as $key => $item)
+                                                                {{$item}}<hr>
+                                                            @endforeach
+                                                        @endif        
+                                                    </div>
+                                            </div>
+                                        </div>
+            
+                                        <!-- Modal footer -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Back</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /endModal -->
                         </tr>
                     @endforeach
                 </tbody>

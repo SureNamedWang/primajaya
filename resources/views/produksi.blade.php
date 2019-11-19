@@ -33,7 +33,7 @@
                             <td>{{$item->keranjangHarga->hargaTipe->nama}}</td>
                             <td>{{$item->jumlah}}</td>
                             @if($item->keranjangProduksi->last())
-                            <td>{{$item->keranjangProduksi->sortBy('updated_at')->last()->progress*100}}%</td>
+                            <td>{{round($item->keranjangProduksi->sortBy('updated_at')->last()->progress*100)}}%</td>
                             @else
                             <td>0%</td>
                             @endif
@@ -97,11 +97,10 @@
                 </div>
                 <!-- /endModal -->
             </form>
-
             @elseif($user->admin!="User"&&$statusProduksi==1)
             <a class="btn btn-block btn-round btn-primary" href="{{route('ubahStatusProduksi',['id'=>$id])}}">Selesaikan Produksi</a>
             @endif
-            @if($user->admin!="User")
+            @if($user->admin!="User"&&$order->status=="Produksi")
             <a class="btn btn-block btn-round btn-secondary" style="color:white" data-toggle="modal" data-target="#mCekBahan">Check Bahan</a>
             <form action="{{route('notifyOwner', ['id' => $id])}}" method="post">
                 @csrf
@@ -130,7 +129,7 @@
                                         @foreach ($bahans as $key => $item)                                    
                                         <tr>
                                             <td>{{$key}}</td>
-                                            <td>{{$item}}</td>
+                                            <td>{{$item}}m</td>
                                         </tr>
                                         @endforeach
                                     </tbody>

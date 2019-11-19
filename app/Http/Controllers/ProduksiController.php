@@ -89,6 +89,8 @@ class ProduksiController extends Controller
         $karyawans->transform(function ($karyawan, $key) {
             $produksis = $karyawan->produksi;
             $jumlah=0;
+            $hariKerja=collect();
+            $jumlahKerja=collect();
             switch ($karyawan->karyawanDivisi->nama) {
                 case 'Rangka':
                     $temporaryCollection = collect();
@@ -101,8 +103,11 @@ class ProduksiController extends Controller
                         if($waktu_selesai->hour>=18){
                             $value = 2;
                         }
-
+                        
                         $temporaryCollection->put($key, $value);
+
+                        //Absen kerja
+                        $hariKerja->put($key, $value);
                     }
 
                     foreach ($temporaryCollection as $value) {
@@ -112,6 +117,15 @@ class ProduksiController extends Controller
                 case 'Kain':
                     foreach ($produksis as $produksi) {
                         $jumlah += $produksi->jumlah;
+                        
+                        //jumlah perOrderan kerja
+                        $idOrderan=$produksi->produksiKeranjang->id_orders;
+                        if($jumlahKerja->has($idOrderan)){
+                            $jumlahKerja->idOrderan+=$produksi->jumlah;
+                        }
+                        else{
+                            $jumlahKerja->put($idOrderan,$produksi->jumlah);
+                        }
                     }
                     break;
                 default:
@@ -120,7 +134,9 @@ class ProduksiController extends Controller
 
             if($jumlah!=0){
                 $karyawan->pengali_gaji = $jumlah;
-                $karyawan->total_gaji = $jumlah*$karyawan->gaji;    
+                $karyawan->total_gaji = $jumlah*$karyawan->gaji;
+                $karyawan->tanggalKerja=$hariKerja;
+                $karyawan->jumlahKerja=$jumlahKerja;
                 return $karyawan;
             }
         });
@@ -131,8 +147,6 @@ class ProduksiController extends Controller
                return $karyawan; 
             }
         });
-
-        
         //dd($karyawans);
         return view('laporanGaji')->with(compact('user','karyawans','periode_awal','periode_akhir'));
     }
@@ -251,6 +265,7 @@ class ProduksiController extends Controller
         if($jumlahBarangJadi==count($barang)){
             $statusProduksi=1;
         }
+        
         //dd($barang);
         $orders=Orders::find($id)->load('ordersKeranjang.keranjangHarga.hargaBahan');
         $bahans=collect();
@@ -291,6 +306,13 @@ class ProduksiController extends Controller
             $eta->put('tanggal',$tgl);
             //dd($eta);
             $admin->notify(new notifikasiETAbahan($eta,$admins));
+
+            $gudang=penyimpanan_bahan::all();
+            foreach($gudang as $sisa){
+                $sisa->jumlah=0;
+                $sisa->save();
+            }
+
             Session::flash('message', "Email telah terkirim ke semua admin!");
             return Redirect::back();
         }
@@ -308,18 +330,36 @@ class ProduksiController extends Controller
                 else{
                     $jumlah=$bahans->get($bahan->MasterBahan->nama);
                     $jumlah=$bahans->get($bahan->MasterBahan->nama)+$bahan->jumlah;
-                    $bahans[$bahan->MasterBahan->nama]=$jumlah;
+                    $bahans[$bahan->MasterBahan->nama]+=$jumlah*$ord->jumlah;
                 }
             }
         }
-        
+
+        $gudangs=penyimpanan_bahan::all();
+        $sisa=collect();
+        foreach($bahans as $bahan=>$jumlah){
+            foreach($gudangs as $gudang){
+                if($gudang->penyimpananMasterBahan->nama==$bahan){
+                    $jumlah=$jumlah-$gudang->jumlah;
+                    if($bahan=="besi"){
+                        $jumlah=round($jumlah/6);
+                    }
+                    else{
+                        $jumlah=round($jumlah/10);
+                    }
+                    $sisa->put($bahan,$jumlah);
+                }
+            }
+        }
+        //dd($sisa);
+
         //Notifikasi email
         $owner = User::where('admin','Pemilik')->first();
-        $bahans->id=$id;
-        $bahans->email=$user->email;
-        $bahans->nama=$user->name;
+        $sisa->id=$id;
+        $sisa->email=$user->email;
+        $sisa->nama=$user->name;
         //dd($bahans);
-        $owner->notify(new notifikasiKekuranganBahan($bahans));
+        $owner->notify(new notifikasiKekuranganBahan($sisa));
 
         Session::flash('message', "Email telah terkirim ke pemilik!");
         return Redirect::back();
