@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Notifications\notifikasiPengiriman;
+use App\Notifications\notifikasiPenerimaan;
 use Illuminate\Http\Request;
 use App\Keranjang;
 use App\Orders;
@@ -33,7 +34,6 @@ class OrdersController extends Controller
         else{
             $orders=Orders::orderBy('created_at','desc')->get();
         }
-        //dd($pengiriman);
         return view('orders')->with(compact('orders','user'));
     }
 
@@ -105,6 +105,26 @@ class OrdersController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //cek quality control udah selesai atau belum
+        $order=Orders::find($id);
+        $barangs=Keranjang::where('id_orders',$order->id)->get();
+        $pendingQC=0;
+        foreach($barangs as $barang){
+            if($barang->quality_control=="Denied"||$barang->quality_control=="Pending"){
+                $pendingQC++;
+            }
+        }
+        if($pendingQC==0){
+            if($order->status=="Quality Control"){
+                $order->status="Menunggu Pelunasan Pembayaran";
+                $order->save();
+            }
+        }
+        else{
+            Session::flash('alert', "Proses Quality Control pesanan belum selesai, silahkan menunggu sampai proses Quality Control semua barang selesai!");
+            return redirect('/orders');
+        }
+
         $user=Auth::user();
         $perubahan=0;
         //pengiriman
@@ -127,30 +147,84 @@ class OrdersController extends Controller
         else{
             $data=new pengiriman();
         }
-        $data->orders_id=$id;
-        $data->pengirim=$request->pengirim;
-        $data->kode=$request->kode;
-        $data->eta=$request->eta;
-        $data->save();
-        
-        $data2=Orders::find($id);
-        $data2->total=$data2->total-$data2->biaya_kirim;
-        $data2->biaya_kirim = $request->biaya;
-        $data2->total=$data2->total+$request->biaya;
-        //dd($data2->total);
-        if($data->kode!=""&&$data->kode!=null){
-            $data2->status="Pengiriman";
-        }
-        else{
-            $data2->status="Quality Control";
-        }
-        $data2->save();
 
+        if(isset($request->kode)){
+            if(isset($request->buktiPengiriman)){
+                $data->kode=$request->kode;
+            }
+            else{
+                Session::flash('alert', "Kode Surat Jalan/Ekspedisi Harus Disertai Bukti Gambar");
+                return Redirect::back();
+            }
+        }
+        
+        if(isset($request->buktiPengiriman)&&$request->buktiPengiriman!=""){
+            $path = $request->file('buktiPengiriman')->extension();
+            //dd($path);
+            if($path!='png' and $path!='jpg' and $path!='jpeg'){
+                Session::flash('alert', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
+                return Redirect::back();
+            }
+            else{
+                $path = $request->file('buktiPengiriman')->store('pengiriman', 'public');
+                $data->bukti_pengiriman=$path;
+            }
+        }
+        if(isset($request->buktiPenerimaan)&&$request->buktiPenerimaan!=""){
+            $path = $request->file('buktiPenerimaan')->extension();
+            //dd($path);
+            if($path!='png' and $path!='jpg' and $path!='jpeg'){
+                Session::flash('alert', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
+                return Redirect::back();
+            }
+            else{
+                $path = $request->file('buktiPenerimaan')->store('penerimaan', 'public');
+                $data->bukti_penerimaan=$path;
+                $data->save();
+                
+                $data->email=$user->email;
+                $data->nama=$user->nama;
+                $pembeli=User::where('id',$order->id_user)->first();
+                $pembeli->notify(new notifikasiPenerimaan($data));
+
+                $order->status="Selesai";
+                $order->save();
+                Session::flash('message', "Bukti Penerimaan telah berhasil diupload!");
+                return redirect('/orders');
+            }
+        }
+        $data->orders_id=$id;
+        if(isset($request->pengirim)){
+            $data->pengirim=$request->pengirim;
+        }
+        if(isset($request->eta)){
+            $data->eta=$request->eta;
+        }
+
+        $data->save();
+
+        $data2=Orders::find($id);
+        if(isset($request->biaya)){
+            $data2->total=$data2->total-$data2->biaya_kirim;
+            $data2->biaya_kirim = $request->biaya;
+            $data2->total=$data2->total+$request->biaya;
+            //dd($data2->total);
+            $data2->save();
+        }
+        if(isset($request->kode)){
+            if($data->kode!=""&&$data->kode!=null){
+                $data2->status="Pengiriman";
+            }
+            $data2->save();
+        }
+
+        
         $data->email=$user->email;
         $data->nama=$user->nama;
-        $data->biaya=$request->biaya;
+        $data->biaya=$data2->biaya_kirim;
         $pembeli=User::where('id',$data2->id_user)->first();
         $pembeli->notify(new notifikasiPengiriman($data));
+
         Session::flash('message', "Detail Pengiriman telah berhasil diupload!");
         return redirect('/orders');
     }

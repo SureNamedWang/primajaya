@@ -36,6 +36,8 @@ Route::resource('/produksi', 'ProduksiController');
 
 Route::get('/produksi/ubahStatus/{id}', 'ProduksiController@ubahStatusProduksi')->name('ubahStatusProduksi');
 
+Route::post('/qualityControl', 'ProduksiController@qualityControl')->name('QC');
+
 Route::post('/insertSisaBahan', 'ProduksiController@insertSisaBahan')->name('insertSisaBahan');
 
 Route::post('/laporan/gaji', 'ProduksiController@laporanGaji')->name('laporanGaji');

@@ -34,8 +34,8 @@
                             <td>{{$log->kategori}}</td>
                             <td>{{$log->data_awal}}</td>
                             <td>{{$log->data_baru}}</td>
-                            <td>{{$log->logPembayaran->pembayaranOrders->OrdersUsers->name}}</td>
-                            <td>{{$log->logPembayaran->pembayaranOrders->id}}</td>
+                            <td>{{$log->logUser->name}}</td>
+                            <td>{{$log->logPembayaran->id}}</td>
                             <td>{{Carbon\Carbon::parse($log->created_at)->timezone('Asia/Jakarta')->toDayDateTimeString()}}</td>
                         </tr>
                     @endforeach

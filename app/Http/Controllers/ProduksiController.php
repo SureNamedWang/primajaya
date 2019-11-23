@@ -30,6 +30,26 @@ class ProduksiController extends Controller
         //
     }
 
+    public function qualityControl(Request $request){
+        //dd($request->input());
+        $user=Auth::user();
+        $barang=Keranjang::find($request->idKeranjang);
+        if($request->qc=="Approved"){
+            $barang->quality_control="Approved";
+        }
+        else if($request->qc=="Denied"){
+            $barang->quality_control="Denied";
+        }
+        else{
+            Session::flash('alert', "Quality Control hanya bisa diubah menjadi Approved atau Denied!");
+            return Redirect::back();    
+        }
+        $barang->save();
+        
+        Session::flash('message', "Quality Control Barang Berhasil di Ubah!");
+        return Redirect::back();
+    }
+
     public function insertSisaBahan(Request $request){
         //dd($request->except('_token'));
         $user=Auth::user();

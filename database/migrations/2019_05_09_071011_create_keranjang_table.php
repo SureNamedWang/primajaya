@@ -24,6 +24,7 @@ class CreateKeranjangTable extends Migration
             $table->string('desain', 255)->nullable();
             $table->integer('harga');
             $table->integer('total_harga');
+            $table->enum('quality_control',['Pending','Approved','Denied']);
             $table->softDeletes();
         });
     }

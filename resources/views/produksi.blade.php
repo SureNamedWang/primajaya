@@ -1,9 +1,11 @@
 @extends('index')
 @section('content')
-
+<?php 
+    $qc=0;
+?>
 <section class="jumbotron text-center">
     <div class="container">
-        <h1 class="jumbotron-heading">Proses Produksi Pesanan ID:{{$id}}</h1>
+        <h1 class="jumbotron-heading">List Barang Pesanan ID:{{$id}}</h1>
     </div>
 </section>
 @if (Session::has('message'))
@@ -22,6 +24,7 @@
                             <th scope="col">Tipe</th>
                             <th scope="col">Jumlah</th>
                             <th scope="col">Progress</th>
+                            <th scope="col"@if($user->admin=="Pemilik"&&$statusProduksi==1) colspan=2 @endif>Quality Control</th>
                             <th scope="col">Detail Produksi</th>
                         </tr>
                     </thead>
@@ -37,6 +40,27 @@
                             @else
                             <td>0%</td>
                             @endif
+                            @if($item->quality_control!="Approved")
+                            <?php
+                                $qc++; 
+                            ?>
+                            @endif
+                            <form method="post" action="{{route('QC')}}">
+                                @csrf
+                                <td>
+                                    <input type="hidden" name="idKeranjang" value="{{$item->id}}">
+                                    <select class="form-control" name="qc" required @if($user->admin!='Pemilik') disabled @endif>
+                                        <option value="" @if($item->quality_control=="Pending") selected @endif>Pending</option>
+                                        <option value="Approved" @if($item->quality_control=="Approved") selected @endif>Approved</option>
+                                        <option value="Denied" @if($item->quality_control=="Denied") selected @endif>Denied</option>
+                                    </select>
+                                    @if($user->admin=="Pemilik"&&$statusProduksi==1)
+                                    <td>
+                                    <input type="submit" class="button btn-round" value="Ganti">
+                                    </td>
+                                    @endif
+                                </td>
+                            </form>
                             <td><a href="{{route('detailProduksi', ['id' => $id, 'idBrg' => $item->id])}}" class="btn btn-sm btn-info">Lihat Detail Produksi</a></td>
                         </tr>
                         @endforeach
@@ -45,7 +69,9 @@
                 </tbody>
             </table>
             @if($user->admin!="User"&&$order->status=="Quality Control")
+            @if($qc>0)
             <a class="btn btn-block btn-round btn-primary" href="{{route('ubahStatusProduksi',['id'=>$id])}}">Lanjutkan Produksi</a>
+            @endif
             <a class="btn btn-block btn-round btn-success mb-2" style="color:white" data-toggle="modal" data-target="#mInsertSisa">Catat Sisa Bahan</a>
             
             <form action="{{route('insertSisaBahan')}}" method="post">

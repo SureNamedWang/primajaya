@@ -176,7 +176,7 @@
                     </div>
                     <!-- /endModal -->
                     @endif
-                    <td><a href="{{route('orders.index')}}" class="btn btn-block btn-info">List Order</a></td>
+                    <td><a href="{{route('orders.index')}}" class="btn btn-block btn-info">BACK</a></td>
                 </tr>
 
             </tbody>

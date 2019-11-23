@@ -43,10 +43,10 @@
                                         @if($user->admin!='Admin')
                                         <a class="dropdown-item" href="{{route('cart.show', ['id' => $item->id])}}">Detail Order</a>
                                         @endif
-                                        @if($item->dp<=$item->total_pembayaran)
+                                        @if($item->dp<=$item->total_pembayaran&&$item->status!="Selesai")
                                         <a class="dropdown-item" href="{{route('produksi.show', ['id' => $item->id])}}">Produksi</a>
                                         @endif
-                                        @if($item->status=="Quality Control"||$item->status=="Pengiriman")
+                                        @if($item->status!="Pending"&&$item->status!="Produksi")
                                         <a class="dropdown-item" data-toggle="modal" data-target="#myModal{{$item->id}}">Pengiriman</a>
                                         @endif
                                     </div>
@@ -74,13 +74,26 @@
                                             </div>
 
                                             <!-- Modal body -->
-                                            <form method="post" action="{{ route('orders.update', ['id' => $item->id]) }}">
+                                            <form method="post" action="{{ route('orders.update', ['id' => $item->id]) }}" enctype="multipart/form-data">
                                             {{method_field('PATCH')}}
                                             {{ csrf_field() }}
                                             <div class="modal-body">
                                                 <div class="form-group col-sm-12">
                                                     <div class="form-label-group">
-                                                    <select class="form-control" name="pengirim" required @if($user->admin=="User") disabled @endif>
+                                                    <select class="form-control" 
+                                                    name="pengirim" 
+                                                    required 
+                                                    @if($user->admin=="User") disabled @endif 
+                                                        @if(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim!="CV.Prima Jaya Tenda")
+                                                        @if($item->biaya_kirim>0&&$item->total==$item->total_pembayaran) 
+                                                        disabled 
+                                                        @endif 
+                                                        @elseif(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim=="CV.Prima Jaya Tenda")
+                                                        @if($item->total==$item->total_pembayaran)
+                                                        disabled
+                                                        @endif
+                                                        @endif
+                                                        >
                                                         <option value="">Pilih Jasa Pengiriman</option>
                                                         <option value="CV.Prima Jaya Tenda" @if(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim=="CV.Prima Jaya Tenda") selected @endif>CV.Prima Jaya Tenda</option>
                                                         <option value="Tiki" @if(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim=="Tiki") selected @endif>Tiki</option>
@@ -90,26 +103,146 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group col-sm-12">
-                                                    <div class="form-label-group">                
-                                                        <input class="form-control" type="text" name="kode" @if(isset($item->ordersPengiriman->kode)&&$item->ordersPengiriman->kode!=null) value="{{$item->ordersPengiriman->kode}}" @endif @if($user->admin=="User") disabled @endif>
-                                                        <label for="kode">Kode Ekspedisi/Nomor Surat Jalan</label>
-                                                    </div>
-                                                </div>
-
                                                 <div class="form-group">
                                                     <div class="form-label-group">
                                                         <label>Estimasi Waktu Sampai(Dalam Hari)</label>
-                                                        <input class="form-control" type="number" min=1 name="eta" @if(isset($item->ordersPengiriman->eta)&&$item->ordersPengiriman->eta!=null) value="{{$item->ordersPengiriman->eta}}" @endif @if($user->admin=="User") disabled @endif>  
+                                                        <input class="form-control" 
+                                                        type="number" 
+                                                        min=1 
+                                                        name="eta" 
+                                                        @if(isset($item->ordersPengiriman->eta)&&$item->ordersPengiriman->eta!=null) 
+                                                        value="{{$item->ordersPengiriman->eta}}" 
+                                                        @endif 
+                                                        @if($user->admin=="User") 
+                                                        disabled 
+                                                        @endif
+                                                        @if(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim!="CV.Prima Jaya Tenda")
+                                                        @if($item->biaya_kirim>0&&$item->total==$item->total_pembayaran) 
+                                                        disabled 
+                                                        @endif 
+                                                        @elseif(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim=="CV.Prima Jaya Tenda")
+                                                        @if($item->total==$item->total_pembayaran)
+                                                        disabled
+                                                        @endif
+                                                        @endif
+                                                        >  
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group col-sm-12">
                                                     <div class="form-label-group">                
-                                                        <input type="number" name="biaya" min=0 value={{$item->biaya_kirim}} @if($user->admin=="User") disabled @endif required>
+                                                        <input type="number" 
+                                                        name="biaya" 
+                                                        min=0 
+                                                        value={{$item->biaya_kirim}} 
+                                                        @if($user->admin=="User") 
+                                                        disabled 
+                                                        @endif 
+                                                        @if(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim!="CV.Prima Jaya Tenda")
+                                                        @if($item->biaya_kirim>0&&$item->total==$item->total_pembayaran) 
+                                                        disabled 
+                                                        @endif 
+                                                        @elseif(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim=="CV.Prima Jaya Tenda")
+                                                        @if($item->total==$item->total_pembayaran)
+                                                        disabled
+                                                        @endif
+                                                        @endif
+                                                        required>
                                                         <label for="biaya">Biaya Kirim</label>
                                                     </div>
                                                 </div>
+                                                <hr>
+                                                
+                                                @if(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim!="CV.Prima Jaya Tenda")
+                                                @if($item->biaya_kirim>0&&$item->total==$item->total_pembayaran) 
+                                                    <div class="form-group col-sm-12">
+                                                        <div class="form-label-group">                
+                                                            <input class="form-control" type="text" name="kode" 
+                                                            @if(isset($item->ordersPengiriman->kode)&&$item->ordersPengiriman->kode!=null) 
+                                                            value="{{$item->ordersPengiriman->kode}}" 
+                                                            @endif
+                                                            @if(isset($item->ordersPengiriman->bukti_pengiriman))
+                                                            disabled
+                                                            @endif
+                                                            @if($user->admin=="User") disabled @endif
+                                                            >
+                                                            <label for="kode">Kode Ekspedisi/Nomor Surat Jalan</label>
+                                                        </div>
+                                                    </div>
+                                                    @if($user->admin!="User"&&$item->status!="Selesai")
+                                                    @if($item->status=="Menunggu Pelunasan Pembayaran")
+                                                    <div class="input-file input-file-image mx-auto">
+                                                        Surat Jalan/Ekspedisi
+                                                        <img class="img-upload-preview" width="150" src="http://placehold.it/150x150" alt="preview">
+                                                        <input type="file" class="form-control form-control-file" id="uploadImg" name="buktiPengiriman" accept="image/*">
+                                                        <label for="uploadImg" class=" label-input-file btn btn-primary">Upload Gambar</label>
+                                                        <br>
+                                                        <label for="uploadImg" class="form-check-label">(format file jpg/jpeg/png)</label>
+                                                    </div>
+                                                    @endif
+                                                    @if($item->status=="Pengiriman")
+                                                    <div class="input-file input-file-image mx-auto">
+                                                        Bukti Penerimaan
+                                                        <img class="img-upload-preview" width="150" src="http://placehold.it/150x150" alt="preview">
+                                                        <input type="file" class="form-control form-control-file" id="uploadImg" name="buktiPenerimaan" accept="image/*">
+                                                        <label for="uploadImg" class=" label-input-file btn btn-primary">Upload Gambar</label>
+                                                        <br>
+                                                        <label for="uploadImg" class="form-check-label">(format file jpg/jpeg/png)</label>
+                                                    </div>
+                                                    @endif
+                                                    @else
+                                                    @if(isset($item->ordersPengiriman->bukti_pengiriman))
+                                                    <div class="form-group col-sm-12">
+                                                        Bukti Pengiriman
+                                                        <div class="form-label-group">
+                                                            <img src="{{asset('storage/'.$item->ordersPengiriman->bukti_pengiriman)}}" style="height: 300px;width: 300px;" />
+                                                        </div>
+                                                    </div>
+                                                    @endif
+                                                    @if(isset($item->ordersPengiriman->bukti_penerimaan))
+                                                    <div class="form-group col-sm-12">
+                                                        Bukti Penerimaan
+                                                        <div class="form-label-group">
+                                                            <img src="{{asset('storage/'.$item->ordersPengiriman->bukti_penerimaan)}}" style="height: 300px;width: 300px;" />
+                                                        </div>
+                                                    </div>
+                                                    @endif
+                                                    @endif
+                                                @endif 
+                                                @elseif(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim=="CV.Prima Jaya Tenda")
+                                                @if($item->total==$item->total_pembayaran)
+                                                    <div class="form-group col-sm-12">
+                                                        <div class="form-label-group">                
+                                                            <input class="form-control" type="text" name="kode" @if(isset($item->ordersPengiriman->kode)&&$item->ordersPengiriman->kode!=null) value="{{$item->ordersPengiriman->kode}}" @endif @if($user->admin=="User") disabled @endif>
+                                                            <label for="kode">Kode Ekspedisi/Nomor Surat Jalan</label>
+                                                        </div>
+                                                    </div>
+                                                    @if($user->admin!="User")
+                                                    @if($item->status!="Menunggu Pelunasan Pembayaran")
+                                                    <div class="input-file input-file-image mx-auto">
+                                                        Surat Jalan/Ekspedisi
+                                                        <img class="img-upload-preview" width="150" src="http://placehold.it/150x150" alt="preview">
+                                                        <input type="file" class="form-control form-control-file" id="uploadImg" name="buktiPengiriman" accept="image/*">
+                                                        <label for="uploadImg" class=" label-input-file btn btn-primary">Upload Gambar</label>
+                                                        <br>
+                                                        <label for="uploadImg" class="form-check-label">(format file jpg/jpeg/png)</label>
+                                                    </div>
+                                                    @endif
+                                                    @if($item->status!="Pengiriman")
+                                                    <div class="input-file input-file-image mx-auto">
+                                                        Bukti Penerimaan
+                                                        <img class="img-upload-preview" width="150" src="http://placehold.it/150x150" alt="preview">
+                                                        <input type="file" class="form-control form-control-file" id="uploadImg" name="buktiPenerimaan" accept="image/*">
+                                                        <label for="uploadImg" class=" label-input-file btn btn-primary">Upload Gambar</label>
+                                                        <br>
+                                                        <label for="uploadImg" class="form-check-label">(format file jpg/jpeg/png)</label>
+                                                    </div>
+                                                    @endif
+                                                    @endif
+                                                @endif
+                                                @endif
+                                                
+                                                
                                             </div>
                                             @if($user->admin=="Admin")
                                             <!-- Modal footer -->

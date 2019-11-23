@@ -11,4 +11,7 @@ class log_pembayaran extends Model
     {
         return $this->hasOne('App\Pembayaran', 'id', 'id_pembayaran');
     }
+    public function logUser(){
+        return $this->hasOne('App\User', 'id', 'admin');
+    }
 }

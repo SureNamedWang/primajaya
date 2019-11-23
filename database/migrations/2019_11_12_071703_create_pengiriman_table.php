@@ -19,6 +19,8 @@ class CreatePengirimenTable extends Migration
             $table->string('kode',255)->nullable();
             $table->enum('pengirim', ['CV.Prima Jaya Tenda', 'Tiki', 'JNE', 'Pos']);
             $table->integer('eta');
+            $table->string('bukti_pengiriman',255)->nullable();
+            $table->string('bukti_penerimaan',255)->nullable();
             $table->timestamps();
         });
     }

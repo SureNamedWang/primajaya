@@ -21,7 +21,7 @@ class CreateOrdersTable extends Migration
             $table->integer('total');
             $table->integer('dp');
             $table->integer('total_pembayaran');
-            $table->enum('status', ['Pending', 'Produksi', 'Quality Control', 'Pengiriman', 'Selesai', 'Expired']);
+            $table->enum('status', ['Pending', 'Produksi', 'Quality Control', 'Menunggu Pelunasan Pembayaran', 'Pengiriman', 'Selesai', 'Expired']);
             $table->timestamps();
         });
     }

@@ -35,7 +35,9 @@ class PembayaranController extends Controller
 
     public function showLogPembayaran(Request $request){
         $user=Auth::user();
+        //$logs=log_pembayaran::with('logPembayaran')->get();
         $logs=log_pembayaran::all();
+        //dd($logs);
         return view('log_pembayaran')->with(compact('user','logs'));
     }
 
@@ -200,7 +202,9 @@ class PembayaranController extends Controller
 
         if(isset($order)){   
             if($order->total_pembayaran>=$order->dp){
-                $order->status="Produksi";
+                if($order->status=="Pending"){
+                    $order->status="Produksi";
+                }
             }
             else if($order->total_pembayaran<$order->dp){
                 $order->status="Pending";

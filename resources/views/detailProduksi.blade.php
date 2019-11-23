@@ -146,7 +146,7 @@
                             <td><button type="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#modalInsertProduksi">Upload</button></td>
                             @endif
                             
-                        <td><a href="{{route('produksi.show', ['id' => $id])}}" class="btn btn-block btn-info">List Barang</a></td>
+                        <td><a href="{{route('produksi.show', ['id' => $id])}}" class="btn btn-block btn-info">BACK</a></td>
                     </tr>
 
                 </tbody>

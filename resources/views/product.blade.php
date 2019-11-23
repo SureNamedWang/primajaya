@@ -31,9 +31,15 @@
 						{{ucwords($products->nama)}}
 					</h2>
 					<hr>
-					<h6 style="font-weight: bolder;">Harga </h6>
+					<h6 style="font-weight: bolder;">Total </h6>
 					<span class="price h3 text-danger">
 						<span class="currency">IDR </span><span class="num" id="dispHarga">{{number_format($products->hargaUkuranProduct->first()->harga)}}</span>
+					</span>
+					<hr>
+					<span class="price h3 text-danger">
+						<span class="currency">Estimasi Waktu Produksi: </span><span class="num" id="dispProduksi">7</span><span class="currency"> Hari</span>
+						<br>
+						<span>*NB:Estimasi waktu belum termasuk waktu kirim</span>
 					</span>
 					<hr>
 					<!-- price-detail-wrap .// -->
@@ -203,6 +209,18 @@
 		total=total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 		//alert('ukuran:'+vUkuran+' Kain:'+vKain+' Logo:'+vLogo+' Total:'+total);
 		$('#dispHarga').html(total);
+		let eta=0;
+		if(Math.round(vJumlah/5)==0){
+			eta++;
+		}
+		else{
+			eta=Math.round(vJumlah/5);
+			if(vJumlah%5>0&&vJumlah%5<3){
+				eta++;
+			}
+		}
+		eta=eta*7;
+		$('#dispProduksi').html(eta);
 		//number_format(total,0,',','.')
 	}
 	</script>
