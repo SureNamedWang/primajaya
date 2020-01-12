@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePengirimenTable extends Migration
+class CreatePengirimanTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,7 +15,7 @@ class CreatePengirimenTable extends Migration
     {
         Schema::create('pengiriman', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigIntegerer('orders_id');
+            $table->bigInteger('orders_id');
             $table->string('kode',255)->nullable();
             $table->enum('pengirim', ['CV.Prima Jaya Tenda', 'Tiki', 'JNE', 'Pos']);
             $table->integer('eta');

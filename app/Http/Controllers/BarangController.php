@@ -48,33 +48,32 @@ class BarangController extends Controller
 
     public function storeBarang(Request $request){
         //Dari Tambah Barang
-        if($request->asal=="tambahBarang"){
-
-            $barang = new Products();
-            $barang->detail=$request->detail;
-            $barang->nama=$request->nama;
-            //dd($barang);
-            $barang->save();
-
-            $barang=Products::where('detail',$request->detail)->where('nama',$request->nama)->first();
-            //dd($barang);
-
-            $gambarBarang = new Gambar();
-
-            $path = $request->file('fileToUpload')->extension();
-                //dd($path);
-            if($path!='png' and $path!='jpg' and $path!='jpeg'){
-                Session::flash('message', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
+            if($request->file('fileToUpload')==null){
+                Session::flash('alert', "Silahkan upload Gambar");
                 return Redirect::back();
             }
             else{
-                $path = $request->file('fileToUpload')->store('barang', 'public');
-                $gambarBarang->id_products=$barang->id;
-                $gambarBarang->gambar=$path;
-                $gambarBarang->thumbnail=1;
+                $path = $request->file('fileToUpload')->extension();
+                //dd($path);
+                if($path!='png' and $path!='jpg' and $path!='jpeg'){
+                    Session::flash('alert', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
+                    return Redirect::back();
+                }
+                else{
+                    $barang = new Products();
+                    $barang->detail=$request->detail;
+                    $barang->nama=$request->nama;
+                    $barang->save();
+                    $gambarBarang = new Gambar();
+                    $path = $request->file('fileToUpload')->store('barang', 'public');
+                    $gambarBarang->id_products=$barang->id;
+                    $gambarBarang->gambar=$path;
+                    $gambarBarang->thumbnail=1;
 
-                $gambarBarang->save();
+                    $gambarBarang->save();
+                }
             }
+            
 
             $ukuran= new Ukuran();
             $ukuran->id_products=$barang->id;
@@ -82,7 +81,7 @@ class BarangController extends Controller
 
             $ukuran->save();
 
-            $ukuran=Ukuran::where('id_products',$barang->id)->where('id_mukuran',$request->ukuran)->first();
+            //$ukuran=Ukuran::where('id_products',$barang->id)->where('id_mukuran',$request->ukuran)->first();
 
             $harga=new Harga();
             $harga->id_ukuran=$ukuran->id;
@@ -93,7 +92,6 @@ class BarangController extends Controller
 
             Session::flash('message', "Barang baru berhasil di simpan");
             return Redirect::back();
-        }
     }
 
     public function editBarang(Request $request){

@@ -33,10 +33,10 @@
                     </div>
                     <div class="form-group col-sm-12">
                         <h6>Gambar</h6>
-                        <input class="input-group-btn" class="w-100" type="file" name="fileToUpload">
+                        <input class="input-group-btn" class="w-100" type="file" name="fileToUpload" required>
                     </div>
                     <div class="form-group col-sm-12">
-                        <select class="form-control" name="ukuran">
+                        <select class="form-control" name="ukuran" required>
                             <option value="">Pilih Ukuran</option>
                             @foreach ($ukuran as $ukuran)
                             <option value="{{$ukuran->id}}">{{$ukuran->ukuran}}</option>
@@ -44,7 +44,7 @@
                         </select>
                     </div>
                     <div class="form-group col-sm-12">
-                        <select class="form-control" name="tipe">
+                        <select class="form-control" name="tipe" required>
                             <option value="">Pilih Tipe</option>
                             @foreach ($tipe as $tipe)
                             <option value="{{$tipe->id}}">{{$tipe->nama}}</option>

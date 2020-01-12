@@ -243,20 +243,20 @@ class ProduksiController extends Controller
 
         $produksi->save();
 
-        // $Orders = Orders::find($request->OrderID);
-        // $pembeli = User::find($Orders->id_user);
+        $Orders = Orders::find($request->OrderID);
+        $pembeli = User::find($Orders->id_user);
 
-        // Mail::send('email', [], function ($m) use ($path,$pembeli) {
-        //     $m->from('noreply@primajaya.com', 'Prima Jaya');
+        Mail::send('email', [], function ($m) use ($path,$pembeli) {
+            $m->from('noreply@primajaya.com', 'Prima Jaya');
 
-        //     $m->to($pembeli->email)->subject('Pesanan Anda');
+            $m->to($pembeli->email)->subject('Pesanan Anda');
 
-        //     $m->attach(asset('storage/'.$path));
+            $m->attach(asset('storage/'.$path));
 
-        //     if(isset($path2)){
-        //         $m->attach(asset('storage/'.$path2));
-        //     }
-        // });
+            if(isset($path2)){
+                $m->attach(asset('storage/'.$path2));
+            }
+        });
 
 
 
@@ -278,8 +278,10 @@ class ProduksiController extends Controller
         $barang = Keranjang::with('keranjangProduksi')->where('id_orders',$id)->get();
         //dd(count($barang));
         foreach($barang as $item){
-            if($item->keranjangProduksi->sortBy('updated_at')->last()->progress==1){
-                $jumlahBarangJadi++;
+            if($item->keranjangProduksi->first()!=null){
+                if($item->keranjangProduksi->sortBy('updated_at')->last()->progress==1){
+                    $jumlahBarangJadi++;
+                }
             }
         }
         if($jumlahBarangJadi==count($barang)){
@@ -354,33 +356,40 @@ class ProduksiController extends Controller
                 }
             }
         }
-
         $gudangs=penyimpanan_bahan::all();
         $sisa=collect();
-        foreach($bahans as $bahan=>$jumlah){
-            foreach($gudangs as $gudang){
-                if($gudang->penyimpananMasterBahan->nama==$bahan){
-                    $jumlah=$jumlah-$gudang->jumlah;
-                    if($bahan=="besi"){
-                        $jumlah=round($jumlah/6);
+        if(count($gudangs)>0){
+            foreach($bahans as $bahan=>$jumlah){
+                foreach($gudangs as $gudang){
+                    if($gudang->penyimpananMasterBahan->nama==$bahan){
+                        $jumlah=$jumlah-$gudang->jumlah;
+                        // if($bahan=="besi"){
+                        //     $jumlah=round($jumlah/6);
+                        // }
+                        // else{
+                        //     $jumlah=round($jumlah/10);
+                        // }
+                        $sisa->put($bahan,$jumlah);
                     }
-                    else{
-                        $jumlah=round($jumlah/10);
-                    }
-                    $sisa->put($bahan,$jumlah);
                 }
             }
+            //Notifikasi email
+            $owner = User::where('admin','Pemilik')->first();
+            $sisa->id=$id;
+            $sisa->email=$user->email;
+            $sisa->nama=$user->name;
+            //dd($sisa);
+            $owner->notify(new notifikasiKekuranganBahan($sisa));
         }
-        //dd($sisa);
-
-        //Notifikasi email
-        $owner = User::where('admin','Pemilik')->first();
-        $sisa->id=$id;
-        $sisa->email=$user->email;
-        $sisa->nama=$user->name;
-        //dd($bahans);
-        $owner->notify(new notifikasiKekuranganBahan($sisa));
-
+        else{
+            $owner = User::where('admin','Pemilik')->first();
+            $bahans->id=$id;
+            $bahans->email=$user->email;
+            $bahans->nama=$user->name;
+            //dd($bahans);
+            $owner->notify(new notifikasiKekuranganBahan($bahans));
+        }
+        
         Session::flash('message', "Email telah terkirim ke pemilik!");
         return Redirect::back();
     }
@@ -444,7 +453,7 @@ class ProduksiController extends Controller
             $path = $request->file('fileToUpload')->extension();
             //dd($path);
             if($path!='png' and $path!='jpg' and $path!='jpeg'){
-                Session::flash('message', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
+                Session::flash('alert', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
                 return Redirect::back();
             }
             else{
@@ -458,7 +467,7 @@ class ProduksiController extends Controller
             $path2 = $request->file('fileToUpload2')->extension();
             //dd($path2);
             if($path2!='png' and $path2!='jpg' and $path2!='jpeg'){
-                Session::flash('message', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
+                Session::flash('alert', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
                 return Redirect::back();
             }
             else{

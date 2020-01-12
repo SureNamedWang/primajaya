@@ -80,26 +80,48 @@
                                             <div class="modal-body">
                                                 <div class="form-group col-sm-12">
                                                     <div class="form-label-group">
-                                                    <select class="form-control" 
-                                                    name="pengirim" 
-                                                    required 
-                                                    @if($user->admin=="User") disabled @endif 
-                                                        @if(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim!="CV.Prima Jaya Tenda")
-                                                        @if($item->biaya_kirim>0&&$item->total==$item->total_pembayaran) 
-                                                        disabled 
-                                                        @endif 
-                                                        @elseif(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim=="CV.Prima Jaya Tenda")
-                                                        @if($item->total==$item->total_pembayaran)
-                                                        disabled
-                                                        @endif
-                                                        @endif
-                                                        >
-                                                        <option value="">Pilih Jasa Pengiriman</option>
-                                                        <option value="CV.Prima Jaya Tenda" @if(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim=="CV.Prima Jaya Tenda") selected @endif>CV.Prima Jaya Tenda</option>
-                                                        <option value="Tiki" @if(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim=="Tiki") selected @endif>Tiki</option>
-                                                        <option value="JNE" @if(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim=="JNE") selected @endif>JNE</option>
-                                                        <option value="Pos" @if(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim=="Pos") selected @endif>Pos</option>
-                                                    </select>
+                                                        <label for="nama">Nama</label>
+                                                        <input type="text" class="form-control" id="nama" name="nama" value={{$item->OrdersUsers->name}} disabled>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group col-sm-12">
+                                                    <div class="form-label-group">
+                                                        <label for="address">Alamat</label>
+                                                        <input type="text" class="form-control" id="address" name="address" value={{$item->OrdersUsers->alamat}} disabled>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group col-sm-12">
+                                                    <div class="form-label-group">
+                                                        <label for="cp">Telepon</label>
+                                                        <input type="text" class="form-control" id="cp" name="cp" value={{$item->OrdersUsers->telp}} disabled>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group col-sm-12">
+                                                    <div class="form-label-group">
+                                                        <label for="pengirim">Jasa Pengiriman</label>
+                                                        <select class="form-control" 
+                                                        name="pengirim" 
+                                                        required 
+                                                        @if($user->admin=="User") disabled @endif 
+                                                            @if(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim!="CV.Prima Jaya Tenda")
+                                                            @if($item->biaya_kirim>0&&$item->total==$item->total_pembayaran) 
+                                                            disabled 
+                                                            @endif 
+                                                            @elseif(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim=="CV.Prima Jaya Tenda")
+                                                            @if($item->total==$item->total_pembayaran)
+                                                            disabled
+                                                            @endif
+                                                            @endif
+                                                            >
+                                                            <option value="">Pilih Jasa Pengiriman</option>
+                                                            <option value="CV.Prima Jaya Tenda" @if(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim=="CV.Prima Jaya Tenda") selected @endif>CV.Prima Jaya Tenda</option>
+                                                            <option value="Tiki" @if(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim=="Tiki") selected @endif>Tiki</option>
+                                                            <option value="JNE" @if(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim=="JNE") selected @endif>JNE</option>
+                                                            <option value="Pos" @if(isset($item->ordersPengiriman->pengirim)&&$item->ordersPengiriman->pengirim=="Pos") selected @endif>Pos</option>
+                                                        </select>
                                                     </div>
                                                 </div>
 

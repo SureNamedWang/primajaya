@@ -157,7 +157,7 @@
                                             <input type="hidden" name="OrderID" value="{{$id}}">
                                             Upload Bukti Pembayaran
                                             <img class="img-upload-preview" width="150" src="http://placehold.it/150x150" alt="preview">
-                                            <input type="file" class="form-control form-control-file" id="uploadImg" name="fileToUpload" accept="image/*">
+                                            <input type="file" class="form-control form-control-file" id="uploadImg" name="fileToUpload" accept="image/*" required>
                                             <label for="uploadImg" class=" label-input-file btn btn-primary">Upload new Image</label>
                                             <br>
                                             <label for="uploadImg" class="form-check-label">(format file jpg/jpeg/png)</label>

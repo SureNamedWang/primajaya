@@ -18,9 +18,9 @@ class notifikasiKekuranganBahan extends Notification
      *
      * @return void
      */
-    public function __construct($sisa)
+    public function __construct($bahans)
     {
-        $this->bahans = $sisa;
+        $this->bahans = $bahans;
     }
 
     /**
@@ -52,10 +52,10 @@ class notifikasiKekuranganBahan extends Notification
         foreach($this->bahans as $bahans=>$jumlah){
             if($bahans!='id'||$bahans!='email'||$bahans!='nama'){
                 if($bahans=="besi"){
-                    $mail->line($bahans.' : '.$jumlah.' lenjer');
+                    $mail->line($bahans.' : '.round($jumlah/6).' lenjer');
                 }
                 else{
-                    $mail->line($bahans.' : '.$jumlah.' roll');
+                    $mail->line($bahans.' : '.round($jumlah/10).' roll');
                 }
                 
             }

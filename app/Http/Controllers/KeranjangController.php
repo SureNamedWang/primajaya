@@ -54,6 +54,7 @@ class KeranjangController extends Controller
 
             }
             else{
+                Session::flash('alert', "Email/Password salah, silahkan masukkan kembali atau daftar akun baru jika anda belum memiliki akun.");    
                 return Redirect::back()->withInput();
             }
         }
