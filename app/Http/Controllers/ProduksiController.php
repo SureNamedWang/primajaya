@@ -199,7 +199,7 @@ class ProduksiController extends Controller
         $path = $request->file('fileToUpload')->extension();
         //dd($path);
         if($path!='png' and $path!='jpg' and $path!='jpeg'){
-            Session::flash('alert', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
+            Session::flash('alert', "Tipe file untuk produksi awal salah. Tipe file yang diterima hanya png/jpg/jpeg");
             return Redirect::back();
         }
         else{
@@ -211,7 +211,7 @@ class ProduksiController extends Controller
             $path2 = $request->file('fileToUpload2')->extension();
             
             if($path2!='png' and $path2!='jpg' and $path2!='jpeg'){
-                Session::flash('alert', "Tipe file salah. Tipe file yang diterima hanya png/jpg/jpeg");
+                Session::flash('alert', "Tipe file untuk produksi akhir salah. Tipe file yang diterima hanya png/jpg/jpeg");
                 return Redirect::back();
             }
             else{
@@ -246,11 +246,9 @@ class ProduksiController extends Controller
         $Orders = Orders::find($request->OrderID);
         $pembeli = User::find($Orders->id_user);
 
-        Mail::send('email', [], function ($m) use ($path,$pembeli) {
+        Mail::send('email', [], function ($m) use ($path,$pembeli,$Orders) {
             $m->from('noreply@primajaya.com', 'Prima Jaya');
-
-            $m->to($pembeli->email)->subject('Pesanan Anda');
-
+            $m->to($pembeli->email)->subject('Pesanan Tenda untuk Order ID:'.$Orders->id);
             $m->attach(asset('storage/'.$path));
 
             if(isset($path2)){

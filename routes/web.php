@@ -14,11 +14,16 @@
 Route::get('/', function () {
     return redirect('catalogue');
 });
+
 Route::resource('/catalogue', 'ProductController');
 
 Route::resource('/cart', 'KeranjangController');
 
 Route::resource('/karyawan', 'KaryawanController');
+
+Route::get('/profile', 'HomeController@showProfile')->name('showProfile');
+
+Route::post('editProfile', 'HomeController@editProfile')->name('editProfile');
 
 Route::post('editKeranjang', 'KeranjangController@editKeranjang')->name('editKeranjang');
 
