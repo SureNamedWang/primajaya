@@ -49,6 +49,8 @@ Route::post('/laporan/gaji', 'ProduksiController@laporanGaji')->name('laporanGaj
 
 Route::post('/notify/{id}', 'ProduksiController@notifyOwner')->name('notifyOwner');
 
+Route::post('/laporan/purchasing', 'ProduksiController@laporanPurchasing')->name('laporanPurchasing');
+
 Route::get('/detailProduksi/{id}/{idBrg}', 'ProduksiController@showDetailProduksi')->name('detailProduksi');
 
 Route::resource('/barang', 'BarangController');

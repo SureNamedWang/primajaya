@@ -8,6 +8,7 @@ use App\Notifications\notifikasiETAbahan;
 use App\karyawan;
 use App\Keranjang;
 use App\Produksi;
+use App\Purchasing;
 use App\Orders;
 use App\User;
 use App\penyimpanan_bahan;
@@ -93,7 +94,21 @@ class ProduksiController extends Controller
         $orders->save();
         return redirect('/produksi/'.$id);
     }
-
+    public function laporanPurchasing(Request $request){
+        $user=Auth::user();
+        $start=$request->periode_awal;
+        $fin=$request->periode_akhir;
+        $purchasing=Purchasing::whereBetween('tanggal_pesan',[$start,$fin])->get();
+        $jumlah=0;
+        
+        $purchasing->transform(function ($bayar,$key){
+            $bayar->tanggal_pesan=Carbon::parse($bayar->tanggal_pesan);
+            return $bayar;
+        });
+        $awal=Carbon::parse($request->periode_awal);
+        $akhir=Carbon::parse($request->periode_akhir);
+        return view('laporanPurchasing')->with(compact('user','awal','akhir','purchasing'));
+    }
     public function laporanGaji(Request $request){
         $user=Auth::user();
         $start=$request->periode_awal.' 0:00:00';
@@ -326,6 +341,15 @@ class ProduksiController extends Controller
             $eta->put('tanggal',$tgl);
             //dd($eta);
             $admin->notify(new notifikasiETAbahan($eta,$admins));
+
+            $purchasing=new Purchasing();
+            $tglSkrg=Carbon::now();
+            $tglSkrg->timezone='Asia/Jakarta';
+            $purchasing->id_orders=$id;
+            $purchasing->tanggal_pesan=$tglSkrg;
+            $purchasing->tanggal_sampai=$tgl;
+            $purchasing->total=$request->total;
+            $purchasing->save();
 
             $gudang=penyimpanan_bahan::all();
             foreach($gudang as $sisa){

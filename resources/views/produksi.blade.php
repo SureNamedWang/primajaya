@@ -168,6 +168,12 @@
                                         placeholder="Estimasi Bahan Sampai" aria-label="Estimasi Barang Sampai" aria-describedby="basic-addon1">
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <div class="input-group mb-3">
+                                    <input type="number" min=0 name="total" value="0" required>
+                                        <label for="total">Total Biaya</label>
+                                    </div>
+                                </div>
                                 @endif
                             </div>
 

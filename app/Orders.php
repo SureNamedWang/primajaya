@@ -21,4 +21,8 @@ class Orders extends Model
     {
         return $this->hasOne('App\pengiriman', 'orders_id', 'id');
     }
+    public function ordersPurchasing()
+    {
+        return $this->hasMany('App\Purchashing', 'id_orders', 'id');
+    }
 }
